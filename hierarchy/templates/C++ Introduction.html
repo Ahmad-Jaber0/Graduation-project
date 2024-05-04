@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Introduction</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Introduction</div> 
+        <hr>
+        <div class = "heading-two">What is C++?</div>
+        <div class = "text">
+          C++ is a cross-platform language that can be used to create high-performance applications.
+          <br>
+          <br>
+          C++ was developed by Bjarne Stroustrup, as an extension to the C language.
+          <br>
+          <br>
+          C++ gives programmers a high level of control over system resources and memory.
+          <br>
+          <br>
+          The language was updated 4 major times in 2011, 2014, 2017, and 2020 to C++11, C++14, C++17, C++20.
+        </div>
+        <hr>
+        <div class = "heading-two">Why Use C++</div>
+        <div class = "text">
+          C++ is one of the world's most popular programming languages.
+          <br>
+          <br>
+          C++ can be found in today's operating systems, Graphical User Interfaces, and embedded systems.
+          <br>
+          <br>
+          C++ is an object-oriented programming language which gives a clear structure to programs and allows code to be reused, lowering development costs.
+          <br>
+          <br>
+          C++ is portable and can be used to develop applications that can be adapted to multiple platforms.
+          <br>
+          <br>
+          C++ is fun and easy to learn!
+          <br>
+          <br>
+          As C++ is close to C, C# and Java, it makes it easy for programmers to switch to C++ or vice versa.
+        </div>
+        <hr>
+        <div class = "heading-two">Difference between C and C++</div>
+        <div class = "text">
+          C++ was developed as an extension of C, and both languages have almost the same syntax.
+          <br>
+          <br>
+          The main difference between C and C++ is that C++ support classes and objects, while C does not.
+        </div>
+        <hr>
+        <div class = "heading-two">C++ Get Started</div>
+        <div class = "text">To start using C++, you need two things:</div>
+        <ul>
+          <li>A text editor, like Notepad, to write C++ code</li>
+          <li>A compiler, like GCC, to translate the C++ code into a language that the computer will understand</li>
+        </ul>
+        <div class = "text">There are many text editors and compilers to choose from. In this tutorial, we will use an IDE (see below).</div>
+        <hr>
+        <div class = "heading-two">C++ Install IDE</div>
+        <div class = "text">
+          An IDE (Integrated Development Environment) is used to edit AND compile the code.
+          <br>
+          <br>
+          Popular IDE's include Code::Blocks, Eclipse, and Visual Studio. These are all free, and they can be used to both edit and debug C++ code.
+          <br>
+          <br>
+          Note: Web-based IDE's can work as well, but functionality is limited.
+          <br>
+          <br>
+          We will use Code::Blocks in our tutorial, which we believe is a good place to start.
+          <br>
+          <br>
+          You can find the latest version of Codeblocks at <a href="http://www.codeblocks.org/">CodeBlocks</a> Download the <code class = "code-words">mingw-setup.exe</code> file, which will install the text editor with a compiler.
+        </div>
+        <hr>
+        <div class = "heading-two">C++ Quickstart</div>
+        <div class = "text">
+          Let's create our first C++ file.
+          <br>
+          <br>
+          Open Codeblocks and go to File > New > Empty File.
+          <br>
+          <br>
+          Write the following C++ code and save the file as <code class = "code-words">myfirstprogram.cpp</code> (File > Save File as):
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              #include <iostream>
+              <br>
+              using namespace std;
+              <br>  
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;cout << "Hello World!";
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Don't worry if you don't understand the code above - we will discuss it in detail in later chapters. For now, focus on how to run the code.
+          <br>
+          <br>
+          In Codeblocks, it should look like this:
+        </div>
+        <div class = "image-contianer"><img src="https://www.w3schools.com/cpp/codeblocks2020.png"></div>
+        <div class = "text">Then, go to Build > Build and Run to run (execute) the program. The result will look something to this:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              Hello World!
+              <br>
+              Process returned 0 (0x0) execution time : 0.011 s
+              <br>
+              Press any key to continue.
+            </div>
+          </div>
+        </div>
+        <div class = "text">Congratulations! You have now written and executed your first C++ program.</div>
+        <hr>
+        <div class = "heading-two">Learning C++ At W3Schools</div>
+        <div class = "text">
+          When learning C++ at W3Schools.com, you can use our "Try it Yourself" tool, which shows both the code and the result. This will make it easier for you to understand every part as we move forward:
+          <br>
+          <br>
+          myfirstprogram.cpp
+          <br>
+          Code:
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              #include <iostream>
+              <br>
+              using namespace std;
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;cout << "Hello World!";
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              // Result:  Hello World!
+            </div>
+          </div>
+        </div>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Output'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='#'"> Previous </button>    
+    </main>
+{% endblock %}

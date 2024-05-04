@@ -1,0 +1,684 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Functions</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Functions</div>
+        <hr>
+        <div class = "text">
+          A function is a block of code which only runs when it is called.
+          <br>
+          <br>
+          You can pass data, known as parameters, into a function.
+          <br>
+          <br>
+          Functions are used to perform certain actions, and they are important for reusing code: Define the code once, and use it many times.
+        </div>
+        <hr>
+        <div class = "heading-two">Create a Function</div>
+        <div class = "text">
+          C++ provides some pre-defined functions, such as main(), which is used to execute code. But you can also create your own functions to perform certain actions.
+          <br>
+          <br>
+          To create (often referred to as declare) a function, specify the name of the function, followed by parentheses ():
+          <br>
+          <br>
+          Syntax
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void myFunction() {
+                <br>
+                &nbsp;&nbsp;// code to be executed
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">Example Explained</div>
+        <ul>
+          <li><code class = "code-words">myFunction()</code> is the name of the function</li>
+          <li><code class = "code-words">void</code> means that the function does not have a return value. You will learn more about return values later in the next chapter</li>
+          <li>inside the function (the body), add code that defines what the function should do</li>
+        </ul>
+        <hr>
+        <div class = "heading-two">Call a Function</div>
+        <div class = "text">
+          Declared functions are not executed immediately. They are "saved for later use", and will be executed later, when they are called.
+          <br>
+          <br>
+          To call a function, write the function's name followed by two parentheses <code class = "code-words">()</code> and a semicolon <code class = "code-words">;</code>
+          <br>
+          <br>
+          In the following example, <code class = "code-words">myFunction()</code> is used to print a text (the action), when it is called:
+          <br>
+          <br>
+          Example
+          <br>
+          <br>
+          Inside <code class = "code-words">main</code>, call <code class = "code-words">myFunction()</code>:
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              // Create a function
+              <br>
+              void myFunction() {
+                <br>
+                &nbsp;&nbsp;cout << "I just got executed!";
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;myFunction(); // call the function
+                <br>
+                &nbsp;&nbsp;return 0;
+              <br>
+            }
+            <br>
+            <br>
+            // Outputs "I just got executed!"
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          A function can be called multiple times:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void myFunction() {
+                <br>
+                &nbsp;&nbsp;cout << "I just got executed!\n";
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;myFunction();
+                <br>
+                &nbsp;&nbsp;myFunction();
+                <br>
+                &nbsp;&nbsp;myFunction();
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              <br>
+              // I just got executed!
+              <br>
+              // I just got executed!
+              <br>
+              // I just got executed!
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Function Declaration and Definition</div>
+        <div class = "text">A C++ function consist of two parts:</div>
+        <ul>
+          <li>Declaration: the return type, the name of the function, and parameters (if any)</li>
+          <li>Definition: the body of the function (code to be executed)</li>
+        </ul>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void myFunction() { // declaration
+                <br>
+                &nbsp;&nbsp;// the body of the function (definition)
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Note: If a user-defined function, such as <code class = "code-words">myFunction()</code> is declared after the <code class = "code-words">main()</code> function, an error will occur:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int main() {
+                <br>
+                &nbsp;&nbsp;myFunction();
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              <br>
+              void myFunction() {
+                <br>
+                <br>&nbsp;&nbsp;cout << "I just got executed!";
+              }
+              <br>
+              <br>
+              // Error
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          However, it is possible to separate the declaration and the definition of the function - for code optimization.
+          <br>
+          <br>
+          You will often see C++ programs that have function declaration above <code class = "code-words">main()</code>, and function definition below <code class = "code-words">main()</code>. This will make the code better organized and easier to read:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              // Function declaration
+              <br>
+              void myFunction();
+              <br>
+              <br>
+              // The main method
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;myFunction();  // call the function
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              <br>
+              // Function definition
+              <br>
+              void myFunction() {
+                <br>
+                &nbsp;&nbsp;cout << "I just got executed!";
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "heading-one">C++ Function Parameters</div>
+        <hr>
+        <div class = "heading-two">Parameters and Arguments</div>
+        <div class = "text">
+          Information can be passed to functions as a parameter. Parameters act as variables inside the function.
+          <br>
+          <br>
+          Parameters are specified after the function name, inside the parentheses. You can add as many parameters as you want, just separate them with a comma:
+          <br>
+          <br>
+          Syntax
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void functionName(parameter1, parameter2, parameter3) {
+                <br>
+                &nbsp;&nbsp;// code to be executed
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          The following example has a function that takes a <code class = "code-words">string</code> called fname as parameter. When the function is called, we pass along a first name, which is used inside the function to print the full name:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void myFunction(string fname) {
+                <br>
+                &nbsp;&nbsp;cout << fname << " Refsnes\n";
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;myFunction("Liam");
+                <br>
+                &nbsp;&nbsp;myFunction("Jenny");
+                <br>
+                &nbsp;&nbsp;myFunction("Anja");
+                <br>
+                &nbsp;&nbsp;return 0;
+              }
+              <br>
+              <br>
+              // Liam Refsnes
+              // Jenny Refsnes
+              // Anja Refsnes
+            </div>
+          </div>
+        </div>
+        <div class = "note">
+          <div class = "text">
+            When a parameter is passed to the function, it is called an argument. So, from the example above: <code class = "code-words">fname</code> is a parameter, while <code class = "code-words">Liam</code>, <code class = "code-words">Jenny</code> and Anja are arguments.
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Default Parameter Value</div>
+        <div class = "text">
+          You can also use a default parameter value, by using the equals sign (<code class = "code-words">=</code>).
+          <br>
+          <br>
+          If we call the function without an argument, it uses the default value ("Norway"):
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void myFunction(string country = "Norway") {
+                <br>
+                &nbsp;&nbsp;cout << country << "\n";
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                &nbsp;&nbsp;myFunction("Sweden");
+                <br>
+                &nbsp;&nbsp;myFunction("India");
+                <br>
+                &nbsp;&nbsp;myFunction();
+                <br>
+                &nbsp;&nbsp;myFunction("USA");
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              <br>
+              // Sweden
+              // India
+              // Norway
+              // USA
+            </div>
+          </div>
+        </div>
+        <div class = "note">
+          <div class = "text">
+            A parameter with a default value, is often known as an "optional parameter". From the example above, <code class = "code-words">country</code> is an optional parameter and "<code class = "code-words">Norway</code>" is the default value.
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Multiple Parameters</div>
+        <div class = "text">
+          Inside the function, you can add as many parameters as you want:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void myFunction(string fname, int age) {
+                <br>
+                &nbsp;&nbsp;cout << fname << " Refsnes. " << age << " years old. \n";
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;myFunction("Liam", 3);
+                <br>
+                &nbsp;&nbsp;myFunction("Jenny", 14);
+                <br>
+                &nbsp;&nbsp;myFunction("Anja", 30);
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              <br>
+              // Liam Refsnes. 3 years old.
+              // Jenny Refsnes. 14 years old.
+              // Anja Refsnes. 30 years old.
+            </div>
+          </div>
+        </div>
+        <div class = "note">
+          <div class = "text">
+            Note that when you are working with multiple parameters, the function call must have the same number of arguments as there are parameters, and the arguments must be passed in the same order.
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-one">C++ The Return Keyword</div>
+        <hr>
+        <div class = "heading-two">Return Values</div>
+        <div class = "text">
+          The <code class = "code-words"void></code> keyword, used in the previous examples, indicates that the function should not return a value. If you want the function to return a value, you can use a data type (such as <code class = "code-words">int</code>, <code class = "code-words">string</code>, etc.) instead of <code class = "code-words">void</code>, and use the <code class = "code-words">return</code> keyword inside the function:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myFunction(int x) {
+                <br>
+                &nbsp;&nbsp;return 5 + x;
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;cout << myFunction(3);
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              <br>
+              // Outputs 8 (5 + 3)
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          This example returns the sum of a function with two parameters:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myFunction(int x, int y) {
+                <br>
+                &nbsp;&nbsp;return x + y;
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;cout << myFunction(5, 3);
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              <br>
+              // Outputs 8 (5 + 3)
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          You can also store the result in a variable:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myFunction(int x, int y) {
+                <br>
+                &nbsp;&nbsp;return x + y;
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;int z = myFunction(5, 3);
+                <br>
+                &nbsp;&nbsp;cout << z;
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+              <br>
+              // Outputs 8 (5 + 3)
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-one">C++ Functions - Pass By Reference</div>
+        <hr>
+        <div class = "heading-two">Pass By Reference</div>
+        <div class = "text">
+          In the examples from the previous page, we used normal variables when we passed parameters to a function. You can also pass a reference to the function. This can be useful when you need to change the value of the arguments:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void swapNums(int &x, int &y) {
+                <br>
+                &nbsp;&nbsp;int z = x;
+                <br>
+                &nbsp;&nbsp;x = y;
+                <br>
+                &nbsp;&nbsp;y = z;
+                <br>
+              }
+              <br>
+              <br>              
+              int main() {
+                <br>
+                &nbsp;&nbsp;int firstNum = 10;
+                <br>
+                &nbsp;&nbsp;int secondNum = 20;
+                <br>
+                <br>
+                &nbsp;&nbsp;cout << "Before swap: " << "\n";
+                <br>
+                &nbsp;&nbsp;cout << firstNum << secondNum << "\n";
+                <br>
+                <br>
+                // Call the function, which will change the values of firstNum and secondNum
+                <br>
+                &nbsp;&nbsp;swapNums(firstNum, secondNum);
+                <br>
+                <br>
+                &nbsp;&nbsp;cout << "After swap: " << "\n";
+                <br>
+                &nbsp;&nbsp;cout << firstNum << secondNum << "\n";
+                <br>
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-one">C++ Pass Array to a Function</div>
+        <hr>
+        <div class = "heading-two">Pass Arrays as Function Parameters</div>
+        <div class = "text">
+          You can also pass arrays to a function:
+          <br>          
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              void myFunction(int myNumbers[5]) {
+                <br>
+                &nbsp;&nbsp;for (int i = 0; i < 5; i++) {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;cout << myNumbers[i] << "\n";
+                  <br>
+                &nbsp;&nbsp;}
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;int myNumbers[5] = {10, 20, 30, 40, 50};
+                <br>
+                &nbsp;&nbsp;myFunction(myNumbers);
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "note">
+          <div class = "text">
+            Example Explained
+            <br>
+            <br>
+            The function (<code class = "code-words">myFunction</code>) takes an array as its parameter (<code class = "code-words">int myNumbers[5]</code>), and loops through the array elements with the <code class = "code-words">for</code> loop.
+            <br>
+            <br>
+            When the function is called inside <code class = "code-words">main()</code>, we pass along the <code class = "code-words">myNumbers</code> array, which outputs the array elements.
+            <br>
+            <br>
+            Note that when you call the function, you only need to use the name of the array when passing it as an argument <code class = "code-words">myFunction(myNumbers)</code>. However, the full declaration of the array is needed in the function parameter (<code class = "code-words">int myNumbers[5]</code>).
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-one">C++ Function Overloading</div>
+        <hr>
+        <div class = "heading-two">Function Overloading</div>
+        <div class = "text">
+          With function overloading, multiple functions can have the same name with different parameters:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myFunction(int x)
+              <br>
+              float myFunction(float x)
+              <br>
+              double myFunction(double x, double y)
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Consider the following example, which have two functions that add numbers of different type:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int plusFuncInt(int x, int y) {
+                <br>
+                &nbsp;&nbsp;return x + y;
+                <br>
+              }
+              <br>
+              <br>
+              double plusFuncDouble(double x, double y) {
+                <br>
+                &nbsp;&nbsp;return x + y;
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;int myNum1 = plusFuncInt(8, 5);
+                <br>
+                &nbsp;&nbsp;double myNum2 = plusFuncDouble(4.3, 6.26);
+                <br>
+                &nbsp;&nbsp;cout << "Int: " << myNum1 << "\n";
+                <br>
+                &nbsp;&nbsp;cout << "Double: " << myNum2;
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Instead of defining two functions that should do the same thing, it is better to overload one.
+          <br>
+          <br>
+          In the example below, we overload the <code class = "code-words">plusFunc</code> function to work for both <code class = "code-words">int</code> and <code class = "code-words">double</code>:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int plusFunc(int x, int y) {
+                <br>
+                &nbsp;&nbsp;return x + y;
+                <br>
+              }
+              <br>
+              <br>
+              double plusFunc(double x, double y) {
+                <br>
+                &nbsp;&nbsp;return x + y;
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;int myNum1 = plusFunc(8, 5);
+                <br>
+                &nbsp;&nbsp;double myNum2 = plusFunc(4.3, 6.26);
+                <br>
+                &nbsp;&nbsp;cout << "Int: " << myNum1 << "\n";
+                <br>
+                &nbsp;&nbsp;cout << "Double: " << myNum2;
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "note">
+          <div class = "text">
+            Note: Multiple functions can have the same name as long as the number and/or type of parameters are different.
+          </div>
+        </div>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Recursion'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Pointers'%}'"> Previous </button>    
+    </main>
+{% endblock %}

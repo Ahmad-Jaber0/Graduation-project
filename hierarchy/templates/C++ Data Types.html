@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Data Types</title>
+{% endblock %}
+{% block content %}
+      <main class="content">
+        <div class = "heading-one">C++ Data Types</div>
+        <hr>
+        <div class = "heading-two">Basic Data Types</div>
+        <div class = "text">As explained in the Variables chapter, a variable in C++ must be a specified data type:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myNum = 5;               // Integer (whole number)
+              <br>
+              <br>
+              float myFloatNum = 5.99;     // Floating point number
+              <br>
+              <br>
+              double myDoubleNum = 9.98;   // Floating point number
+              <br>
+              <br>
+              char myLetter = 'D';         // Character
+              <br>
+              <br>
+              bool myBoolean = true;       // Boolean
+              <br>
+              <br>
+              string myText = "Hello";     // String
+            </div>
+          </div>
+        </div>
+        <div class = "text">The data type specifies the size and type of information the variable will store:</div>
+        <table>
+          <tr>
+            <th>Data Type</th>
+            <th>Size</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code class = "code-words">boolean</code></td>
+            <td>1 byte</td>
+            <td>Stores true or false values</td>
+          </tr>
+          <tr>
+            <td><code class = "code-words">char</code></td>
+            <td>1 byte</td>
+            <td>Stores a single character/letter/number, or ASCII values</td>
+          </tr>
+          <tr>
+            <td><code class = "code-words">int</code></td>
+            <td>2 or 4 bytes</td>
+            <td>Stores whole numbers, without decimals</td>
+          </tr>
+          <tr>
+            <td><code class = "code-words">float</code></td>
+            <td>4 bytes</td>
+            <td>Stores fractional numbers, containing one or more decimals. Sufficient for storing 6-7 decimal digits</td>
+          </tr>
+          <tr>
+            <td><code class = "code-words">double</code></td>
+            <td>8 bytes</td>
+            <td>Stores fractional numbers, containing one or more decimals. Sufficient for storing 15 decimal digits</td>
+          </tr>
+        </table>
+        <hr>
+        <div class = "heading-two">Numeric Types</div>
+        <div class = "text">Use <code class = "code-words">int</code> when you need to store a whole number without decimals, like 35 or 1000, and <code class = "code-words">float</code> or <code class = "code-words">double</code> when you need a floating point number (with decimals), like 9.99 or 3.14515.</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myNum = 1000;
+              <br>
+              <br>
+              cout << myNum;
+            </div>
+          </div>
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              float myNum = 5.75;
+              <br>
+              <br>
+              cout << myNum;
+            </div>
+          </div>
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              double myNum = 19.99;
+              <br>
+              <br>
+              cout << myNum;
+            </div>
+          </div>
+        </div>
+        <div class = "note"> 
+          <div class = "text"><code class = "code-words">float</code> vs. <code class = "code-words">double</code></div>
+          <div class = "text">The precision of a floating point value indicates how many digits the value can have after the decimal point.<br>The precision of <code class = "code-words">float</code> is only six or seven decimal digits, while <code class = "code-words">double</code> variables have a precision of about 15 digits. Therefore it is safer to use <code class = "code-words">double</code> for most calculations.</div>
+        </div>
+        <hr>
+        <div class = "heading-two">Scientific Numbers</div>
+        <div class = "text">A floating point number can also be a scientific number with an "e" to indicate the power of 10:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              float f1 = 35e3;
+              <br>
+              <br>
+              double d1 = 12E4;
+              <br>
+              <br>
+              cout << f1;
+              <br>
+              <br>
+              cout << d1;
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Boolean Types</div>
+        <div class = "text">A boolean data type is declared with the <code class = "code-words">bool</code> keyword and can only take the values <code class = "code-words">true</code> or <code class = "code-words">false</code>.<br>When the value is returned, <code class = "code-words">true</code> = <code class = "code-words">1</code> and <code class = "code-words">false</code> = <code class = "code-words">0</code>.</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              bool isCodingFun = true;
+              <br>
+              <br>
+              bool isFishTasty = false;
+              <br>
+              <br>
+              cout << isCodingFun;  // Outputs 1 (true)
+              <br>
+              <br>
+              cout << isFishTasty;  // Outputs 0 (false)
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Character Types</div>
+        <div class = "text">The <code class = "code-words">char</code> data type is used to store a single character. The character must be surrounded by single quotes, like 'A' or 'c':</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              char myGrade = 'B';
+              <br>
+              <br>
+              cout << myGrade;
+            </div>
+          </div>
+        </div>
+        <div class = "text">Alternatively, if you are familiar with ASCII, you can use ASCII values to display certain characters:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              char a = 65, b = 66, c = 67;
+              <br>
+              <br>
+              cout << a;
+              <br>
+              <br>
+              cout << b;
+              <br>
+              <br>
+              cout << c;
+            </div>
+          </div>
+        </div>
+        <div class = "text">Tip: A list of all ASCII values can be found in w3school <a href="https://www.w3schools.com/charsets/ref_html_ascii.asp" target="_blank">ASCII Table Reference</a>.</div>
+        
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Operators'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Variables'%}'"> Previous </button>
+      
+    </main>
+
+{% endblock %}

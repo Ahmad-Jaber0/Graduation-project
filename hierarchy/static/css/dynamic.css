@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+*{
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+header{
+    background-color: #0d0d84;
+    width: 100%;
+    position: fixed;
+    left:0;
+    top:0;
+    height: 5em;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 100px;
+    border-bottom: 1px solid blue;
+}
+
+.logo{
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.6em;
+}
+
+.navigation a{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    padding-left: 30px;
+}
+
+#nav-middle {
+    margin-right: 0.4em;
+}
+
+.navigation a:hover{
+    color: cyan;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #0d0d84;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.toolbar{
+    background-color: rgba(115, 115, 254, 0.474);
+    position:fixed;
+    top:5em;
+    width: 100%;
+    height: 3.5em;
+    text-align: center;
+    z-index: 9999;
+}
+
+.toolbarelements{
+    cursor: pointer;
+    background-color: white;
+    width: 70px;
+    margin-top: 0.7em;
+    margin-right: 7px;
+    border: none;
+    /* No border */
+    border-radius: 30px;
+    /* Rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow */
+    animation: button-shimmer 2s infinite;
+    transition: all 0.25s ease-in-out;
+    /* Smooth transition */
+}
+
+
+.toolbarelements:active {
+    transform: scale(0.89);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+
+.savebtn-cancelbtn-container{
+    position: fixed;
+    bottom: 20px; /* Adjust bottom spacing */
+    right: 20px; /* Adjust right spacing */
+}
+
+.beautiful-button {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(to bottom, #1b1c3f, #4a4e91);
+   /* Gradient background */
+    color: white;
+   /* White text color */
+    font-family: "Segoe UI", sans-serif;
+   /* Stylish and legible font */
+    font-weight: bold;
+    font-size: 18px;
+   /* Large font size */
+    border: none;
+   /* No border */
+    border-radius: 30px;
+   /* Rounded corners */
+    padding: 14px 28px;
+   /* Large padding */
+    cursor: pointer;
+   /* Cursor on hover */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+   /* Subtle shadow */
+    animation: button-shimmer 2s infinite;
+    transition: all 0.3s ease-in-out;
+   /* Smooth transition */
+   
+  }
+  
+  /* Hover animation */
+  .beautiful-button:hover {
+    background: linear-gradient(to bottom, #2c2f63, #5b67b7);
+    animation: button-particles 1s ease-in-out infinite;
+    transform: translateY(-2px);
+  }
+  
+  /* Click animation */
+  .beautiful-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+
+  
+  /* Shimmer animation */
+  @keyframes button-shimmer {
+    0% {
+      background-position: left top;
+    }
+  
+    100% {
+      background-position: right bottom;
+    }
+  }
+
+  /* Particle animation */
+  @keyframes button-particles {
+    0% {
+      background-position: left top;
+    }
+  
+    100% {
+      background-position: right bottom;
+    }
+  }
+
+
+  .editor {
+    margin-top: 5.7em;
+    padding: 20px;
+    min-height: 40em;
+    border: 3px solid #0d0d84;
+    overflow: auto;
+    font-size: 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.editor ul{
+  margin-left: 44px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+}
+
+
+.image-contianer{
+  display:flex;
+  justify-content: center;
+}
+
+.editor img{
+  width: 750px;
+  height: 600px;
+  border:1px transparent solid;
+  border-radius: 20px;
+}
+
+/* Code box */
+.outer-container {
+  background-color: #38444d;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.code-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.code-box {
+  background-color: black;
+  border: 1px solid #515151;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 15px;
+}
+
+.code-content {
+  font-size: 1.3rem;
+  color:white;
+}
+
+/* code tag */
+.code-words{
+  color: blue;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-size: 1.3rem;
+  background-color: rgb(222, 222, 222);
+}
+
+/* Heading 1 */
+.heading-one{
+  font-size: 3.3rem;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Heading 2 */
+.heading-two{
+  font-size: 2.2rem;
+  display: inline-block;
+  border: 3px solid rgb(150, 248, 248);
+  padding: 20px;
+  border-radius: 30px 10px 30px 10px;
+  margin-bottom: 20px;
+}
+
+/* text */
+.text{
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.text a{
+  color: white;
+}
+.text a:hover{
+  color: #17C3B2;
+}
+
+/* Horizantal line tag */
+hr {
+  margin-top: -10px;
+  margin-bottom: 15px;
+  border: 1px rgb(23, 207, 227) solid;
+}
+
+/* Note box */
+.note{
+  color: #000000;
+  background-color: #f9f976;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding: 25px 32px;
+  font-size: 1.5rem;
+}
+
+.note .code-content {
+  color:black;
+}
+
+.note .code-words{
+  color: rgb(255, 0, 0);
+  background-color: rgba(219, 218, 218, 0.861);
+}
+
+.note .heading-two{
+  border-color: rgba(255, 0, 0, 0.849);
+}
+
+.note ul{
+  color:black;
+}
+
+.note .code-box {
+    background-color: white;
+}
+
+
+/* Table Tag */
+table {
+  color: #ebeaea;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+td, th {
+  border: 7px solid #0b1120;
+  text-align: left;
+  padding: 8px;
+  
+}
+
+/* Apply background color for odd rows */
+tr:nth-child(odd) {
+  background-color: #1e2530;
+}
+
+/* Apply background color for even rows */
+tr:nth-child(even) {
+  background-color: #38444d;
+}

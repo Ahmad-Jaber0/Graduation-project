@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Data Entry</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Data Entry</div>
+        <hr>
+        <div class = "text">
+          You have already learned that <code class = "code-words">cout</code> is used to output (print) values. Now we will use <code class = "code-words">cin</code> to get user input.
+          <br>
+          <br>
+          <code class = "code-words">cin</code> is a predefined variable that reads data from the keyboard with the extraction operator (<code class = "code-words">>></code>).
+          <br>
+          <br>
+          In the following example, the user can input a number, which is stored in the variable <code class = "code-words">x</code>. Then we print the value of <code class = "code-words">x</code>:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int x; 
+              <br>
+              cout << "Type a number: "; // Type a number and press enter
+              <br>
+              cin >> x; // Get user input from the keyboard
+              <br>
+              cout << "Your number is: " << x; // Display the input value
+            </div>
+          </div>
+        </div>
+        <div class = "note">
+          <div class = "text">
+            Good To Know
+            <br>
+            <br>
+            <code class = "code-words">cout</code> is pronounced "see-out". Used for output, and uses the insertion operator (<code class = "code-words"><<</code>)
+            <br>
+            <br>
+            <code class = "code-words">cin</code> is pronounced "see-in". Used for input, and uses the extraction operator (<code class = "code-words">>></code>)
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Creating a Simple Calculator</div>
+        <div class = "text">
+          In this example, the user must input two numbers. Then we print the sum by calculating (adding) the two numbers:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int x, y;
+              <br>
+              int sum;
+              <br>
+              cout << "Type a number: ";
+              <br>
+              cin >> x;
+              <br>
+              cout << "Type another number: ";
+              <br>
+              cin >> y;
+              <br>
+              sum = x + y;
+              <br>
+              cout << "Sum is: " << sum;
+            </div>
+          </div>
+        </div>
+        <div class = "text">Another Example demonstrates how to input different data types </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int integerNumber;
+              <br>
+              float floatNumber;
+              <br>
+              double doubleNumber;
+              <br>
+              <br>
+              // Input an integer
+              <br>
+              cout << "Enter an integer number: ";
+              <br>
+              cin >> integerNumber;
+              <br>
+              <br>
+              // Input a float
+              <br>
+              cout << "Enter a float number: ";
+              <br>
+              cin >> floatNumber;
+              <br>
+              <br>
+              // Input a double
+              <br>
+              cout << "Enter a double number: ";
+              <br>
+              cin >> doubleNumber;
+              <br>
+              char character;
+              <br>
+              <br>
+              // Output the input values
+              <br>
+              cout << "\nYou entered:\n";
+              <br>
+              cout << "Integer: " << integerNumber << endl;
+              <br>
+              cout << "Float: " << floatNumber << endl;
+              <br>
+              cout << "Double: " << doubleNumber << endl;
+              <br>
+              cout << "Character: " << character << endl;
+            </div>
+          </div>
+        </div>
+        <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Operators'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Data Types'%}'"> Previous </button>    
+    </main>
+{% endblock %}

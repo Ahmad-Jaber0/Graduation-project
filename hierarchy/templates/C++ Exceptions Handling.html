@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Exceptions Hangling</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Exceptions Hangling</div>
+        <hr>
+        <div class = "heading-two">C++ Exceptions</div>
+        <div class = "text">
+          When executing C++ code, different errors can occur: coding errors made by the programmer, errors due to wrong input, or other unforeseeable things.
+          <br>
+          <br>
+          When an error occurs, C++ will normally stop and generate an error message. The technical term for this is: C++ will throw an exception (throw an error).
+        </div>
+        <hr>
+        <div class = "heading-two">C++ try and catch</div>
+        <div class = "text">
+          Exception handling in C++ consist of three keywords: <code class = "code-words">try</code>, <code class = "code-words">throw</code> and <code class = "code-words">catch</code>:
+          <br>
+          <br>
+          The <code class = "code-words">try</code> statement allows you to define a block of code to be tested for errors while it is being executed.
+          <br>
+          <br>
+          The <code class = "code-words">throw</code> keyword throws an exception when a problem is detected, which lets us create a custom error.
+          <br>
+          <br>
+          The <code class = "code-words">catch</code> statement allows you to define a block of code to be executed, if an error occurs in the try block.
+          <br>
+          <br>
+          The <code class = "code-words">try</code> and <code class = "code-words">catch</code> keywords come in pairs:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              try {
+                <br>
+                &nbsp;&nbsp;// Block of code to try
+                <br>
+                &nbsp;&nbsp;throw exception;&nbsp;&nbsp;&nbsp;// Throw an exception when a problem arise
+                <br>
+              }
+              <br>
+              catch () {
+                <br>
+                &nbsp;&nbsp;// Block of code to handle errors
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Consider the following example:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              try {
+                <br>
+                &nbsp;&nbsp;int age = 15;
+                <br>
+                &nbsp;&nbsp;if (age >= 18) {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;cout << "Access granted - you are old enough.";
+                  <br>
+                  &nbsp;&nbsp;} else {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;throw (age);
+                  <br>
+                  &nbsp;&nbsp;}
+                <br>
+              }
+              <br>
+              catch (int myNum) {
+                <br>
+                &nbsp;&nbsp;cout << "Access denied - You must be at least 18 years old.\n";
+                <br>
+                &nbsp;&nbsp;cout << "Age is: " << myNum;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Example explained
+          <br>
+          <br>
+          We use the try block to test some code: If the age variable is less than 18, we will throw an exception, and handle it in our catch block.
+          <br>
+          <br>
+          In the <code class = "code-words">catch</code> block, we catch the error and do something about it. The <code class = "code-words">catch</code> statement takes a parameter: in our example we use an <code class = "code-words">int</code> variable (<code class = "code-words">myNum</code>) (because we are throwing an exception of <code class = "code-words">int</code> type in the <code class = "code-words">try</code> block (<code class = "code-words">age</code>)), to output the value of <code class = "code-words">age</code>.
+          <br>
+          <br>
+          If no error occurs (e.g. if <code class = "code-words">age</code> is <code class = "code-words">20</code> instead of <code class = "code-words">15</code>, meaning it will be be greater than 18), the <code class = "code-words">catch</code> block is skipped:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int age = 20;
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          You can also use the <code class = "code-words">throw</code> keyword to output a reference number, like a custom error number/code for organizing purposes:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              try {
+                <br>
+                &nbsp;&nbsp;int age = 15;
+                <br>
+                &nbsp;&nbsp;if (age >= 18) {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;cout << "Access granted - you are old enough.";
+                  <br>
+                &nbsp;&nbsp;} else {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;throw 505;
+                  <br>
+                  &nbsp;&nbsp;}
+                <br>
+              }
+              catch (int myNum) {
+                cout << "Access denied - You must be at least 18 years old.\n";
+                cout << "Error number: " << myNum;
+              }
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">
+          Handle Any Type of Exceptions (...)
+        </div>
+        <div class = "text">
+          If you do not know the <code class = "code-words">throw</code> type used in the <code class = "code-words">try</code> block, you can use the "three dots" syntax (<code class = "code-words">...</code>) inside the <code class = "code-words">catch</code> block, which will handle any type of exception:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              try {
+                <br>
+                &nbsp;&nbsp;int age = 15;
+                <br>
+                &nbsp;&nbsp;if (age >= 18) {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;cout << "Access granted - you are old enough.";
+                  <br>
+                  &nbsp;&nbsp;} else {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;throw 505;
+                  <br>
+                  &nbsp;&nbsp;}
+                <br>
+              }
+              <br>
+              catch (...) {
+                <br>
+                &nbsp;&nbsp;cout << "Access denied - You must be at least 18 years old.\n";
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Files Handling'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Enum type'%}'"> Previous </button>    
+    </main>
+{% endblock %}

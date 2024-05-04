@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Condition</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Control Flow – Condition</div>
+        <hr>
+        <div class = "text">You already know that C++ supports the usual logical conditions from mathematics:</div>
+        <ul>
+          <li>Less than: <code class = "code-words">a < b</code></li>
+          <li>Less than or equal to: <code class = "code-words">a <= b</code></li>
+          <li>Greater than: <code class = "code-words">a > b</code></li>
+          <li>Greater than or equal to: <code class = "code-words">a >= b</code></li>
+          <li>Equal to <code class = "code-words">a == b</code></li>
+          <li>Not Equal to: <code class = "code-words">a != b</code></li>
+        </ul>
+        <div class = "text">
+          You can use these conditions to perform different actions for different decisions.
+          <br>
+          <br>
+          C++ has the following conditional statements:
+        </div>
+        <ul>
+          <li>Use <code class = "code-words">if</code> to specify a block of code to be executed, if a specified condition is true</li>
+          <li>Use <code class = "code-words">else</code> to specify a block of code to be executed, if the same condition is false</li>
+          <li>Use <code class = "code-words">else if</code> to specify a new condition to test, if the first condition is false</li>
+          <li>Use <code class = "code-words">switch</code> to specify many alternative blocks of code to be executed</li>
+        </ul>
+        <hr>
+        <div class = "heading-two">The if Statement</div>
+        <div class = "text">Use the <code class = "code-words">if</code> statement to specify a block of C++ code to be executed if a condition is <code class = "code-words">true</code>.</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              if (condition) {
+              <br>
+              &nbsp;// block of code to be executed if the condition is true
+              <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "note">Note that <code class = "code-words">if</code> is in lowercase letters. Uppercase letters (If or IF) will generate an error.</div>
+        <div class = "text">In the example below, we test two values to find out if 20 is greater than 18. If the condition is <code class = "code-words">true</code>, print some text:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int x = 20;
+              <br>
+              int y = 18;
+              <br>
+              if (x > y) {
+              <br>
+              &nbsp;cout << "x is greater than y";
+              <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Example explained
+          <br>
+          <br>
+          In the example above we use two variables, x and y, to test whether x is greater than y (using the <code class = "code-words">></code> operator). As x is 20, and y is 18, and we know that 20 is greater than 18, we print to the screen that "x is greater than y".
+        </div>
+        <hr>
+        <div class = "heading-two">The else Statement</div>
+        <div class = "text">Use the <code class = "code-words">else</code> statement to specify a block of code to be executed if the condition is <code class = "code-words">false</code>.<br><br>Syntax</div>
+        
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              if (condition) {
+                <br>
+                &nbsp;// block of code to be executed if the condition is true
+                <br>
+              } else {
+                <br>
+                &nbsp;// block of code to be executed if the condition is false
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">Example</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int time = 20;
+              <br>
+              if (time < 18) {
+                <br>
+                &nbsp;cout << "Good day.";
+                <br>
+              } else {
+                <br>
+                &nbsp;cout << "Good evening.";
+                <br>
+              }
+              <br>
+              // Outputs "Good evening."
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Example explained
+          <br>
+          <br>
+          In the example above, time (20) is greater than 18, so the condition is <code class = "code-words">false</code>. Because of this, we move on to the <code class = "code-words">else</code> condition and print to the screen "Good evening". If the time was less than 18, the program would print "Good day".
+        </div>
+        <hr>
+        <div class = "heading-two">The else if Statement</div>
+        <div class = "text">
+          Use the <code class = "code-words">else if</code> statement to specify a new condition if the first condition is <code class = "code-words">false</code>.
+          <br>
+          Syntax
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              if (condition1) {
+                <br>
+                &nbsp;// block of code to be executed if condition1 is true
+                <br>
+              } else if (condition2) {
+                <br>
+                &nbsp;// block of code to be executed if the condition1 is false and condition2 is true
+                <br>
+              } else {
+                <br>
+                &nbsp;// block of code to be executed if the condition1 is false and condition2 is false
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">Example</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int time = 22;
+              <br>
+              if (time < 10) {
+                <br>
+                cout << "Good morning.";
+                <br>
+              } else if (time < 20) {
+                <br>
+                cout << "Good day.";
+                <br>
+              } else {
+                <br>
+                cout << "Good evening.";
+                <br>
+              }
+            // Outputs "Good evening."
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Example explained
+          <br>
+          <br>
+          In the example above, time (22) is greater than 10, so the first condition is <code class = "code-words">false</code>. The next condition, in the <code class = "code-words">else if</code> statement, is also <code class = "code-words">false</code>, so we move on to the <code class = "code-words">else</code> condition since condition1 and condition2 is both <code class = "code-words">false</code> - and print to the screen "Good evening".
+          <br>
+          However, if the time was 14, our program would print "Good day."
+          </div>
+          <hr>
+          <div class = "heading-two">Short Hand If...Else (Ternary Operator)</div>
+          <div class = "text">
+            There is also a short-hand if else, which is known as the ternary operator because it consists of three operands. It can be used to replace multiple lines of code with a single line. It is often used to replace simple if else statements:
+            <br>
+            Syntax
+          </div>
+          <div class="outer-container">
+            <i class="fas fa-code code-icon"></i>
+            <div class="code-box">
+              <div class="code-content">
+                variable = (condition) ? expressionTrue : expressionFalse;
+              </div>
+            </div>
+          </div>
+          <div class = "text">
+            Instead of writing:
+            <br>
+            Example
+          </div>
+          <div class="outer-container">
+            <i class="fas fa-code code-icon"></i>
+            <div class="code-box">
+              <div class="code-content">
+                int time = 20;
+                <br>
+                if (time < 18) {
+                  <br>
+                  &nbsp;cout << "Good day.";
+                  <br>
+                } else {
+                  <br>
+                  &nbsp;cout << "Good evening.";
+                  <br>
+                }
+              </div>
+            </div>
+          </div>
+          <div class = "text">
+            You can simply write:
+            <br>
+            Example
+          </div>
+          <div class="outer-container">
+            <i class="fas fa-code code-icon"></i>
+            <div class="code-box">
+              <div class="code-content">
+                int time = 20;
+                <br>
+                string result = (time < 18) ? "Good day." : "Good evening.";
+                <br>
+                cout << result;
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class = "heading-two">C++ Switch Statements</div>
+          <div class = "text">
+            Use the <code class = "code-words">switch</code> statement to select one of many code blocks to be executed.
+            <br>
+            <br>
+            Syntax
+          </div>
+          <div class="outer-container">
+            <i class="fas fa-code code-icon"></i>
+            <div class="code-box">
+              <div class="code-content">
+                switch(expression) {
+                  <br>
+                  &nbsp;&nbsp;case x:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;// code block
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                    &nbsp;&nbsp;case y:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;// code block
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                    &nbsp;&nbsp;default:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;// code block
+                    <br>
+                }
+              </div>
+            </div>
+          </div>
+          <div class = "text">
+            This is how it works:
+          </div>
+          <ul>
+            <li>The <code class = "code-words">switch</code> expression is evaluated once</li>
+            <li>The value of the expression is compared with the values of each <code class = "code-words">case</code></li>
+            <li>If there is a match, the associated block of code is executed</li>
+            <li>The <code class = "code-words">break</code> and <code class = "code-words">default</code> keywords are optional, and will be described later in this chapter</li>
+          </ul>
+          <div class = "text">
+            The example below uses the weekday number to calculate the weekday name:
+            <br>
+            <br>
+            Example
+          </div>
+          <div class="outer-container">
+            <i class="fas fa-code code-icon"></i>
+            <div class="code-box">
+              <div class="code-content">
+                int day = 4;
+                <br>
+                switch (day) {
+                  <br>
+                  &nbsp;&nbsp;case 1:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Monday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                    &nbsp;&nbsp;case 2:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Tuesday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                    &nbsp;&nbsp;case 3:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Wednesday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                    &nbsp;&nbsp;case 4:
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;cout << "Thursday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                    &nbsp;&nbsp;case 5:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Friday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                    &nbsp;&nbsp;case 6:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Saturday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                    &nbsp;&nbsp;case 7:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Sunday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                }
+                <br>
+                // Outputs "Thursday" (day 4)
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class = "heading-two">The break Keyword</div>
+          <div class = "text">
+            When C++ reaches a <code class = "code-words">break</code> keyword, it breaks out of the switch block.
+            <br>
+            <br>
+            This will stop the execution of more code and case testing inside the block.
+            <br>
+            <br>
+            When a match is found, and the job is done, it's time for a break. There is no need for more testing.
+          </div>
+          <div class = "note">
+            A break can save a lot of execution time because it "ignores" the execution of all the rest of the code in the switch block.
+          </div>
+          <hr>
+          <div class = "heading-two">The default Keyword</div>
+          <div class = "text">
+            The <code class = "code-words">default</code> keyword specifies some code to run if there is no case match:
+            <br>
+            <br>
+            Example
+          </div>
+          <div class="outer-container">
+            <i class="fas fa-code code-icon"></i>
+            <div class="code-box">
+              <div class="code-content">
+                int day = 4;
+                <br>
+                switch (day) {
+                  <br>
+                  &nbsp;&nbsp;case 6:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Today is Saturday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                  &nbsp;&nbsp;case 7:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Today is Sunday";
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;break;
+                    <br>
+                  &nbsp;&nbsp;default:
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;cout << "Looking forward to the Weekend";
+                  <br>
+                }
+                <br>
+                // Outputs "Looking forward to the Weekend"
+              </div>
+            </div>
+          </div>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Control Flow – Loop'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Math'%}'"> Previous </button>    
+    </main>
+{% endblock %}

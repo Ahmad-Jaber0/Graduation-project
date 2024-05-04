@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Variables</title>
+{% endblock %}
+{% block content %}
+      <main class="content">
+        <div class = "heading-one">C++ Variables</div>
+        <hr>
+        <div class = "heading-two">Declare Variables</div>
+        <div class = "text">Variables are containers for storing data values.</div>
+        <div class = "text">In C++, there are different types of variables (defined with different keywords), for example:</div>
+        <ul>
+          <li><code class = "code-words">int</code> - stores integers (whole numbers), without decimals, such as 123 or -123</li>
+          <li><code class = "code-words">double</code> - stores floating point numbers, with decimals, such as 19.99 or -19.99</li>
+          <li><code class = "code-words">char</code> - stores single characters, such as 'a' or 'B'. Char values are surrounded by single quotes</li>
+          <li><code class = "code-words">string</code> - stores text, such as "Hello World". String values are surrounded by double quotes</li>
+          <li><code class = "code-words">bool</code> - stores values with two states: true or false</li>
+        </ul>
+        <hr> 
+        <div class = "heading-two">Syntax</div>
+        <div class = "text">To create a variable, specify the type and assign it a value:</div> 
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              type variableName = value;
+            </div>
+          </div>
+        </div>
+        <div class = "text">Where type is one of C++ types (such as <code class = "code-words">int</code>), and variableName is the name of the variable (such as x or myName). The equal sign is used to assign values to the variable.</div>
+        <br>
+        <div class = "text">To create a variable that should store a number, look at the following example:<br><br>--> Create a variable called myNum of type <code class = "code-words">int</code> and assign it the value 15:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myNum = 15;
+              <br>
+              <br>
+              cout << myNum;
+            </div>
+          </div>
+        </div>
+        <div class = "text">You can also declare a variable without assigning the value, and assign the value later:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myNum;
+              <br>
+              <br>
+              myNum = 15;
+              <br>
+              <br>
+              cout << myNum;
+            </div>
+          </div>
+        </div>
+        <div class = "text">Note that if you assign a new value to an existing variable, it will overwrite the previous value:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myNum = 15;  // myNum is 15
+              <br>
+              <br>
+              myNum = 10;  // Now myNum is 10
+              <br>
+              <br>
+              cout << myNum;  // Outputs 10
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Other Types</div>
+        <div class = "text">A demonstration of other data types:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myNum = 5;               // Integer (whole number without decimals)
+              <br>
+              <br>
+              double myFloatNum = 5.99;    // Floating point number (with decimals)
+              <br>
+              <br>
+              char myLetter = 'D';         // Character
+              <br>
+              <br>
+              string myText = "Hello";     // String (text)
+              <br>
+              <br>
+              bool myBoolean = true;       // Boolean (true or false)
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Display Variables</div>
+        <div class = "text">The <code class = "code-words">cout</code> object is used together with the <code class = "code-words"><<</code> operator to display variables.<br><br>To combine both text and a variable, separate them with the <code class = "code-words"><<</code> operator:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int myAge = 35;
+              <br>
+              <br>
+              cout << "I am " << myAge << " years old.";
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Add Variables Together</div>
+        <div class = "text">To add a variable to another variable, you can use the <code class = "code-words">+</code> operator:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int x = 5;
+              <br>
+              <br>
+              int y = 6;
+              <br>
+              <br>
+              int sum = x + y;.
+              <br>
+              <br>
+              cout << sum;
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Declare Many Variables</div>
+        <div class = "text">To declare more than one variable of the same type, use a comma-separated list:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int x = 5, y = 6, z = 50;
+              <br>
+              <br>
+              cout << x + y + z;
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">One Value to Multiple Variables</div>
+        <div class = "text">You can also assign the same value to multiple variables in one line:</div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int x, y, z;
+              <br>
+              <br>
+              x = y = z = 50;
+              <br>
+              <br>
+              cout << x + y + z;
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Identifiers</div>
+        <div class = "text">All C++ variables must be identified with unique names.
+          <br>
+          <br>
+          These unique names are called identifiers.
+          <br>
+          <br>
+          Identifiers can be short names (like x and y) or more descriptive names (age, sum, totalVolume).
+          <br>
+          <br>
+          Note: It is recommended to use descriptive names in order to create understandable and maintainable code:
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              // Good
+              <br>
+              int minutesPerHour = 60;
+              <br>
+              <br>
+              // OK, but not so easy to understand what m actually is
+              <br>
+              int m = 60;
+            </div>
+          </div>
+        </div>
+        <div class = "text">The general rules for naming variables are:</div>
+        <ul>
+          <li>
+            Names can contain letters, digits and underscores
+          </li>
+          <li>
+            Names must begin with a letter or an underscore (_)
+          </li>
+          <li>
+            Names are case-sensitive (<code class = "code-words">myVar</code> and <code class = "code-words">myvar</code> are different variables)
+          </li>
+          <li>
+            Names cannot contain whitespaces or special characters like !, #, %, etc.
+          </li>
+          <li>
+            Reserved words (like C++ keywords, such as <code class = "code-words">int</code>) cannot be used as names
+          </li>
+        </ul>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Data Types'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Output'%}'"> Previous </button>
+      
+    </main>
+{% endblock %}

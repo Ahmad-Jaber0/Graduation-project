@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Recursion</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Recursion</div>
+        <hr>
+        <div class = "heading-two">Recursion</div>
+        <div class = "text">
+          Recursion is the technique of making a function call itself. This technique provides a way to break complicated problems down into simple problems which are easier to solve.
+          <br>
+          <br>
+          Recursion may be a bit difficult to understand. The best way to figure out how it works is to experiment with it.
+        </div>
+        <hr>
+        <div class = "heading-two">Recursion Example</div>
+        <div class = "text">
+          Adding two numbers together is easy to do, but adding a range of numbers is more complicated. In the following example, recursion is used to add a range of numbers together by breaking it down into the simple task of adding two numbers:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              int sum(int k) {
+                <br>
+                &nbsp;&nbsp;if (k > 0) {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;return k + sum(k - 1);
+                  <br>
+                &nbsp;&nbsp;} else {
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;return 0;
+                  <br>
+                &nbsp;&nbsp;}
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;int result = sum(10);
+                <br>
+                &nbsp;&nbsp;cout << result;
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Example Explained
+          <br>
+          <br>
+          When the <code class = "code-words">sum()</code> function is called, it adds parameter <code class = "code-words">k</code> to the sum of all numbers smaller than <code class = "code-words">k</code> and returns the result. When k becomes 0, the function just returns 0. When running, the program follows these steps:
+          <br>
+          <br>
+          <br>
+          10 + sum(9)
+          <br>
+          10 + ( 9 + sum(8) )
+          <br>
+          10 + ( 9 + ( 8 + sum(7) ) )
+          <br>
+          ...
+          <br>
+          10 + 9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 + sum(0)
+          <br>
+          10 + 9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 + 0
+          <br>
+          <br>
+          Since the function does not call itself when k is 0, the program stops there and returns the result.
+        </div>
+        <div class = "note">
+          <div class = "text">
+            The developer should be very careful with recursion as it can be quite easy to slip into writing a function which never terminates, or one that uses excess amounts of memory or processor power. However, when written correctly recursion can be a very efficient and mathematically-elegant approach to programming.
+          </div>
+        </div>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Structures'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Functions'%}'"> Previous </button>    
+    </main>
+{% endblock %}

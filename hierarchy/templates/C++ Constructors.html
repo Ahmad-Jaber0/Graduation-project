@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Constructors</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Constructors</div>
+        <hr>
+        <div class = "heading-two">Constructors</div>
+        <div class = "text">
+          A constructor in C++ is a special method that is automatically called when an object of a class is created.
+          <br>
+          <br>
+          To create a constructor, use the same name as the class, followed by parentheses ():
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              class MyClass {&nbsp;&nbsp;&nbsp;&nbsp;// The class
+                <br>
+                &nbsp;&nbsp;public:&nbsp;&nbsp;&nbsp;&nbsp;// Access specifier
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;MyClass() {&nbsp;&nbsp;&nbsp;&nbsp;// Constructor
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout << "Hello World!";
+                    <br>
+                  }
+              };
+              <br>
+              <br>
+              int main() { 
+                <br>
+                &nbsp;&nbsp;MyClass myObj;&nbsp;&nbsp;&nbsp;&nbsp;// Create an object of MyClass (this will call the constructor)
+                <br>
+                &nbsp;&nbsp;return 0; 
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "note">
+          <div class = "text">
+            Note: The constructor has the same name as the class, it is always public, and it does not have any return value.
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Constructor Parameters</div>
+        <div class = "text">
+          Constructors can also take parameters (just like regular functions), which can be useful for setting initial values for attributes.
+          <br>
+          <br>
+          The following class have <code class = "code-words">brand</code>, <code class = "code-words">model</code> and <code class = "code-words">year</code> attributes, and a constructor with different parameters. Inside the constructor we set the attributes equal to the constructor parameters (<code class = "code-words">brand=x</code>, etc). When we call the constructor (by creating an object of the class), we pass parameters to the constructor, which will set the value of the corresponding attributes to the same:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              class Car {&nbsp;&nbsp;&nbsp;&nbsp;// The class
+                <br>
+                &nbsp;&nbsp;public:&nbsp;&nbsp;&nbsp;&nbsp;// Access specifier
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;string brand;&nbsp;&nbsp;&nbsp;&nbsp;// Attribute
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string model;&nbsp;&nbsp;&nbsp;&nbsp;// Attribute
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int year;&nbsp;&nbsp;&nbsp;&nbsp;// Attribute
+                    <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;Car(string x, string y, int z) {&nbsp;&nbsp;&nbsp;&nbsp;// Constructor with parameters
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;brand = x;
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model = y;
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;year = z;
+                    <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;}
+              };
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;// Create Car objects and call the constructor with different values
+                <br>
+                &nbsp;&nbsp;Car carObj1("BMW", "X5", 1999);
+                <br>
+                &nbsp;&nbsp;Car carObj2("Ford", "Mustang", 1969);
+                <br>
+                <br>
+                &nbsp;&nbsp;// Print values
+                <br>
+                &nbsp;&nbsp;cout << carObj1.brand << " " << carObj1.model << " " << carObj1.year << "\n";
+                <br>
+                &nbsp;&nbsp;cout << carObj2.brand << " " << carObj2.model << " " << carObj2.year << "\n";
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          Just like functions, constructors can also be defined outside the class. First, declare the constructor inside the class, and then define it outside of the class by specifying the name of the class, followed by the scope resolution <code class = "code-words">::</code> operator, followed by the name of the constructor (which is the same as the class):
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              class Car {&nbsp;&nbsp;&nbsp;&nbsp;// The class
+                <br>
+                &nbsp;&nbsp;public:&nbsp;&nbsp;&nbsp;&nbsp;// Access specifier
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;string brand;&nbsp;&nbsp;&nbsp;&nbsp;// Attribute
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;string model;&nbsp;&nbsp;&nbsp;&nbsp;// Attribute
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;int year;&nbsp;&nbsp;&nbsp;&nbsp;// Attribute
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;Car(string x, string y, int z);&nbsp;&nbsp;&nbsp;&nbsp;// Constructor declaration
+                  <br>
+              };
+              <br>
+              <br>
+              // Constructor definition outside the class
+              <br>
+              Car::Car(string x, string y, int z) {
+                <br>
+                &nbsp;&nbsp;brand = x;
+                <br>
+                &nbsp;&nbsp;model = y;
+                <br>
+                &nbsp;&nbsp;year = z;
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;// Create Car objects and call the constructor with different values
+                <br>
+                &nbsp;&nbsp;Car carObj1("BMW", "X5", 1999);
+                <br>
+                &nbsp;&nbsp;Car carObj2("Ford", "Mustang", 1969);
+                <br>
+                <br>
+                &nbsp;&nbsp;// Print values
+                <br>
+                &nbsp;&nbsp;cout << carObj1.brand << " " << carObj1.model << " " << carObj1.year << "\n";
+                <br>
+                &nbsp;&nbsp;cout << carObj2.brand << " " << carObj2.model << " " << carObj2.year << "\n";
+                <br>
+                &nbsp;&nbsp;return 0;
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Encapsulation'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Access Specifiers'%}'"> Previous </button>    
+    </main>
+{% endblock %}

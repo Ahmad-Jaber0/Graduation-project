@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CousreContent</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dynamic.css' %}">
+</head>
+<body>
+    <header>
+        <a href="home.html" class="logo">LoomingCode</a>
+
+        <nav class="navigation" id="nav-middle">
+            <a href="file:///D:/أصيل/graduation%20project/Home.html">Home</a>
+            <a href="file:///D:/أصيل/graduation%20project/Home.html#aboute">About</a>
+            <a href="file:///D:/أصيل/graduation%20project/Home.html#services">Services</a>
+            <a href="file:///D:/أصيل/graduation%20project/Home.html#courses">Courses</a>
+            <a href="file:///D:/أصيل/graduation%20project/Home.html#contact">Contact</a>
+        </nav>
+
+        <nav class="navigation">
+            <a href="#" id="profile"><i class="fa-regular fa-user fa-lg"></i></a>
+            <a href="#"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+            <a href="#"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
+        </nav>
+    </header>
+
+    <div class="toolbar">
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="heading-one" onclick="func(this)"><img src="{% static 'images/h1.png' %}"></button>
+            <span class="tooltiptext">heading1</span>
+        </div>
+
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="heading-two" onclick="func(this)"><img src="{% static 'images/h2.png' %}"></button>
+            <span class="tooltiptext">heading2</span>
+        </div>
+
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="text" onclick="func(this)"><img src="{% static 'images/text.png' %}"></button>
+            <span class="tooltiptext">text</span>
+        </div>
+
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="image" onclick="func(this)"><img src="{% static 'images/image.png' %}"></button>
+            <span class="tooltiptext">image</span>
+        </div>
+
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="code block" onclick="func(this)"><img src="{% static 'images/code.png' %}"></button>
+            <span class="tooltiptext">code block</span>
+        </div>
+
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="table" onclick="func(this)"><img src="{% static 'images/table.png' %}"></button>
+            <span class="tooltiptext">table</span>
+        </div>
+
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="list" onclick="func(this)"><img src="{% static 'images/list.png' %}"></button>
+            <span class="tooltiptext">list</span>
+        </div>
+        
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="note" onclick="func(this)"><img src="{% static 'images/notes.png' %}"></button>
+            <span class="tooltiptext">note</span>
+        </div>
+
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="code-word" onclick="func(this)"><img src="{% static 'images/code word.png' %}"></button>
+            <span class="tooltiptext">code word</span>
+        </div>
+
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="horizental-line" onclick="func(this)"><img src="{% static 'images/hr.png' %}"></button>
+            <span class="tooltiptext">horizental line</span>
+        </div>
+
+    </div>
+
+    <div id= "editor" class= "editor"  contenteditable></div>
+    
+    <div class="savebtn-cancelbtn-container">
+        <button style="margin-left: 10px;" class="beautiful-button" id="generate-html">Done</button>
+    </div>
+
+    <script>
+        var editor = document.getElementById('editor');
+        editor.focus();
+        const editorElement = document.getElementById('editor');
+        const generateHTMLButton = document.getElementById('generate-html');
+
+        function func(button) {
+        event.stopPropagation(); // Stop propagation of the click event
+
+        const elementType = button.getAttribute('data-element');
+        let elementHtml;
+
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+        const parentElement = range.startContainer.parentElement;
+
+        switch (elementType) {
+            case 'heading-one':
+                if (parentElement && parentElement.classList.contains('heading-one')) {
+                    // Do nothing, as the cursor is already inside a heading-one element
+                } else {
+                    elementHtml = '<div class="heading-one"><br></div>';
+                }
+                break;
+
+            case 'heading-two':
+                if (parentElement && parentElement.classList.contains('heading-two')) {
+                    // Do nothing, as the cursor is already inside a heading-two element
+                } else {
+                    elementHtml = '<div class="heading-two"><br></div><br><br>';
+                }
+                break;
+
+            case 'text':
+                elementHtml = '<div class="text"><br></div>';
+                break;
+        
+            case 'image':
+                const choice = prompt('Do you want to insert an image from your computer (type "local") or via URL (type "url")?');
+                if (choice === 'local') {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = 'image/*';
+                    input.onchange = function(event) {
+                        const file = event.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function() {
+                                const imageUrl = reader.result;
+                                const elementHtml = `<div class="image-container"><img src="${imageUrl}" alt="User-inserted image"></div>`;
+                                document.execCommand('insertHTML', false, elementHtml);
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            alert('Failed to load the image. Please try again.');
+                        }
+                    };
+                    input.click();
+                } else if (choice === 'url') {
+                    const imageUrl = prompt('Enter the image URL:');
+                    if (imageUrl) {
+                        const elementHtml = `<div class="image-container"><img src="${imageUrl}" alt="User-inserted image"></div>`;
+                        document.execCommand('insertHTML', false, elementHtml);
+                    } else {
+                        alert('No URL provided. Please enter a valid image URL.');
+                    }
+                } else {
+                    alert('Invalid choice. Please select "local" or "url".');
+                }
+                break;
+
+            case 'code block':
+                elementHtml = '<div class="outer-container"><i class="fas fa-code code-icon"></i><div class="code-box"><div class="code-content"><br></div></div></div><br>';
+                break;
+            
+            case 'note':
+                elementHtml = '<div class = "note">&nbsp;&nbsp;<br></div><br>';
+                break;
+
+            case 'table':
+                const rowsAndColumns = prompt('Enter number of rows and columns (comma separated)');
+                const [rows, columns] = rowsAndColumns.split(',').map(num => parseInt(num.trim()));
+
+                if (!isNaN(rows) && !isNaN(columns) && rows > 0 && columns > 0) {
+                    elementHtml = generateTable(rows, columns);
+                } else {
+                    alert('Please enter valid numbers for rows and columns.');
+                }
+                break;
+
+            case 'list':
+                const numItems = prompt('Enter number of list items:');
+                if (!isNaN(numItems) && numItems > 0) {
+                    elementHtml = generateList(numItems);
+                } else {
+                    alert('Please enter a valid number for the number of list items.');
+                }
+                break;
+
+            case 'code-word':
+                elementHtml = '<code class = "code-words">&nbsp;<br></code><br>';
+                break;
+
+            case 'horizental-line':
+                elementHtml = '<hr><br>';
+                break;
+
+        }
+            
+
+            if (elementHtml) {
+                const newNode = document.createElement('div');
+                newNode.innerHTML = elementHtml;
+                range.insertNode(newNode);
+                range.setStartAfter(newNode);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+
+        function generateTable(rows, columns) {
+            let tableHtml = '<table>';
+            for (let i = 0; i < rows; i++) {
+                tableHtml += '<tr>';
+                for (let j = 0; j < columns; j++) {
+                    if (i === 0) {
+                        tableHtml += '<th></th>';
+                    } else {
+                        tableHtml += '<td></td>';
+                    }
+                }
+                tableHtml += '</tr>';
+            }
+            tableHtml += '</table><br>';
+            return tableHtml;
+        }
+
+        function generateList(numItems) {
+            let listHtml = '<ul>';
+                for (let i = 0; i < numItems; i++) {
+                    listHtml += '<li></li>';
+                }
+                listHtml += '</ul><br>';
+                return listHtml;
+            }
+    
+
+            generateHTMLButton.addEventListener('click', () => {
+                const editorContent = editorElement.innerHTML.trim();
+                if (editorContent) {
+                    const safeHTML = editorContent;
+                    editorElement.innerHTML = safeHTML;
+                    const topicId = "{{ topic.pk }}"; // Assuming you are passing topic ID to the template
+                    const csrfToken = "{{ csrf_token }}"; // Assuming CSRF token is available in the template
+                    fetch(`/update_code_html/${topicId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                        },
+                        body: JSON.stringify({ codeHtml: safeHTML }),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Failed to update code HTML.');
+                    })
+                    .then(data => {
+                        alert('HTML content saved successfully.');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Failed to update HTML content.');
+                    });
+                } else {
+                    alert('Please enter content.');
+                }
+            });
+        </script>
+    </body>
+    </html>

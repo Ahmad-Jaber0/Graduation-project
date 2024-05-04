@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Math</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Math</div>
+        <hr>
+        <div class = "text">C++ has many functions that allows you to perform mathematical tasks on numbers.</div>
+        <hr>
+        <div class = "heading-two">Max and min</div>
+        <div class = "text">
+          The <code class = "code-words">max(x,y)</code> function can be used to find the highest value of x and y:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              cout << max(5, 10);
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          And the <code class = "code-words">min(x,y)</code> function can be used to find the lowest value of x and y:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              cout << min(5, 10);
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">C++ <cmath> Header</div>
+        <div class = "text">
+          Other functions, such as <code class = "code-words">sqrt</code> (square root), <code class = "code-words">round</code> (rounds a number) and <code class = "code-words">log</code> (natural logarithm), can be found in the <code class = "code-words">&lt;cmath&gt;</cmath></code> header file:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              // Include the cmath library
+              <br>
+              #include &lt;cmath&gt;
+              <br>
+              <br>
+              cout << sqrt(64);
+              <br>
+              cout << round(2.6);
+              <br>
+              cout << log(2);
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Other Math Functions</div>
+        <div class = "text">
+          A list of other popular Math functions (from the &lt;cmath&gt; library) can be found in the table below:
+        </div>
+        <table>
+          <tr>
+            <th>Function</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>abs(x)</td>
+            <td>Returns the absolute value of x</td>
+          </tr>
+          <tr>
+            <td>acos(x)</td>
+            <td>Returns the arccosine of x</td>
+          </tr>
+          <tr>
+            <td>asin(x)</td>
+            <td>Returns the arcsine of x</td>
+          </tr>
+          <tr>
+            <td>atan(x)</td>
+            <td>Returns the arctangent of x</td>
+          </tr>
+          <tr>
+            <td>cbrt(x)</td>
+            <td>Returns the cube root of x</td>
+          </tr>
+          <tr>
+            <td>ceil(x)</td>
+            <td>Returns the value of x rounded up to its nearest integer</td>
+          </tr>
+          <tr>
+            <td>cos(x)</td>
+            <td>Returns the cosine of x</td>
+          </tr>
+          <tr>
+            <td>cosh(x)</td>
+            <td>Returns the hyperbolic cosine of x</td>
+          </tr>
+          <tr>
+            <td>exp(x)</td>
+            <td>Returns the value of E<sup>x</sup></td>
+          </tr>
+          <tr>
+            <td>expm1(x)</td>
+            <td>Returns ex -1</td>
+          </tr>
+          <tr>
+            <td>fabs(x)</td>
+            <td>Returns the absolute value of a floating x</td>
+          </tr>
+          <tr>
+            <td>fdim(x, y)</td>
+            <td>Returns the positive difference between x and y</td>
+          </tr>
+          <tr>
+            <td>floor(x)</td>
+            <td>Returns the value of x rounded down to its nearest integer</td>
+          </tr>
+          <tr>
+            <td>hypot(x, y)</td>
+            <td>Returns sqrt(x2 +y2) without intermediate overflow or underflow</td>
+          </tr>
+          <tr>
+            <td>fma(x, y, z)</td>
+            <td>Returns x*y+z without losing precision</td>
+          </tr>
+          <tr>
+            <td>fmax(x, y)</td>
+            <td>Returns the highest value of a floating x and y</td>
+          </tr>
+          <tr>
+            <td>fmin(x, y)</td>
+            <td>Returns the lowest value of a floating x and y</td>
+          </tr>
+          <tr>
+            <td>fmod(x, y)</td>
+            <td>Returns the floating point remainder of x/y</td>
+          </tr>
+          <tr>
+            <td>pow(x, y)</td>
+            <td>Returns the value of x to the power of y</td>
+          </tr>
+          <tr>
+            <td>sin(x)</td>
+            <td>Returns the sine of x (x is in radians)</td>
+          </tr>
+          <tr>
+            <td>sinh(x)</td>
+            <td>Returns the hyperbolic sine of a double value</td>
+          </tr>
+          <tr>
+            <td>tan(x)</td>
+            <td>Returns the tangent of an angle</td>
+          </tr>
+          <tr>
+            <td>tanh(x)</td>
+            <td>Returns the hyperbolic tangent of a double value</td>
+          </tr>
+        </table>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Control Flow – Condition'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Operators'%}'"> Previous </button>    
+    </main>
+{% endblock %}

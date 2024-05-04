@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>C++ Class Methods</title>
+{% endblock %}
+{% block content %}
+    <main class="content">
+      <div class = "heading-one">C++ Class Methods</div>
+        <hr>
+        <div class = "heading-two">Class Methods</div>
+        <div class = "text">
+          Methods are functions that belongs to the class.
+          <br>
+          <br>
+          There are two ways to define functions that belongs to a class:
+        </div>
+        <ul>
+          <li>Inside class definition</li>
+          <li>Outside class definition</li>
+        </ul>
+        <div class = "text">
+          In the following example, we define a function inside the class, and we name it "<code class = "code-words">myMethod</code>".
+          <br>
+          <br>
+          Note: You access methods just like you access attributes; by creating an object of the class and using the dot syntax (<code class = "code-words">.</code>):
+          <br>
+          <br>
+          Inside Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              class MyClass {&nbsp;&nbsp;&nbsp;&nbsp;// The class
+                <br>
+                &nbsp;&nbsp;public:&nbsp;&nbsp;&nbsp;&nbsp;// Access specifier
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;void myMethod() {&nbsp;&nbsp;&nbsp;&nbsp;// Method/function defined inside the class
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout << "Hello World!";
+                  }
+              };
+              <br>
+              <br>
+              int main() { 
+                <br>
+                &nbsp;&nbsp;MyClass myObj;&nbsp;&nbsp;&nbsp;&nbsp;// Create an object of MyClass
+                <br>
+                &nbsp;&nbsp;myObj.myMethod();&nbsp;&nbsp;&nbsp;&nbsp;// Call the method
+                <br>
+                &nbsp;&nbsp;return 0; 
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <div class = "text">
+          To define a function outside the class definition, you have to declare it inside the class and then define it outside of the class. This is done by specifiying the name of the class, followed the scope resolution <code class = "code-words">::</code> operator, followed by the name of the function:
+          <br>
+          <br>
+          Outside Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              class MyClass {&nbsp;&nbsp;&nbsp;&nbsp;// The class
+                <br>
+                &nbsp;&nbsp;public:&nbsp;&nbsp;&nbsp;&nbsp;// Access specifier
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;void myMethod();&nbsp;&nbsp;&nbsp;&nbsp;// Method/function declaration
+              };
+              
+              <br>
+              <br>
+              // Method/function definition outside the class
+              <br>
+              void MyClass::myMethod() {
+                <br>
+                &nbsp;&nbsp;cout << "Hello World!";
+                <br>
+              }
+              <br>
+              <br>
+              int main() {
+                <br>
+                &nbsp;&nbsp;MyClass myObj;&nbsp;&nbsp;&nbsp;&nbsp;// Create an object of MyClass
+                <br>
+                &nbsp;&nbsp;myObj.myMethod();&nbsp;&nbsp;&nbsp;&nbsp;// Call the method
+                <br>
+                &nbsp;&nbsp;return 0; 
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class = "heading-two">Parameters</div>
+        <div class = "text">
+          You can also add parameters:
+          <br>
+          <br>
+          Example
+        </div>
+        <div class="outer-container">
+          <i class="fas fa-code code-icon"></i>
+          <div class="code-box">
+            <div class="code-content">
+              #include &lt;iostream&gt;
+              <br>
+              using namespace std;
+              <br>
+              <br>
+              class Car {
+                <br>
+                &nbsp;&nbsp;public:
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;int speed(int maxSpeed);
+                  <br>
+              };
+              <br>
+              <br>
+              int Car::speed(int maxSpeed) {
+                <br>
+                &nbsp;&nbsp;return maxSpeed;
+                <br>
+              }
+              <br>
+              <br>
+              int main() { 
+                <br>
+                &nbsp;&nbsp;Car myObj;&nbsp;&nbsp;&nbsp;&nbsp;// Create an object of Car
+                <br>
+                &nbsp;&nbsp;cout << myObj.speed(200);&nbsp;&nbsp;&nbsp;&nbsp;// Call the method with an argument
+                <br>
+                &nbsp;&nbsp;return 0; 
+                <br>
+              }
+            </div>
+          </div>
+        </div>
+      <div></div>
+      <button class ="next" onclick="window.location.href='{% url 'course' 'Access Specifiers'%}'">Next</button>
+      <button class ="previous" onclick="window.location.href='{% url 'course' 'Classes and Objects'%}'"> Previous </button>    
+    </main>
+{% endblock %}
