@@ -2,8 +2,111 @@
 {% load static %}
 {% block title %}
 <title>C++ Introduction</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+  *{
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+  }
+  
+  
+  .message{
+      background-color: white;
+      border: 2px solid #0000ff;
+      border-radius: 10px;
+      padding: 2em;
+      margin-top: 5em;
+      position: fixed;
+      right:1em;
+      top: 7em;
+      z-index: 9999;
+    }
+    /* Animation keyframes */
+    @keyframes slow-appear-animation {
+      0% { opacity: 0; } /* Start with opacity 0 */
+      100% { opacity: 1; } /* End with opacity 1 */
+    }
+    
+    /* Apply animation to the element */
+    .message {
+      opacity: 0; /* Initially hidden */
+      animation: slow-appear-animation 1s ease forwards; /* Animation with 1s duration */
+    }
+    .message a{
+      text-decoration: none;
+    }
+    
+    .message h3{
+      font-size: 2.2em;
+      color:#0000ff;
+    }
+    .message p{ 
+        margin-top:1em;
+        width: 20em;
+    }
+    .message button{
+      margin-top:1em;
+      background-color: #0000ff;
+      cursor: pointer;
+      color:white;
+      border-radius: 2em;
+      border-color:#0000ff;
+      font-size:1em;
+      font-weight: 600;
+      padding: 1em;
+      text-transform: uppercase;
+      opacity: 1; /* Initial opacity (full visible)*/
+      transition: opacity 0.1s ease; /* Smooth transition */
+      transition: 0.4s ease;
+    }
+    .message span{
+      display:inline-block;
+      min-width: 1em;
+    }
+    #start-quiz-button:hover{
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+    #no-thanks-button:hover{
+      transform: scale(1.1);
+      opacity: 0.7;
+    }</style>
+    <script>
+      function closeMessage(){
+          let message = document.querySelector(".message");  
+          message.style.display = "none";
+      }
+  </script>
 {% endblock %}
 {% block content %}
+<div class = "message" id = "message">
+  <div>
+      <center><img src = "images/helping-hand.png" loading = "lazy" alt = "helping-hand"></center>
+  </div>
+  <div>
+      <h3>
+          Let us help you!
+      </h3>
+      <p>
+          start attempt a <b>quiz</b> now, and know the best starting chapter for you.
+          this quiz will help you to determine the best chapter to start with,
+          thus save learning time with us!. 
+      </p>
+  </div>
+  <div>
+      <center>
+      <a href = "">
+          <button id = "start-quiz-button">Start quiz</button>
+      </a>
+      <span></span>
+      <button id = "no-thanks-button" onclick = "closeMessage()">No thanks</button>
+      </center>
+  </div>
+</div>
     <main class="content">
       <div class = "heading-one">C++ Introduction</div> 
         <hr>
