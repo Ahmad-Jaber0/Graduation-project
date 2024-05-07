@@ -8,15 +8,19 @@ from django.views.decorators.http import require_http_methods
 import json
 from django.utils import timezone
 
-        
+from django.db.models import Min
+
 def home(request):
-    return render(request, 'home.html')
+    course=Course.objects.all()
+    return render(request, 'home.html',{'courses':course})
 
 @login_required
 def course(request, course_name):
-    template_name = f"C++ {course_name}.html"
-        
-    return render(request, template_name)
+    smallest_rank = Topic.objects.filter(course__name=course_name).aggregate(min_rank=Min('rank'))['min_rank']
+    
+    topic = Topic.objects.filter(course__name=course_name, rank=smallest_rank).first()  
+    
+    return redirect('course_detail', course_name=course_name, topic_name=topic.topic_name)
 
 
 
@@ -140,11 +144,11 @@ def update_code_html(request, topic_id):
             return JsonResponse({'success': False, 'error': 'Topic not found.'}, status=404)
     return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
 
-def course_detail(request, course_name, topic_id):
+def course_detail(request, course_name, topic_name):
     course = Course.objects.get(name=course_name)
     chapters = Chapter.objects.filter(course=course)
     topics = Topic.objects.filter(course=course).order_by('chapter', 'rank')  # Order topics by chapter and rank
-    topic = Topic.objects.get(pk=topic_id)
+    topic = Topic.objects.get(course=course,topic_name=topic_name)
 
     previous_topic = None
     next_topic = None

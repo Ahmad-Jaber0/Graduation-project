@@ -134,15 +134,17 @@
     <h1>Courses</h1>
     <div class="CoursesContainer">
         <!--it is a parent container to contain all cards-->
+        {% for course in courses %}
         <div class="card">
             <b>
                 <div class="CourseIcon">
                     <img src="{% static 'images/c++icon.png' %}" loading="lazy" height="144px" width="144px">                </div>
-                <h3>C++ course</h3>
-                <button id="c++Button">OPEN COURSE</button>
+                <h3>{{course.name}}</h3>
+                <a href="{% url 'course' course.name %}"> <button id = "c++Button">OPEN COURSE</button></a>
             </b>
         </div>
-        
+        {% endfor %}
+
     </div>
 </section>
 
