@@ -11,4 +11,7 @@ urlpatterns = [
     path('form/',views.Dynamic,name='form'),
     path('update_code_html/<int:topic_id>/', views.update_code_html, name='update_code_html'),
     path('<str:course_name>/<int:topic_id>/', views.course_detail, name='course_detail'),
+    path('dynamic_page/', views.dynamic_page, name='dynamic_page'),
+        path('fetch_chapters/', views.fetch_chapters, name='fetch_chapters'),
+
 ] 

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import auth, messages
 from django.http import HttpResponse,HttpResponseForbidden,JsonResponse
 from django.contrib.auth import authenticate,login,logout,get_user_model
@@ -66,7 +66,17 @@ def login(request):
 @login_required
 def LogoutPage(request):
     logout(request)
-    return redirect('home')    
+    return redirect('home')   
+
+def dynamic_page(request):
+
+    topic_id = request.GET.get('topic_id')
+
+    # Get the topic object based on the topic_id
+    topic = get_object_or_404(Topic, pk=topic_id)
+
+    # Render the dynamic.html template with the topic data
+    return render(request, 'dynamic.html', {'topic': topic})
 
 @login_required
 def Dynamic(request):
@@ -80,10 +90,10 @@ def Dynamic(request):
             course_name = request.POST.get('otherInput1')
         if chapter_number is None or chapter_number == 'other':
             x = request.POST.get('otherInput2')
-            chapter_number=f"Chapter{x}"
+            chapter_number = f"Chapter{x}"
 
-        print(course_name)    
-        print(chapter_number)    
+        print(course_name)
+        print(chapter_number)
 
         # Check if course already exists, else create a new one
         course, created = Course.objects.get_or_create(
@@ -95,15 +105,26 @@ def Dynamic(request):
         chapter, created = Chapter.objects.get_or_create(course=course, name=chapter_number)
 
         # Check if topic already exists within the same chapter and course
-        if Topic.objects.filter(topic_name=topic_name, chapter=chapter, course=course,rank=topic_rank).exists():
+        if Topic.objects.filter(topic_name=topic_name, chapter=chapter, course=course, rank=topic_rank).exists():
             return JsonResponse({'error': 'Topic already exists within this chapter.'}, status=400)
         else:
-            topic = Topic.objects.create(topic_name=topic_name, chapter=chapter, course=course,rank=topic_rank )
+            topic = Topic.objects.create(topic_name=topic_name, chapter=chapter, course=course, rank=topic_rank)
+
+        return JsonResponse({'topic': {'id': topic.id}})
+
+    course=Course.objects.all()
+    chapter=Chapter.objects.all()
+
+    return render(request, 'Form.html',{'course':course,'chapter':chapter}) 
 
 
-        return render(request, 'dynamic.html',{'topic':topic})
-
-    return render(request, 'Form.html')
+def fetch_chapters(request):
+    if request.method == "GET" and request.is_ajax():
+        course_name = request.GET.get("course")
+        if course_name:
+            chapters = Chapter.objects.filter(course__name=course_name).values_list("name", flat=True)
+            return JsonResponse({"chapters": list(chapters)})
+    return JsonResponse({"error": "Invalid request"})
 
 
 def update_code_html(request, topic_id):

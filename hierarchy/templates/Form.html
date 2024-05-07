@@ -41,6 +41,16 @@
             outline: none;
         }
 
+        select,
+        input[type="number"] {
+            width: calc(100% - 10px); /* Adjusted width for better appearance */
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
         .hidden {
             display: none;
         }
@@ -71,8 +81,9 @@
             <label for="Course-Name:">Course Name:</label>
             <select id="Course-Name:" name="Course-Name:" required>
                 <option value="" disabled selected>Select an option</option>
-                <option value="C++">C++</option>
-                <option value="Python">Python</option>
+                {% for i in course %}
+                <option value="{{i.name}}">{{i.name}}</option>
+                {% endfor %}
                 <option value="other">other</option>
             </select>
             <input type="text" id="otherInput1" name="otherInput1" class="hidden" placeholder="Enter course name">
@@ -81,11 +92,12 @@
             <label for="Chapter-Number">Chapter Number</label>
             <select id="Chapter-Number" name="Chapter-Number" required disabled>
                 <option value="" disabled selected>Select an option</option>
+
                 <option value="Chapter1">Chapter1</option>
                 <option value="Chapter2">Chapter2</option>
                 <option value="other">Other</option>
             </select>
-            <input type="text" id="otherInput2" name="otherInput2" class="hidden" placeholder="enter chapter new number" pattern="[0-9]+">
+            <input type="number" id="otherInput2" name="otherInput2" class="hidden" placeholder="enter chapter new number">
         </div>
         <div class="form-group">
             <label for="textInput">Topic Name</label>
@@ -148,5 +160,27 @@
             }
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+<script>
+    $(document).ready(function () {
+        $('#myForm').submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'form' %}",
+                data: $(this).serialize(),
+                success: function (response) {
+                    var topicId = response.topic.id;
+                    window.location.href = "{% url 'dynamic_page' %}?topic_id=" + topicId;
+                },
+                error: function (xhr, errmsg, err) {
+                    alert('Topic already exists with this course');
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

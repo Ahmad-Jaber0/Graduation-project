@@ -179,9 +179,9 @@ html, body {
   background-color: rgba(0, 0, 0, 0.84);
 }
 
-.sidebar .menu .menu-item:focus,
-.sidebar .menu .menu-item:active {
-  background-color: rgba(2, 184, 184, 0.84);
+.sidebar .menu .menu-item.active {
+  color: yellow; /* Adjust as needed */
+  background-color: rgba(4, 4, 5, 0.84); /* Adjust as needed */
 }
 
 

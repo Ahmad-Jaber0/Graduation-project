@@ -4,434 +4,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/Home.css' %}">
     <title>LoomingCode</title>
+    <!--<title>CodingLife</title>-->
 </head>
-<body>
-    <header>
-        <a href = "{% url 'home'%}" class = "logo">LoomingCode</a>
+<header>
+    <a href="{% url 'home'%}" class="logo">LoomingCode</a>
 
-        <nav class = "navigation" id = "nav-middle">
-            <a href = "{% url 'home'%}">Home</a>
-            <a href="{% url 'home' %}#courses">Courses</a>
-            <a href = "{% url 'home' %}#services">Services</a>
+    <nav class="navigation" id="nav-middle">
+        <a href="{% url 'home'%}">Home</a>
+        <a href="{% url 'home' %}#courses">Courses</a>
+        <a href="{% url 'home' %}#services">Services</a>
 
-            <a href = "{% url 'home' %}#aboute">About</a>
-            <a href="{% url 'home' %}#contact">Contact</a>
-        </nav>
+        <a href="{% url 'home' %}#aboute">About</a>
+        <a href="{% url 'home' %}#contact">Contact</a>
+    </nav>
 
-        <nav class = "navigation">
-            <a href = "#" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
-            <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
-            <a href = "{% url 'logout_page'%}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
-        </nav>
+    <nav class="navigation">
+        <a href="#" id="profile"><i class="fa-regular fa-user fa-lg"></i></a>
+        <a href="{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+        <a href="{% url 'logout_page'%}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
+    </nav>
 
-    </header>
-
-    <section class="WelcomeSection" style="background-image: url('{% static 'images/main.png' %}');">
-        <div class = "word" style = "color: white;font-weight: 400;font-size:50px;">Welcome to</div> 
-        <div class = "word"> 
-        <span style = "font-size: 70px; font-weight: 600;color: yellow">LoomingCode</span>
-        </div>
-        <p>unlock your learning ambitions</p>
-        <p id = "smallparagraph">LoomingCode: Where Ideas Take Flight.
-            Your passport to the coding universe. Let's start coding!</p>
-        <p>
-            <a href="{% url 'signup'%}"><button type="button">create new account</button></a>
-        </p>
-        <br>
-        
-        <p>
-            <ul class="example-2">
-                <li class="icon-content">
-                  <a
-                    href="https://www.linkedin.com/in/aws-nassar?fbclid=IwZXh0bgNhZW0CMTAAAR2NC6qmSMXqpe7IWMT19GChjAZgsHUGpMz2VEuLr4C02NODkDec2JmSbZY_aem_AYj9XpuBa8U3kGetsR6W8WLNroKxvtFzbzI2DjFjHOfdclGE7S2W9lZrDpS39MDtcBfiA545SYP1BviDQ0jdb0--"
-                    aria-label="LinkedIn"
-                    data-social="linkedin"
-                  >
-                    <div class="filled"></div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-linkedin"
-                      viewBox="0 0 16 16"
-                      xml:space="preserve"
-                    >
-                      <path
-                        d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"
-                        fill="currentColor"
-                      ></path>
-                    </svg>
-                  </a>
-                </li>
-                <li class="icon-content">
-                  <a href="https://github.com/Aseel-Attili" aria-label="GitHub" data-social="github">
-                    <div class="filled"></div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-github"
-                      viewBox="0 0 16 16"
-                      xml:space="preserve"
-                    >
-                      <path
-                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
-                        fill="currentColor"
-                      ></path>
-                    </svg>
-                  </a>
-                </li>
-                  
-                <li class="icon-content">
-                  <a href="https://www.youtube.com/channel/UCdLkFH25vC3JM_JoRDO1WTw" aria-label="Youtube" data-social="youtube">
-                    <div class="filled"></div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-youtube"
-                      viewBox="0 0 16 16"
-                      xml:space="preserve"
-                    >
-                      <path
-                        d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"
-                        fill="currentColor"
-                      ></path>
-                    </svg>
-                  </a>
-                </li>
-              </ul>
+</header>
+<section class="WelcomeSection" style="background-image: url('{% static 'images/main.png' %}');">
+    <div class = "word" style = "color: white;font-weight: 400;font-size:50px;">Welcome to</div> 
+    <div class = "word"> 
+    <span style = "font-size: 70px; font-weight: 600;color: yellow">LoomingCode</span>
+    </div>
+    <p>unlock your learning ambitions</p>
+    <p id = "smallparagraph">LoomingCode: Where Ideas Take Flight.
+        Your passport to the coding universe. Let's start coding!</p>
+    <p>
+        <a href="{% url 'signup'%}"><button type="button">create new account</button></a>
+    </p>
+    <br>
+    
+    <p>
+        <ul class="example-2">
+            <li class="icon-content">
+              <a
+                href="https://www.linkedin.com/in/aws-nassar?fbclid=IwZXh0bgNhZW0CMTAAAR2NC6qmSMXqpe7IWMT19GChjAZgsHUGpMz2VEuLr4C02NODkDec2JmSbZY_aem_AYj9XpuBa8U3kGetsR6W8WLNroKxvtFzbzI2DjFjHOfdclGE7S2W9lZrDpS39MDtcBfiA545SYP1BviDQ0jdb0--"
+                aria-label="LinkedIn"
+                data-social="linkedin"
+              >
+                <div class="filled"></div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-linkedin"
+                  viewBox="0 0 16 16"
+                  xml:space="preserve"
+                >
+                  <path
+                    d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </a>
+            </li>
+            <li class="icon-content">
+              <a href="https://github.com/Aseel-Attili" aria-label="GitHub" data-social="github">
+                <div class="filled"></div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-github"
+                  viewBox="0 0 16 16"
+                  xml:space="preserve"
+                >
+                  <path
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </a>
+            </li>
               
-        </p>
-    </section>
-
-    <div>
-        <hr style = "border: 1px solid blue">
-    </div>
-
-    <section class = "textSection">
-        <h1>Empower Your Coding Journey with LoomingCode</h1>
-        <p>At LoomingCode, we're your ultimate destination for top-notch programming education.
-        Dive into a world of limitless possibilities with our interactive tutorials,
-        real-world projects, and vibrant community. 
-        Unlock your potential and trust our experienced team dedicated to helping you succeed. 
-        Start your coding journey with LoomingCode today!</p>
-    </section>
-
-    <div>
-        <hr style = "border: 1px solid blue">
-    </div>
-
-    <section class = "textSection" id = "courses">
-        <h1>Courses</h1>
-        <div class = "CoursesContainer"><!--it is a parent container to contain all cards-->
-            <div class="card">
-                <b>
-                   <div class = "CourseIcon">
-                    
-                    <img src="{% static 'images/c++icon.png' %}" loading = "lazy" height="144px" width="144px">
-                   </div> 
-                    <h3>C++ course</h3>
-                    <a href="{% url 'course' 'Introduction'%}"> <button id = "c++Button">OPEN COURSE</button></a>
-                </b>
-            </div>
-            <div class="card">
-                <b>
-                    <div class = "CourseIcon">
-                        
-                        <img src="{% static 'images/cicon.png' %}" loading = "lazy" height="144px" width="144px">
-                    </div> 
-                    <h3>C course</h3>
-                    <button id = "cButton">OPEN COURSE</button>
-                </b>
-            </div>
-            <div class="card">
-                <b>
-                    <div class = "CourseIcon">
-                        
-                        <img src="{% static 'images/javaicon.png' %}" loading = "lazy" height="144px" width="144px">
-                    </div> 
-                    <h3>java course</h3>
-                    <button id = "javaButton">OPEN COURSE</button>
-                </b>
-            </div>
-            <div class="card">
-                <b>
-                    <div class = "CourseIcon">
-                        
-                        <img src="{% static 'images/pythonicon.png' %}" loading = "lazy" height="144px" width="144px">
-                    </div> 
-                    <h3>python course</h3>
-                    <button id = "pythonButton">OPEN COURSE</button>
-                </b>
-            </div>
-            <div class="card">
-                <b>
-                    <div class = "CourseIcon">
-                        
-                        <img src="{% static 'images/htmlicon.png' %}" loading = "lazy" height="144px" width="144px">
-                    </div> 
-                    <h3>html course</h3>
-                    <button id = "htmlButton">OPEN COURSE</button>
-                </b>
-            </div>
-            <div class="card">
-                <b>
-                    <div class = "CourseIcon">
-                        
-                        <img src="{% static 'images/cssicon.png' %}" loading = "lazy" height="144px" width="144px">
-                    </div> 
-                    <h3>css course</h3>
-                    <button id = "cssButton">OPEN COURSE</button>
-                </b>
-            </div>
-            <div class="card">
-                <b>
-                    <div class = "CourseIcon">
-                        
-                        <img src="{% static 'images/JSicon.png' %}" loading = "lazy" height="144px" width="144px">
-                    </div> 
-                    <h3>js course</h3>
-                    <button id = "jsButton">OPEN COURSE</button>
-                </b>
-            </div>
-            <div class="card">
-                <b>
-                    <div class = "CourseIcon">
-                        
-                        <img src="{% static 'images/phpicon.png' %}" loading = "lazy" height="144px" width="144px">
-                    </div> 
-                    <h3>php course</h3>
-                    <button id = "phpButton">OPEN COURSE</button>
-                </b>
-            </div>
-        </div>
-    </section>
-
-    <div>
-        <hr style = "border: 1px solid blue">
-    </div>
-
-    <section class = "textSection" id = "services">
-        <h1 style = "margin-bottom: 2em;">Our services</h1>
-        <div class = "CoursesContainer ServicesContainer">
-            <div class="servicesCard">
-                <div class="circle"></div>
-                <div class="circle"></div>
-                <div class="card-inner">
-                        <h3>Interactive Tutorials</h3>
-                        <p>Engaging and interactive tutorials covering various
-                            programming languages, concepts, and frameworks. 
-                            These tutorials may include hands-on exercises, 
-                            quizzes, and challenges to reinforce learning.
-                        </p>
-                </div>
-            </div>
-            <div class="servicesCard">
-                <div class="circle"></div>
-                <div class="circle"></div>
-                <div class="card-inner">
-                    <h3>Real-World Projects</h3>
-                    <p> Access to a diverse range of real-world projects
-                        that allow learners to apply their programming 
-                        skills in practical scenarios. These projects 
-                        could be industry-relevant and may involve 
-                        building web applications, mobile apps, or 
-                        other software solutions.
-                    </p>
-                </div>
-            </div>
-            <div class="servicesCard">
-                <div class="circle"></div>
-                <div class="circle"></div>
-                <div class="card-inner">
-                    <h3>Community Support and Collaboration</h3>
-                    <p>A vibrant online community where learners can
-                        connect with peers, mentors, and industry 
-                        professionals. This community provides a platform
-                        for collaboration, knowledge sharing, and support, 
-                        fostering a conducive learning environment for 
-                        everyone involved.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div>
-        <hr style = "border: 1px solid blue">
-    </div>
-
-    <section class = "textSection" id = "aboute">
-        <h1>About</h1>
-        <p>
-            Our platform is built on the belief that everyone should
-             have access to high-quality educational resources that 
-             inspire creativity, foster innovation, and drive success. 
-             Our dynamic platform empowers instructors to contribute and 
-             curate courses, ensuring that learners have access to 
-             the latest and most comprehensive content available. 
-             With a dedicated team of experienced educators and
-              industry professionals, we strive to provide
-               top-notch programming education through free 
-               interactive tutorials and practical projects. 
-               Whether you're a student embarking on your 
-               coding journey or an educator passionate about 
-               sharing knowledge, LoomingCode offers a vibrant ecosystem
-                where learning thrives. Join us on this exciting journey
-                 of learning and discovery, and let's code together!
-        </p>
-    </section>
-    <div>
-        <hr style = "border: 1px solid blue">
-    </div>
-    <section class = "RatingSection">
-        <div style="color: yellow;font-size:2.5em;font-weight: 600;padding-left: 100px;padding-top:2.6em">
-            Rate us
-        </div>
-        <div class="rating" style = "padding-left: 5em;padding-top:100px">
-            <input type="radio" id="star-1" name="star-radio" value="star-1">
-            <label for="star-1">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-            </label>
-            <input type="radio" id="star-2" name="star-radio" value="star-1">
-            <label for="star-2">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-            </label>
-            <input type="radio" id="star-3" name="star-radio" value="star-1">
-            <label for="star-3">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-            </label>
-            <input type="radio" id="star-4" name="star-radio" value="star-1">
-            <label for="star-4">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-            </label>
-            <input type="radio" id="star-5" name="star-radio" value="star-1">
-            <label for="star-5">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-            </label>
-        </div>
-    </section>
-
-    <div>
-        <hr style = "border: 1px solid blue">
-    </div>
-
-    <section class = "contact" id = "contact" style = "background-color: black;">
-
-        <h1>Developers</h1>
-
-        <div class = "content"><!--it is a parent container to contain all Contactcards-->
-
-            <div class = "contactcard">
-                <div style = "text-align:center; margin-top: 0.7em;">
-                    
-                    <img src = "{% static 'images/اوس.png' %}" loading="lazy">
-                </div>
-                <div class= "info">
-                    <h4>Aws Nassar</h4>
-                    <h4>Phone</h4>
-                    <p>+972569605424</p>
-                    <h4>Gmail</h4>
-                    <p>aws..a.nassar@gmail.com</p>
-                    <div>
-                        <a href = "https://www.facebook.com/profile.php?id=100008495946230&mibextid=qi2Omg&rdid=iviR1FQ83qo4t5tm"><i class="fa-brands fa-facebook"></i></a>
-                        <a href = "https://www.instagram.com/nassaraws/" style = "margin-left: 10px;"><i class="fa-brands fa-instagram"></i></a>
-                        <a href = "https://www.youtube.com/@Aws-Nassar" style = "margin-left: 10px;"><i class="fa-brands fa-youtube"></i></a>
-                        <a href = "https://github.com/Aws-Nassar?fbclid=IwZXh0bgNhZW0CMTAAAR04iPp2P16MUs07IJU5OJjGzPDCTD-HnOv6yZxkuu1z5M_FZ6abKA5I2pk_aem_AeiXDVaaE271a1QlagyywI7ks5AGtMMVP_8eEsYb645R5bdfJN6G6j4ru4DeteJC4I7CdwOdHgpIOhZe0lk2HVd_" style = "margin-left: 10px;"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class = "contactcard">
-                <div style = "text-align:center; margin-top: 0.7em;">
-                    
-                    <img src = "{% static 'images/1صورة اصيل.png' %}" loading="lazy">
-                </div>
-                <div class= "info">
-                    <h4>Aseel Attili</h4>
-                    <h4>Phone</h4>
-                    <p>+972599736269</p>
-                    <h4>Gmail</h4>
-                    <p>aseelattili2@gmail.com</p>
-                    <div>
-                        <a href = "https://www.facebook.com/profile.php?id=100004298850253"><i class="fa-brands fa-facebook"></i></a>
-                        <a href = "https://www.instagram.com/aseel_attili" style = "margin-left: 10px;"><i class="fa-brands fa-instagram"></i></a>
-                        <a href = "https://www.youtube.com/channel/UC2t-2Hk4BATP3SCFv1EaLBw" style = "margin-left: 10px;"><i class="fa-brands fa-youtube"></i></a>
-                        <a href = "https://github.com/Aseel-Attili" style = "margin-left: 10px;"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class = "contactcard">
-                <div style = "text-align:center; margin-top: 0.7em;">
-                    <img src = "{% static 'images/احمد.png' %}" loading="lazy">
-                </div>
-                <div class= "info">
-                    <h4>Ahmad Jaber</h4>
-                    <h4>Phone</h4>
-                    <p>+972597885283</p>
-                    <h4>Gmail</h4>
-                    <p>ajaber5834@gmail.com</p>
-                    <div>
-                        <a href = "https://www.facebook.com/profile.php?id=100009200669116"><i class="fa-brands fa-facebook"></i></a>
-                        <a href = "https://www.instagram.com/ahmad_jjaber1/?fbclid=IwZXh0bgNhZW0CMTAAAR0LGygDiPE4iiLYUu8h09-cjq2gH34BqXq6LuVf_920QlsGJgULflddOSs_aem_Aegezqp7ckIZ7v5qyPUD_2VXStekESURxta3PxPOrSDyCItKpJxC3Amekl44xngV9EDe4AhAYqviP_Z4TBaorDYS" style = "margin-left: 10px;"><i class="fa-brands fa-instagram"></i></a>
-                        <a href = "https://www.youtube.com/channel/UCdLkFH25vC3JM_JoRDO1WTw" style = "margin-left: 10px;"><i class="fa-brands fa-youtube"></i></a>
-                        <a href = "https://github.com/Ahmad-Jaber0?fbclid=IwZXh0bgNhZW0CMTAAAR1DgMEDFTx_-hnHDFZQ81vZuV2jdz_ZSTid5GJ6slPvsXvEKA86MVfMf-s_aem_AehKCMPDFz-ixyuwVy1OR7JUauW-FjqgzahRpfQ4ClG7zC_a5Uuzf0A7_u2OgGJjCbbo-Z_UBYXlsDN7ncA5ej_O" style = "margin-left: 10px;"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-   
-
-    <section class = "footerbody">
-        <footer class="footer">
-          <div class="waves">
-            <div class="wave" id="wave1"></div>
-            <div class="wave" id="wave2"></div>
-            <div class="wave" id="wave3"></div>
-            <div class="wave" id="wave4"></div>
-          </div>
-          <ul class="social-icon">
-            <li class="social-icon__item"><a class="social-icon__link" href="#">
-                <ion-icon name="logo-facebook"></ion-icon>
-              </a></li>
-            <li class="social-icon__item"><a class="social-icon__link" href="#">
-                <ion-icon name="logo-twitter"></ion-icon>
-              </a></li>
-            <li class="social-icon__item"><a class="social-icon__link" href="#">
-                <ion-icon name="logo-linkedin"></ion-icon>
-              </a></li>
-            <li class="social-icon__item"><a class="social-icon__link" href="#">
-                <ion-icon name="logo-instagram"></ion-icon>
-              </a></li>
+            <li class="icon-content">
+              <a href="https://www.youtube.com/channel/UCdLkFH25vC3JM_JoRDO1WTw" aria-label="Youtube" data-social="youtube">
+                <div class="filled"></div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-youtube"
+                  viewBox="0 0 16 16"
+                  xml:space="preserve"
+                >
+                  <path
+                    d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </a>
+            </li>
           </ul>
-          <ul class="menu">
+          
+    </p>
+</section>
+
+
+<div>
+    <hr style="border: 1px solid blue">
+</div>
+
+<section class="textSection">
+    <h1>Empower Your Coding Journey with LoomingCode</h1>
+    <p>
+        At LoomingCode, we're your ultimate destination for top-notch programming education.
+        Dive into a world of limitless possibilities with our interactive tutorials,
+        real-world projects, and vibrant community.
+        Unlock your potential and trust our experienced team dedicated to helping you succeed.
+        Start your coding journey with LoomingCode today!
+    </p>
+</section>
+
+<div>
+    <hr style="border: 1px solid blue">
+</div>
+
+<section class="textSection" id="courses">
+    <h1>Courses</h1>
+    <div class="CoursesContainer">
+        <!--it is a parent container to contain all cards-->
+        <div class="card">
+            <b>
+                <div class="CourseIcon">
+                    <img src="{% static 'images/c++icon.png' %}" loading="lazy" height="144px" width="144px">                </div>
+                <h3>C++ course</h3>
+                <button id="c++Button">OPEN COURSE</button>
+            </b>
+        </div>
+        
+    </div>
+</section>
+
+<div>
+    <hr style="border: 1px solid blue">
+</div>
+
+<section class="textSection" id="services">
+    <h1>Our services</h1>
+    <div class="CoursesContainer ServicesContainer">
+        <div class="servicesCard">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="card-inner">
+                <h3>Interactive Tutorials</h3>
+                <p>
+                    Engaging and interactive tutorials covering various
+                    programming languages, concepts, and frameworks.
+                    These tutorials may include hands-on exercises,
+                    quizzes, and challenges to reinforce learning.
+                </p>
+            </div>
+        </div>
+        <div class="servicesCard">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="card-inner">
+                <h3>Real-World Projects</h3>
+                <p>
+                    Access to a diverse range of real-world projects
+                    that allow learners to apply their programming
+                    skills in practical scenarios. These projects
+                    could be industry-relevant and may involve
+                    building web applications, mobile apps, or
+                    other software solutions.
+                </p>
+            </div>
+        </div>
+        <div class="servicesCard">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="card-inner">
+                <h3>Community Support and Collaboration</h3>
+                <p>
+                    An active online community connects learners with peers,
+                    mentors, and industry professionals,
+                    facilitating collaboration, knowledge sharing,
+                    and support for an optimal learning environment.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div>
+    <hr style="border: 1px solid blue">
+</div>
+
+<section class="textSection" id="aboute">
+    <h1>About</h1>
+    <p>
+        Our platform is built on the belief that everyone should
+        have access to high-quality educational resources that
+        inspire creativity, foster innovation, and drive success.
+        Our dynamic platform empowers instructors to contribute and
+        curate courses, ensuring that learners have access to
+        the latest and most comprehensive content available.
+        With a dedicated team of experienced educators and
+        industry professionals, we strive to provide
+        top-notch programming education through free
+        interactive tutorials and practical projects.
+        Whether you're a student embarking on your
+        coding journey or an educator passionate about
+        sharing knowledge, LoomingCode offers a vibrant ecosystem
+        where learning thrives. Join us on this exciting journey
+        of learning and discovery, and let's code together!
+    </p>
+</section>
+<div>
+    <hr style="border: 1px solid blue">
+</div>
+
+<section class = "contact" id = "contact" style = "background-color: black;">
+
+    <h1>Developers</h1>
+
+    <div class = "content"><!--it is a parent container to contain all Contactcards-->
+
+        <div class = "contactcard">
+            <div style = "text-align:center; margin-top: 0.7em;">
+                
+                <img src = "{% static 'images/اوس.png' %}" loading="lazy">
+            </div>
+            <div class= "info">
+                <h4>Aws Nassar</h4>
+                <h4>Phone</h4>
+                <p>+972569605424</p>
+                <h4>Gmail</h4>
+                <p>aws..a.nassar@gmail.com</p>
+                <div>
+                    <a href = "https://www.facebook.com/profile.php?id=100008495946230&mibextid=qi2Omg&rdid=iviR1FQ83qo4t5tm"><i class="fa-brands fa-facebook"></i></a>
+                    <a href = "https://www.instagram.com/nassaraws/" style = "margin-left: 10px;"><i class="fa-brands fa-instagram"></i></a>
+                    <a href = "https://www.youtube.com/@Aws-Nassar" style = "margin-left: 10px;"><i class="fa-brands fa-youtube"></i></a>
+                    <a href = "https://github.com/Aws-Nassar?fbclid=IwZXh0bgNhZW0CMTAAAR04iPp2P16MUs07IJU5OJjGzPDCTD-HnOv6yZxkuu1z5M_FZ6abKA5I2pk_aem_AeiXDVaaE271a1QlagyywI7ks5AGtMMVP_8eEsYb645R5bdfJN6G6j4ru4DeteJC4I7CdwOdHgpIOhZe0lk2HVd_" style = "margin-left: 10px;"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class = "contactcard">
+            <div style = "text-align:center; margin-top: 0.7em;">
+                
+                <img src = "{% static 'images/1صورة اصيل.png' %}" loading="lazy">
+            </div>
+            <div class= "info">
+                <h4>Aseel Attili</h4>
+                <h4>Phone</h4>
+                <p>+972599736269</p>
+                <h4>Gmail</h4>
+                <p>aseelattili2@gmail.com</p>
+                <div>
+                    <a href = "https://www.facebook.com/profile.php?id=100004298850253"><i class="fa-brands fa-facebook"></i></a>
+                    <a href = "https://www.instagram.com/aseel_attili" style = "margin-left: 10px;"><i class="fa-brands fa-instagram"></i></a>
+                    <a href = "https://www.youtube.com/channel/UC2t-2Hk4BATP3SCFv1EaLBw" style = "margin-left: 10px;"><i class="fa-brands fa-youtube"></i></a>
+                    <a href = "https://github.com/Aseel-Attili" style = "margin-left: 10px;"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class = "contactcard">
+            <div style = "text-align:center; margin-top: 0.7em;">
+                <img src = "{% static 'images/احمد.png' %}" loading="lazy">
+            </div>
+            <div class= "info">
+                <h4>Ahmad Jaber</h4>
+                <h4>Phone</h4>
+                <p>+972597885283</p>
+                <h4>Gmail</h4>
+                <p>ajaber5834@gmail.com</p>
+                <div>
+                    <a href = "https://www.facebook.com/profile.php?id=100009200669116"><i class="fa-brands fa-facebook"></i></a>
+                    <a href = "https://www.instagram.com/ahmad_jjaber1/?fbclid=IwZXh0bgNhZW0CMTAAAR0LGygDiPE4iiLYUu8h09-cjq2gH34BqXq6LuVf_920QlsGJgULflddOSs_aem_Aegezqp7ckIZ7v5qyPUD_2VXStekESURxta3PxPOrSDyCItKpJxC3Amekl44xngV9EDe4AhAYqviP_Z4TBaorDYS" style = "margin-left: 10px;"><i class="fa-brands fa-instagram"></i></a>
+                    <a href = "https://www.youtube.com/channel/UCdLkFH25vC3JM_JoRDO1WTw" style = "margin-left: 10px;"><i class="fa-brands fa-youtube"></i></a>
+                    <a href = "https://github.com/Ahmad-Jaber0?fbclid=IwZXh0bgNhZW0CMTAAAR1DgMEDFTx_-hnHDFZQ81vZuV2jdz_ZSTid5GJ6slPvsXvEKA86MVfMf-s_aem_AehKCMPDFz-ixyuwVy1OR7JUauW-FjqgzahRpfQ4ClG7zC_a5Uuzf0A7_u2OgGJjCbbo-Z_UBYXlsDN7ncA5ej_O" style = "margin-left: 10px;"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section class="footerbody">
+    <footer class="footer">
+        <ul class="social-icon">
+            <li class="social-icon__item">
+                <a class="social-icon__link" href="#">
+                    <ion-icon name="logo-facebook"></ion-icon>
+                </a>
+            </li>
+            <li class="social-icon__item">
+                <a class="social-icon__link" href="#">
+                    <ion-icon name="logo-twitter"></ion-icon>
+                </a>
+            </li>
+            <li class="social-icon__item">
+                <a class="social-icon__link" href="#">
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+            </li>
+            <li class="social-icon__item">
+                <a class="social-icon__link" href="#">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                </a>
+            </li>
+        </ul>
+        <ul class="menu">
             <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
             <li class="menu__item"><a class="menu__link" href="#">About</a></li>
             <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
             <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
             <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
-      
-          </ul>
-          <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
-        </footer>
-        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    </section>
+
+        </ul>
+        <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
+    </footer>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</section>
 
 
-   
+
 
 </body>
 </html>

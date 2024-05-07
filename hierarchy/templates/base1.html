@@ -61,7 +61,7 @@
             <p class="menu-chapter">{{ chapter.name }}</p>
             {% for topic in topics %}
             {% if topic.chapter == chapter %}
-            <a href="{% url 'course_detail' course1 topic.id %}" class="menu-item">{{ topic.topic_name }}</a>
+            <a href="{% url 'course_detail' course1 topic.id %}" class="menu-item {% if topic.id == top.id %}active{% endif %}">{{ topic.topic_name }}</a>
             {% endif %}
             {% endfor %}
             {% endfor %}

@@ -28,21 +28,34 @@ header{
     font-size: 1.6em;
 }
 
-.navigation a{
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1em;
-    font-weight: 500;
-    padding-left: 30px;
-}
 
 #nav-middle {
     margin-right: 0.4em;
 }
-
-.navigation a:hover{
-    color: yellow;
+#nav-middle a{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    padding-left: 30px;   
 }
+
+#nav-middle a:hover{
+  color: yellow;
+}
+
+#header-icons a{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    padding-left: 30px; 
+}
+
+#header-icons a:hover{
+  color: yellow;
+}
+
 
 /*section{
     padding: 100px 100px;
@@ -63,6 +76,18 @@ header{
   -webkit-backface-visibility: hidden;
   -webkit-perspective: 1000;
   -webkit-transform: translate3d(0,0,0);
+}
+
+.WelcomeSection #Welcome-to-word{
+  color: white;
+  font-weight: 400;
+  font-size:50px;
+}
+
+.WelcomeSection #LoomingCode-word{
+  font-size: 70px;
+  font-weight: 600;
+  color: yellow
 }
 
 .WelcomeSection  .word{
@@ -391,6 +416,11 @@ button {
     margin-top: 1.7em;
 }
 
+
+
+#services h1{
+  margin-bottom: 2em;
+}
 .ServicesContainer{
     display:flex;
     justify-content: space-between;
@@ -466,104 +496,12 @@ button {
 
   
 
-.rating {
-    display: flex;
-    flex-direction:row-reverse;
-    gap: 0.3rem;
-    --stroke: blue;
-    --fill: yellow;
 
-  }
-  
-  .rating input {
-    appearance: unset;
-  }
-  
-  .rating label {
-    cursor: pointer;
-  }
-  
-  .rating svg {
-    width: 4rem;
-    height: 4rem;
-    overflow: visible;
-    fill: transparent;
-    stroke: var(--stroke);
-    stroke-linejoin: bevel;
-    stroke-dasharray: 12;
-    animation: idle 4s linear infinite;
-    transition: stroke 0.2s, fill 0.5s;
-  }
-  
-  @keyframes idle {
-    from {
-      stroke-dashoffset: 24;
-    }
-  }
-  
-  .rating label:hover svg {
-    stroke: var(--fill);
-
-  }
-  
-  .rating input:checked ~ label svg {
-    transition: 0s;
-    animation: idle 4s linear infinite, yippee 0.75s backwards;
-    fill: var(--fill);
-    stroke: var(--fill);
-    stroke-opacity: 0;
-    stroke-dasharray: 0;
-    stroke-linejoin: miter;
-    stroke-width: 8px;
-  }
-  
-  @keyframes yippee {
-    0% {
-      transform: scale(1);
-      fill: var(--fill);
-      fill-opacity: 0;
-      stroke-opacity: 1;
-      stroke: var(--stroke);
-      stroke-dasharray: 10;
-      stroke-width: 1px;
-      stroke-linejoin: bevel;
-    }
-  
-    30% {
-      transform: scale(0);
-      fill: var(--fill);
-      fill-opacity: 0;
-      stroke-opacity: 1;
-      stroke: var(--stroke);
-      stroke-dasharray: 10;
-      stroke-width: 1px;
-      stroke-linejoin: bevel;
-    }
-  
-    30.1% {
-      stroke: var(--fill);
-      stroke-dasharray: 0;
-      stroke-linejoin: miter;
-      stroke-width: 8px;
-    }
-  
-    60% {
-      transform: scale(1.2);
-      fill: var(--fill);
-    }
-  }
-  
-
-.RatingSection{
-    padding-bottom: 100px;
-    display:flex;
-    justify-content: left;
-    width:100%;
-    background-color: black;
-}
 
 .contact{
     padding: 100px 100px;
+    background-color: black;
+    min-height: 80vh;
 }
 
 .contact h1{
@@ -588,7 +526,7 @@ button {
  هي قديش انا بدي الشادو يكوم مش واضح والقيمة الرابعة هي اللون 
  واخر قيمة بالار جي بي هي العتامة او الشفافي*/
     border-radius: 10px;
-    padding: 25px;
+    padding: 1.5em;
     transition:0.7s ease;
 }
 
@@ -606,6 +544,12 @@ in the flex container*/
 }
 
 
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+
+
 
 .info{
     color: white;
@@ -615,21 +559,24 @@ in the flex container*/
 
 
 .info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
 
-    text-decoration: none;
-    color: white;
-    font-size: 1.8em;
+.info .right-three-icons{
+  margin-left: 10px;
 }
 
 
 
-.footerbody {
+/*.footerbody {
     display: flex;
     background: black;
     justify-content: flex-end;
     align-items: flex-end;
-    min-height: 40vh;
-  }
+    min-height: 35vh;
+  }*/
   
   .footer {
     position: relative;
@@ -691,58 +638,2449 @@ in the flex container*/
     font-weight: 300;
   }
   
-  .wave {
-    position: absolute;
-    top: -100px;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    background: url("https://i.ibb.co/wQZVxxk/wave.png");
-    background-size: 1000px 100px;
-  }
   
-  .wave#wave1 {
-    z-index: 1000;
-    opacity: 1;
-    bottom: 0;
-    animation: animateWaves 4s linear infinite;
-  }
-  
-  .wave#wave2 {
-    z-index: 999;
-    opacity: 0.5;
-    bottom: 10px;
-    animation: animate 4s linear infinite !important;
-  }
-  
-  .wave#wave3 {
-    z-index: 1000;
-    opacity: 0.2;
-    bottom: 15px;
-    animation: animateWaves 3s linear infinite;
-  }
-  
-  .wave#wave4 {
-    z-index: 999;
-    opacity: 0.7;
-    bottom: 20px;
-    animation: animate 3s linear infinite;
-  }
-  
-  @keyframes animateWaves {
-    0% {
-      background-position-x: 1000px;
+
+
+
+
+  /*make it responsive*/
+
+@media (min-width: 200px) and (max-width: 249px){
+    body{
+        font-size: 3px;
     }
-    100% {
-      background-positon-x: 0px;
+
+    header{
+        padding: 12px 4px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
     }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: -12em;  
+    }
+    #header-icons a{ 
+        font-size: 1.8em;
+        margin-right: 0em;
+        font-weight: 400;
+        padding-left: 7px;
+    }
+
+    #nav-middle {
+        font-size: 2.7em;
+        margin-left: 1em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 0.5em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:4em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:0.9em;
+    }
+
+
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 900px 101vh;
+      background-position: 50% 0%;
+      padding-top:25vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:3.9em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 5.9em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-600px; }
+      20% { margin-left:-250px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:3em;
+    font-size: 4em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:3em;
+    font-size:3.5em;
+  }
+  button {
+    margin-top: 1.7em;
+    font-size: 0.7em;
+    padding: 2px 6px;
+  }
+  .example-2 .icon-content a {
+    width: 6.5em;
+    height: 6.5em;
+  }
+  .example-2 .icon-content a svg {
+    width: 4.5em;
+    height: 4.5em;
+  }
+
+
+
+
+
+  .textSection{
+    padding: 100px 20px;
   }
   
-  @keyframes animate {
-    0% {
-      background-position-x: -1000px;
-    }
-    100% {
-      background-positon-x: 0px;
-    }
+  /*introduction section*/
+  .textSection h1{
+    color:yellow;
+    font-size: 4em;
+    font-weight: 600;
+    margin-bottom: 20px;
   }
+  
+  .textSection p{
+    font-size: 3.5em;
+    margin-right: 0em;
+  }
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 4em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 3.7em;
+    margin-top:3em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 2.5em;
+    margin-top: 0.5em;
+    margin-left: 2.7em;
+    margin-right: 2.7em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 150px;
+    height: 200px;
+  } 
+  .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }  
+  .circle:nth-child(1) {
+    top: -15px;
+    left: -15px;
+  }
+  
+  .circle:nth-child(2) {
+    bottom: -15px;
+    right: -15px;
+    animation-name: move-down1;
+  }
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 20px;
+}
+.contact h1{
+  font-size: 4em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 60em;
+  padding: 1.5em;
+  margin-bottom: 5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 55.65375px;
+  height: 80.89875px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:2.4em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+
+
+
+
+  @media (min-width: 249px) and (max-width: 299px){
+    body{
+        font-size: 3.3px;
+    }
+
+    header{
+        padding: 12px 4px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: -2.5em;  
+    }
+    #header-icons a{ 
+        font-size: 1.8em;
+        margin-right: 0em;
+        font-weight: 400;
+        padding-left: 7px;
+    }
+
+    #nav-middle {
+        font-size: 2.5em;
+        margin-left: 1em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:4em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:0.9em;
+    }
+
+
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 900px 101vh;
+      background-position: 50% 0%;
+      padding-top:27vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:4.5em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 6.5em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-600px; }
+      20% { margin-left:-250px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:3em;
+    font-size: 4.5em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:3em;
+    font-size:4em;
+  }
+  button {
+    margin-top: 1.7em;
+    font-size: 0.8em;
+    padding: 3px 7px;
+  }
+  .example-2 .icon-content a {
+    width: 6.5em;
+    height: 6.5em;
+  }
+  .example-2 .icon-content a svg {
+    width: 4.5em;
+    height: 4.5em;
+  }
+
+
+
+
+  .textSection{
+    padding: 100px 30px;
+  }
+  
+  /*introduction section*/
+  .textSection h1{
+    color:yellow;
+    font-size: 4.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .textSection p{
+    font-size: 4em;
+    margin-right: 0em;
+  }
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 4.5em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 4em;
+    margin-top:3em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 2.6em;
+    margin-top: 0.5em;
+    margin-left: 2.7em;
+    margin-right: 2.7em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 180px;
+    height: 230px;
+  } 
+  .circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 30px;
+}
+.contact h1{
+  font-size: 4.5em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 60em;
+  padding: 1.5em;
+  margin-bottom: 5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 55.65375px;
+  height: 80.89875px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:2.4em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+
+
+
+  @media (min-width: 299px) and (max-width: 349px){
+    body{
+        font-size: 4px;
+    }
+
+    header{
+        padding: 12px 4px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: -2.5em;  
+    }
+    #header-icons a{ 
+        font-size: 1.9em;
+        margin-right: 0em;
+        font-weight: 400;
+        padding-left: 10px;
+    }
+
+    #nav-middle {
+        font-size: 2.4em;
+        margin-left: 1em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:4em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:0.9em;
+    }
+
+
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 900px 101vh;
+      background-position: 50% 0%;
+      padding-top:27vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:4em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 6em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-600px; }
+      20% { margin-left:-450px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:1em;
+    font-size:3.3em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:1.5em;
+    font-size:3em;
+  }
+  button {
+    margin-top: 1.7em;
+    font-size: 0.7em;
+    padding: 5px 10px;
+  }
+  .example-2 .icon-content a {
+    width: 6.5em;
+    height: 6.5em;
+  }
+  .example-2 .icon-content a svg {
+    width: 4.5em;
+    height: 4.5em;
+  }
+
+
+
+
+
+  .textSection{
+    padding: 100px 35px;
+  }
+  
+  /*introduction section*/
+  .textSection h1{
+    color:yellow;
+    font-size: 3.3em;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .textSection p{
+    font-size: 3em;
+    margin-right: 0em;
+  }
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 3.3em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 3em;
+    margin-top:3em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 2.3em;
+    margin-top: 0.5em;
+    margin-left: 4.3em;
+    margin-right: 4.3em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 200px;
+    height: 250px;
+  } 
+  .circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+  
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 35px;
+}
+.contact h1{
+  font-size: 3.3em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 55em;
+  padding: 1.5em;
+  margin-bottom: 5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 65.475px;
+  height: 95.175px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:2.4em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+
+
+  @media (min-width: 349px) and (max-width: 399px){
+    body{
+        font-size: 4.6px;
+    }
+
+    header{
+        padding: 12px 4px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: 0em;  
+    }
+    #header-icons a{ 
+        font-size: 1.9em;
+        margin-right: 0em;
+        font-weight: 400;
+        padding-left: 10px;
+    }
+
+    #nav-middle {
+        font-size: 2.4em;
+        margin-left: 1em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:3.5em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:1em;
+    }
+
+
+
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 800px 101vh;
+      background-position: 35% 0%;
+      padding-top:27vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:4em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 6em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-600px; }
+      20% { margin-left:-450px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:1em;
+    font-size:3.3em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:1.5em;
+    font-size:3em;
+  }
+  button {
+    margin-top: 1.7em;
+    font-size: 0.5em;
+  }
+  .example-2 .icon-content a {
+    width: 6.5em;
+    height: 6.5em;
+  }
+  .example-2 .icon-content a svg {
+    width: 4.5em;
+    height: 4.5em;
+  }
+
+
+
+
+  .textSection{
+    padding: 100px 35px;
+  }
+  
+  /*introduction section*/
+  .textSection h1{
+    color:yellow;
+    font-size: 3.3em;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .textSection p{
+    font-size: 3em;
+    margin-right: 0em;
+  }
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 3.3em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 3em;
+    margin-top:3em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 2.3em;
+    margin-top: 0.5em;
+    margin-left: 4.7em;
+    margin-right: 4.7em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 240px;
+    height: 290px;
+  } 
+  .circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 35px;
+}
+.contact h1{
+  font-size: 3.3em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 45em;
+  padding: 1.5em;
+  margin-bottom: 5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 65.475px;
+  height: 95.175px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:2em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+
+
+
+@media (min-width: 399px) and (max-width: 459px) {
+    body{
+        font-size: 4.75px;
+    }
+
+    header{
+        padding: 12px 5px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: 6em;   
+    }
+    #header-icons a{ 
+        font-size: 2em;
+        margin-right: 0em;
+        font-weight: 400;
+        padding-left: 10px;
+    }
+
+    #nav-middle {
+        font-size: 2.4em;
+        margin-left: 1.1em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:3.5em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:1em;
+    }
+
+
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 800px 101vh;
+      padding-top:27vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:4.5em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 6.5em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-600px; }
+      20% { margin-left:-450px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:1em;
+    font-size:3.5em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:1.5em;
+    font-size:3.3em;
+  }
+  button {
+    margin-top: 1.7em;
+    font-size: 0.7em;
+  }
+  .example-2 .icon-content a {
+    width: 6.5em;
+    height: 6.5em;
+  }
+  .example-2 .icon-content a svg {
+    width: 4.5em;
+    height: 4.5em;
+  } 
+  
+  
+
+
+  .textSection{
+    padding: 100px 40px;
+  }
+  
+  /*introduction section*/
+  .textSection h1{
+    color:yellow;
+    font-size: 3.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .textSection p{
+    font-size: 3em;
+    margin-right: 0em;
+  }
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 3.5em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 3em;
+    margin-top:3em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 2.5em;
+    margin-top: 0.5em;
+    margin-left: 4.4em;
+    margin-right: 4.4em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 250px;
+    height: 300px;
+  } 
+  .circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 40px;
+}
+.contact h1{
+  font-size: 3.5em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 45em;
+  padding: 1.5em;
+  margin-bottom: 5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 65.475px;
+  height: 95.175px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:2em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+
+}
+
+
+
+  @media (min-width: 459px) and (max-width: 519px) {
+    body{
+        font-size: 4.75px;
+    }
+
+    header{
+        padding: 12px 5px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: 15em;   
+    }
+    #header-icons a{ 
+        font-size: 1.8em;
+        margin-right: 0em;
+        font-weight: 400;
+        padding-left: 10px;
+    }
+
+    #nav-middle {
+        font-size: 2em;
+        margin-left: 9em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:3.3em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:1em;
+    }
+
+
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 767px 101vh;
+      padding-top:27vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:4.5em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 6.5em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-600px; }
+      20% { margin-left:-450px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:1em;
+    font-size:3.5em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:1.5em;
+    font-size:3.3em;
+  }
+  button {
+    margin-top: 1.7em;
+    font-size: 0.7em;
+  }
+  .example-2 .icon-content a {
+    width: 6.5em;
+    height: 6.5em;
+  }
+  .example-2 .icon-content a svg {
+    width: 4.5em;
+    height: 4.5em;
+  }    
+
+
+
+
+  .textSection{
+    padding: 100px 50px;
+  }
+  
+  /*introduction section*/
+  .textSection h1{
+    color:yellow;
+    font-size: 3.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .textSection p{
+    font-size: 3em;
+    margin-right: 0em;
+  }
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 3.5em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 3em;
+    margin-top:3em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 2.5em;
+    margin-top: 0.5em;
+    margin-left: 4.4em;
+    margin-right: 4.4em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 250px;
+    height: 300px;
+  } 
+  .circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 50px;
+}
+.contact h1{
+  font-size: 3.5em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 45em;
+  padding: 1.5em;
+  margin-bottom: 5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 65.475px;
+  height: 95.175px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:2em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+
+  @media (min-width: 519px) and (max-width: 575px){
+    body{
+        font-size: 6px;
+    }
+
+    header{
+        padding: 12px 10px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: 4em;   
+    }
+    #header-icons a{ 
+        font-size: 1.8em;
+        margin-right: 0em;
+        font-weight: 400;
+    }
+
+    #nav-middle {
+        font-size: 2em;
+        margin-left: 8em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:3.1em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:1em;
+    }
+
+
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 767px 101vh;
+      padding-top:27vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:4.5em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 6.5em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-600px; }
+      20% { margin-left:-450px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:1em;
+    font-size:3.5em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:1.5em;
+    font-size:2.8em;
+  }
+  button {
+    margin-top: 1.7em;
+    font-size: 0.6em;
+  }
+  .example-2 .icon-content a {
+    width: 5.5em;
+    height: 5.5em;
+  }
+  .example-2 .icon-content a svg {
+    width: 3.5em;
+    height: 3.5em;
+  }
+
+
+
+  .textSection{
+    padding: 100px 50px;
+  }
+  
+  /*introduction section*/
+  .textSection h1{
+    color:yellow;
+    font-size: 3.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .textSection p{
+    font-size: 2.8em;
+    margin-right: 0em;
+  }
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 2em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 3em;
+    margin-top:2em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 2em;
+    margin-top: 0.5em;
+    margin-left: 3.2em;
+    margin-right: 3.2em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 260px;
+    height: 310px;
+  } 
+  .circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 50px;
+}
+.contact h1{
+  font-size: 3.5em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 40em;
+  padding: 1.5em;
+  margin-bottom: 2.5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 65.475px;
+  height: 95.175px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:1.7em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+
+
+
+
+
+@media (min-width: 575px) and (max-width: 619px){
+    body{
+        font-size: 8px;
+    }
+
+    header{
+        padding: 12px 10px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: 0em;   
+    }
+    #header-icons a{ 
+        font-size: 1.3em;
+        margin-right: 0em;
+        font-weight: 400;
+    }
+
+    #nav-middle {
+        font-size: 1.7em;
+        margin-left: 7em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:2.7em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:1em;
+    }
+
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 767px 101vh;
+      padding-top:27vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:3.5em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 5.5em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-600px; }
+      20% { margin-left:-500px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:1em;
+    font-size:2.6em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:1.5em;
+    font-size:2.1em;
+  }
+  button {
+    margin-top: 1.7em;
+    font-size: 0.6em;
+  }
+  .example-2 .icon-content a {
+    width: 4.5em;
+    height: 4.5em;
+  }
+  .example-2 .icon-content a svg {
+    width: 2.5em;
+    height: 2.5em;
+  }
+
+
+
+
+  .textSection{
+    padding: 100px 70px;
+  }
+  
+  /*introduction section*/
+  .textSection h1{
+    color:yellow;
+    font-size: 2.6em;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .textSection p{
+    font-size: 2.1em;
+    margin-right: 0em;
+  }
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 2em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 2.3em;
+    margin-top:2em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 1.5em;
+    margin-top: 0.5em;
+    margin-left: 3.1em;
+    margin-right: 3.1em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 260px;
+    height: 310px;
+  } 
+  .circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 70px;
+}
+.contact h1{
+  font-size: 2.6em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 30em;
+  padding: 1.5em;
+  margin-bottom: 2.5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 72.75px;
+  height: 105.75px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:1.3em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+
+
+@media (min-width: 619px) and (max-width: 767px){
+    body{
+        font-size: 8px;
+    }
+
+    header{
+        padding: 12px 10px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: 8em;   
+    }
+    #header-icons a{ 
+        font-size: 1.4em;
+        margin-right: 0em;
+        font-weight: 400;
+    }
+
+    #nav-middle {
+        font-size: 1.7em;
+        margin-left: 8.5em;
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+    }
+    #nav-middle a{
+        font-weight: 400;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:2.7em;
+        font-weight: 500;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:1em;
+    }
+
+
+    /*WelcomeSection*/
+        .WelcomeSection {
+          background-size: 767px 101vh;
+          padding-top:27vh;
+        }
+        .WelcomeSection #Welcome-to-word{
+          color: white;
+          font-weight: 400;
+          font-size:3.5em;
+        }
+        .WelcomeSection #LoomingCode-word{
+          font-size: 5.5em;
+          font-weight: 600;
+          color: yellow
+        }
+        @keyframes slidein {
+          0% { margin-left:-600px; }
+          20% { margin-left:-500px; }
+          35% { margin-left:0px; }
+          100% { margin-left:0px; }
+      }
+      .WelcomeSection p{
+        padding-top:1em;
+        font-size:2.6em;
+      }
+      .WelcomeSection #smallparagraph{
+        padding-top:1.5em;
+        font-size:2.1em;
+      }
+      button {
+        margin-top: 1.7em;
+        font-size: 0.6em;
+      }
+      .example-2 .icon-content a {
+        width: 4.5em;
+        height: 4.5em;
+      }
+      .example-2 .icon-content a svg {
+        width: 2.5em;
+        height: 2.5em;
+      }
+
+
+
+
+      .textSection{
+        padding: 100px 70px;
+      }
+      
+      /*introduction section*/
+      .textSection h1{
+        color:yellow;
+        font-size: 2.6em;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      
+      .textSection p{
+        font-size: 2.1em;
+        margin-right: 0em;
+      }
+
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 2em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 2.3em;
+    margin-top:2em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 1.5em;
+    margin-top: 0.5em;
+    margin-left: 3.1em;
+    margin-right: 3.1em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 260px;
+    height: 310px;
+  } 
+  .circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 70px;
+}
+.contact h1{
+  font-size: 2.6em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 30em;
+  padding: 1.5em;
+  margin-bottom: 2.5em;
+  margin-right: 0.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.Developer-img-container img{
+  width : 72.75px;
+  height: 105.75px;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+    font-size:1.3em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+
+
+
+@media (min-width: 767px) and (max-width: 819px){
+    body{
+        font-size: 11px;
+    }
+
+    header{
+        padding: 12px 10px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: 5em;
+    }
+    #header-icons a{ 
+        font-size: 1.3em;
+        margin-right: 0.1em;
+        font-weight: 450;
+    }
+
+    #nav-middle {
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+        font-size: 1em;
+        font-weight: 500;
+        margin-left: 12em;
+    }
+    #nav-middle a{
+        font-size: 1.7em;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:2.7em;
+        font-weight: 550;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:1em;
+    }
+
+
+        /*WelcomeSection*/
+        .WelcomeSection {
+          background-size: 819px 101vh;
+          padding-top:30vh;
+        }
+        .WelcomeSection #Welcome-to-word{
+          color: white;
+          font-weight: 400;
+          font-size:2.6em;
+        }
+        .WelcomeSection #LoomingCode-word{
+          font-size: 4em;
+          font-weight: 600;
+          color: yellow
+        }
+        @keyframes slidein {
+          0% { margin-left:-700px; }
+          20% { margin-left:-550px; }
+          35% { margin-left:0px; }
+          100% { margin-left:0px; }
+      }
+      .WelcomeSection p{
+        padding-top:1em;
+        font-size:2em;
+      }
+      .WelcomeSection #smallparagraph{
+        padding-top:1.5em;
+        font-size:1.7em;
+      }
+      button {
+        margin-top: 1.7em;
+        font-size: 0.6em;
+      }
+      .example-2 .icon-content a {
+        width: 2.8em;
+        height: 2.8em;
+      }
+      .example-2 .icon-content a svg {
+        width: 1.8em;
+        height: 1.8em;
+      }
+
+
+
+
+      .textSection{
+        padding: 100px 70px;
+      }
+      
+      /*introduction section*/
+      .textSection h1{
+        color:yellow;
+        font-size: 2em;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      
+      .textSection p{
+        font-size: 1.7em;
+        margin-right: 0em;
+      }
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 2em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 1.5em;
+    margin-top:3.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 1.1em;
+    margin-top: 0.5em;
+    margin-left: 4.7em;
+    margin-right: 4.7em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 280px;
+    height: 330px;
+  } 
+  .circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 70px;
+}
+.contact h1{
+  font-size: 1.7em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 27em;
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+@media (min-width: 819px) and (max-width: 940px){
+    body{
+        font-size: 12px;
+    }
+    header{
+        padding: 12px 10px;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-content: left;
+        column-gap: 0px;
+        row-gap: 1em;
+    }
+    #header-icons{
+        grid-row: 1; /* Place the navigation links in the first row */
+        margin-right: 0em;
+        margin-left: 15em;
+    }
+    #header-icons a{ 
+        font-size: 1.1em;
+        margin-right: 0.1em;
+        font-weight: 450;
+    }
+    #nav-middle {
+        margin-right: 0em;
+        text-align: center;
+        grid-row: 2;
+        width: 100%;
+        font-size: 1em;
+        font-weight: 500;
+        margin-left: 13.5em;
+    }
+    #nav-middle a{
+        font-size: 1.4em;
+        padding-left: 0px;
+        margin-right: 1em;
+    }
+    .logo{
+        grid-row: 1;
+        max-width: 150px;
+        font-size:2.3em;
+        font-weight: 550;
+        overflow:visible; /* Hide any content that exceeds the maximum width */
+        margin-left:1em;
+    }
+
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 940px 101vh;
+      padding-top:27vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:2.5em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 3.4em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-700px; }
+      20% { margin-left:-600px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:1em;
+    font-size:1.7em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:1.5em;
+    font-size:1.3em;
+  }
+  button {
+    margin-top: 1.5em;
+    font-size: 0.6em;
+  }
+  .example-2 .icon-content a {
+    width: 2.8em;
+    height: 2.8em;
+  }
+  .example-2 .icon-content a svg {
+    width: 1.8em;
+    height: 1.8em;
+  }
+
+
+.textSection{
+  padding: 100px 70px;
+}
+
+/*introduction section*/
+.textSection h1{
+  color:yellow;
+  font-size: 1.7em;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.textSection p{
+  font-size: 1.5em;
+  margin-right: 0em;
+}
+
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 2em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 1.5em;
+    margin-top:3.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 1.1em;
+    margin-top: 0.5em;
+    margin-left: 4.4em;
+    margin-right: 4.4em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 300px;
+    height: 350px;
+  } 
+  .circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+  }
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 70px;
+}
+.contact h1{
+  font-size: 1.7em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 27em;
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
+
+@media (min-width: 940px) and (max-width: 1006px){
+    body{
+        font-size: 15px;
+    }
+    header{
+        padding: 12px 10px;
+    }
+    /*WelcomeSection*/
+    .WelcomeSection {
+      background-size: 1006px 101vh;
+      padding-top:20vh;
+    }
+    .WelcomeSection #Welcome-to-word{
+      color: white;
+      font-weight: 400;
+      font-size:2.5em;
+    }
+    .WelcomeSection #LoomingCode-word{
+      font-size: 3.4em;
+      font-weight: 600;
+      color: yellow
+    }
+    @keyframes slidein {
+      0% { margin-left:-700px; }
+      20% { margin-left:-600px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  .WelcomeSection p{
+    padding-top:1em;
+    font-size:1.7em;
+  }
+  .WelcomeSection #smallparagraph{
+    padding-top:1.5em;
+    font-size:1.3em;
+  }
+  button {
+    margin-top: 1.5em;
+    font-size: 0.6em;
+  }
+  .example-2 .icon-content a {
+    width: 2.8em;
+    height: 2.8em;
+  }
+  .example-2 .icon-content a svg {
+    width: 1.8em;
+    height: 1.8em;
+  }
+
+
+
+
+
+  .textSection{
+    padding: 100px 70px;
+  }
+
+/*introduction and About sections*/
+.textSection h1{
+  color:yellow;
+  font-size: 1.7em;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.textSection p{
+  font-size: 1.5em;
+  margin-right: 0em;
+}
+
+
+
+
+
+
+/*services section*/
+#services h1{
+  margin-bottom: 2em;
+}
+.ServicesContainer{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.textSection .ServicesContainer h3{
+    font-size: 1.5em;
+    margin-top:3.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.textSection .ServicesContainer p{
+    font-size: 1em;
+    margin-top: 0.5em;
+    margin-left: 3.2em;
+    margin-right: 3.2em;
+}
+.servicesCard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 330px;
+    height: 380px;
+  } 
+  .circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+/*contact section*/
+.contact{
+  padding: 100px 70px;
+}
+.contact h1{
+  font-size: 1.7em;
+  font-weight: 600;
+  margin-bottom: 1.3em;
+}
+.content{   /*container*/
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;/*sets how flex items are placed
+in the flex container*/
+  flex-wrap: wrap;
+}
+.contactcard{
+  width: 23em;
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+}
+.Developer-img-container{
+  text-align:center;
+  margin-top: 0.7em;
+}
+.info{
+    color: white;
+    margin-left: 1em;
+    margin-top:0.5em;
+}
+.info a{
+  text-decoration: none;
+  color: white;
+  font-size: 1.8em;
+}
+.info .right-three-icons{
+  margin-left: 0.4em;
+}
+
+}
