@@ -209,16 +209,27 @@ header{
 }
 
 
-.image-contianer{
-  display:flex;
-  justify-content: center;
+.editor figure {
+  display: block; /* Display as block to occupy full width */
+  text-align: center; /* Center the content horizontally */
+  border: 5px rgb(0, 166, 255) solid; /* Border around content */
+  border-radius: 20px; /* Optional: add border radius */
+  margin: 0 auto; /* Center the figure horizontally */
+  width: fit-content; /* Adjust width to fit content */
 }
 
-.editor img{
-  width: 750px;
-  height: 600px;
-  border:1px transparent solid;
+.editor img {
+  border: 1px transparent solid;
   border-radius: 20px;
+  display: block; /* Ensure the image behaves as a block-level element */
+  margin: 0 auto; /* Center the image horizontally */
+}
+
+.editor figcaption {
+  display: block; /* Ensure the figcaption behaves as a block-level element */
+  margin: 0 auto; /* Center the figcaption horizontally */
+  font-size: 0.9em;
+  color: rgb(0, 166, 255);
 }
 
 /* Code box */

@@ -45,7 +45,7 @@ class Topic(models.Model):
         return self.topic_name
 
     class Meta:
-        unique_together = (('topic_name', 'chapter', 'course','rank'),)
+        unique_together = (('topic_name', 'course'),)
 
 
 @receiver(pre_save, sender=Topic)

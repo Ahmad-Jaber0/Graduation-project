@@ -164,6 +164,7 @@ html, body {
   font-size: 1.05rem;
 }
 
+
 .sidebar .menu .menu-item:hover{
   color: #fbff00;
   background-color: rgba(4, 4, 5, 0.84);
@@ -400,18 +401,27 @@ main ul{
   font-size: 1.5rem;
 }
 
-main img{
-  width: 750px;
-  height: 600px;
-  border:1px transparent solid;
-  border-radius: 20px;
+main figure {
+  display: block; 
+  text-align: center; 
+  border: 5px rgb(0, 166, 255) solid; 
+  border-radius: 20px; 
+  margin: 0 auto; 
+  width: fit-content; 
 }
 
-.image-contianer{
-  display:flex;
-  justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+main img {
+  border: 1px transparent solid;
+  border-radius: 20px;
+  display: block;
+  margin: 0 auto; 
+}
+
+main figcaption {
+  display: block;
+  margin: 0 auto; 
+  font-size: 0.9em;
+  color: rgb(0, 166, 255);
 }
 
 

@@ -71,20 +71,28 @@
             background-color: rgb(139, 139, 139);
         }
 
-    </style>
+        #topicList {
+            margin-top: 1em;
+            list-style: none;
+            padding: 0;
+        }
 
+        #topicList li {
+            margin-bottom: 0.5em;
+        }
+    </style>
 </head>
 <body>
     <form class="form-container" id="myForm" method='post'>
-        {% csrf_token %} 
+        {% csrf_token %}
         <div class="form-group">
             <label for="Course-Name:">Course Name:</label>
             <select id="Course-Name:" name="Course-Name:" required>
                 <option value="" disabled selected>Select an option</option>
                 {% for i in course %}
-                <option value="{{i.name}}">{{i.name}}</option>
+                <option value="{{ i.name }}">{{ i.name }}</option>
                 {% endfor %}
-                <option value="other">other</option>
+                <option value="other">Other</option>
             </select>
             <input type="text" id="otherInput1" name="otherInput1" class="hidden" placeholder="Enter course name">
         </div>
@@ -92,7 +100,6 @@
             <label for="Chapter-Number">Chapter Number</label>
             <select id="Chapter-Number" name="Chapter-Number" required disabled>
                 <option value="" disabled selected>Select an option</option>
-
                 <option value="Chapter1">Chapter1</option>
                 <option value="Chapter2">Chapter2</option>
                 <option value="other">Other</option>
@@ -159,6 +166,7 @@
                 submitButton.setAttribute("disabled", "disabled");
             }
         });
+        
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
@@ -171,8 +179,10 @@
                 url: "{% url 'form' %}",
                 data: $(this).serialize(),
                 success: function (response) {
-                    var topicId = response.topic.id;
-                    window.location.href = "{% url 'dynamic_page' %}?topic_id=" + topicId;
+                    var topicName = response.topic.name;
+                    var courseName=response.topic.courseName;
+                    courseName = encodeURIComponent(courseName);
+                    window.location.href = "{% url 'dynamic_page' %}?topic_Name=" + topicName+ "&course_name=" + courseName;;
                 },
                 error: function (xhr, errmsg, err) {
                     alert('Topic already exists with this course');

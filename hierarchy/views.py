@@ -23,8 +23,6 @@ def course(request, course_name):
     return redirect('course_detail', course_name=course_name, topic_name=topic.topic_name)
 
 
-
-
 def SignupPage(request):
     if request.method == 'POST':
         uname = request.POST.get('username')
@@ -74,10 +72,14 @@ def LogoutPage(request):
 
 def dynamic_page(request):
 
-    topic_id = request.GET.get('topic_id')
+    topic_Name = request.GET.get('topic_Name')
+    courseName=request.GET.get('course_name')
+    print(courseName)
+
+    course=get_object_or_404(Course,name=courseName)
 
     # Get the topic object based on the topic_id
-    topic = get_object_or_404(Topic, pk=topic_id)
+    topic = get_object_or_404(Topic, topic_name=topic_Name,course=course)
 
     # Render the dynamic.html template with the topic data
     return render(request, 'dynamic.html', {'topic': topic})
@@ -96,9 +98,6 @@ def Dynamic(request):
             x = request.POST.get('otherInput2')
             chapter_number = f"Chapter{x}"
 
-        print(course_name)
-        print(chapter_number)
-
         # Check if course already exists, else create a new one
         course, created = Course.objects.get_or_create(
             name=course_name,
@@ -109,12 +108,12 @@ def Dynamic(request):
         chapter, created = Chapter.objects.get_or_create(course=course, name=chapter_number)
 
         # Check if topic already exists within the same chapter and course
-        if Topic.objects.filter(topic_name=topic_name, chapter=chapter, course=course, rank=topic_rank).exists():
+        if Topic.objects.filter(topic_name=topic_name, course=course).exists():
             return JsonResponse({'error': 'Topic already exists within this chapter.'}, status=400)
         else:
             topic = Topic.objects.create(topic_name=topic_name, chapter=chapter, course=course, rank=topic_rank)
 
-        return JsonResponse({'topic': {'id': topic.id}})
+        return JsonResponse({'topic': {'id': topic.id,'name':topic.topic_name,'courseName':course.name}})
 
     course=Course.objects.all()
     chapter=Chapter.objects.all()
@@ -129,6 +128,15 @@ def fetch_chapters(request):
             chapters = Chapter.objects.filter(course__name=course_name).values_list("name", flat=True)
             return JsonResponse({"chapters": list(chapters)})
     return JsonResponse({"error": "Invalid request"})
+
+def fetch_topics(request):
+    course_name = request.GET.get('course')
+    chapter_number = request.GET.get('chapter')
+
+    # Retrieve topics based on course name and chapter number
+    topics = Topic.objects.filter(course__name=course_name, chapter__name=chapter_number).values('id', 'topic_name')
+
+    return JsonResponse({'topics': list(topics)})
 
 
 def update_code_html(request, topic_id):
