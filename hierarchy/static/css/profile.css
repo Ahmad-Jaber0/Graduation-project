@@ -1,0 +1,223 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #192C43;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    background-color: #213a57;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+nav {
+    background-color: #1D3149;
+    padding: 20px;
+    width: 200px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  width: 150px; 
+  height: 150px; 
+  border-radius: 50%; 
+}
+
+.logo h1 {
+  margin: 10px 0 0; 
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 1.15em;
+}
+
+nav li a:hover {
+    background-color: #035e8f;
+}
+
+.content {
+    padding: 20px;
+    flex: 1;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+.hidden {
+    display: none;
+}
+
+.label-line {
+    display: flex; 
+    justify-content: space-between;
+    margin-bottom: 10px; 
+}
+
+.label {
+    width: 45%; 
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 1.25em;
+}
+
+section h2 {
+  display: inline-block; 
+  font-size: 2em;
+  padding: 5px 10px; 
+  color: #ffffff;
+}
+
+
+/* Button Tag */
+button {
+  border: none;
+  outline: none;
+  background-color: #37577a;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 100px;
+  transition: all ease 0.1s;
+  box-shadow: 1px 2px 2px 1px #ffffff;
+  margin-top: 25px;
+  float: right;
+}
+
+button:active {
+  transform: translateY(5px);
+  box-shadow: 0px 0px 0px 0px #a29bfe;
+}
+
+button + button {
+  margin-right: 20px; 
+}
+
+
+
+/* dashboard  */
+.enrolled-courses {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+.enrolled-courses span {
+  margin-right: 10px;
+}
+
+.enrolled-courses .count {
+  background-color: #555;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+
+/* For Progess Circle Bar */
+.wrapper{
+    width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wrapper .card{
+    background: #1a2d43;
+    width: calc(33% - 20px);
+    height: 300px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    box-shadow: 0px 10px 15px rgba(0,0,0,0.1);
+  }
+  .wrapper .card .circle{
+    position: relative;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    cursor: default;
+  }
+  .card .circle .box,
+  .card .circle .box span{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+  .card .circle .box{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: all 0.2s;
+  }
+  .card .circle:hover .box{
+    transform: translate(-50%, -50%) scale(0.91);
+  }
+  .card .circle .box span,
+  .wrapper .card .text{
+    background: -webkit-linear-gradient(left, #ffffff, #d0e1f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .circle .box span{
+    font-size: 38px;
+    font-family: sans-serif;
+    font-weight: 600;
+    transform: translate(-45%, -45%);
+    transition: all 0.1s;
+  }
+  .card .circle:hover .box span{
+    transform: translate(-45%, -45%) scale(1.09);
+  }
+  .card .text{
+    font-size: 20px;
+    font-weight: 600;
+  }
+  @media(max-width: 753px){
+    .wrapper{
+      max-width: 700px;
+    }
+    .wrapper .card{
+      width: calc(50% - 20px);
+      margin-bottom: 20px;
+    }
+  }
+  @media(max-width: 505px){
+    .wrapper{
+      max-width: 500px;
+    }
+    .wrapper .card{
+      width: 100%;
+    }
+  }

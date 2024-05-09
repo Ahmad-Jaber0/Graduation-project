@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Profile</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}"> 
+    <script src="{% static 'JS/profile.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-circle-progress/1.2.2/circle-progress.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <img src="{% static 'images/messi.jpg' %}" alt="AWS">
+                <br>
+                <h1>Aws Nassar</h1>
+            </div>
+            <ul>
+                <hr>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#profile">My Profile</a></li>
+                <li><a href="#courses">Enrolled Courses</a></li>
+                <hr>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="#logout">Logout</a></li>
+            </ul>
+        </nav>
+
+
+        <div class="content">
+            <section id="dashboard" class="hidden">
+                <h2>Dashboard</h2>
+                <hr>
+                <div class="enrolled-courses">
+                    <span>Enrolled Courses</span>
+                    <span class="count">0</span>
+                </div>
+                <div class="enrolled-courses">
+                    <span>Active Courses</span>
+                    <span class="count">0</span>
+                </div>
+                <div class="enrolled-courses">
+                    <span>Completed Courses</span>
+                    <span class="count">0</span>
+                </div>
+            </section>
+
+
+            <section id="profile" class="hidden">
+                <h2>My Profile</h2>
+                <hr>
+                <div class="label-line">
+                    <div class="label">First Name</div>
+                    <div class="label">Aws</div>
+                </div>
+                
+                <div class="label-line">
+                    <div class="label">Last Name</div>
+                    <div class="label">Nassar</div>
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Username</div>
+                    <div class="label">Night-_-Wolf</div>
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Email</div>
+                    <div class="label">aws.a.nassar@gmail.com</div>
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Phone Number</div>
+                    <div class="label">________</div>
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Bio</div>
+                    <div class="label">________</div>
+                </div>
+            </section>
+
+
+            <section id="courses" class="hidden">
+                <h2>Enrolled Courses</h2>
+                <hr>
+                <div class="wrapper">
+                    <div class="card">
+                        <div class="circle">
+                        <div class="bar"></div>
+                        <div class="box"><span></span></div>
+                    </div>
+                    <div class="text">HTML & CSS</div>
+                    </div>
+                    <div class="card js">
+                        <div class="circle">
+                        <div class="bar"></div>
+                        <div class="box"><span></span></div>
+                    </div>
+                    <div class="text">JavaScript</div>
+                    </div>
+                    <div class="card react">
+                        <div class="circle">
+                        <div class="bar"></div>
+                        <div class="box"><span></span></div>
+                    </div>
+                    <div class="text">React JS</div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="settings" class="hidden">
+                <h2>My Profile</h2>
+                <hr>
+                <div class="label-line">
+                    <div class="label">First Name</div>
+                    <input type="text" class="label" value="Aws">
+                </div>
+                
+                <div class="label-line">
+                    <div class="label">Last Name</div>
+                    <input type="text" class="label" value="Nassar">
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Username</div>
+                    <input type="text" class="label" value="Night-_-Wolf" disabled>
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Email</div>
+                    <input type="text" class="label" value="aws.a.nassar@gmail.com">
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Phone Number</div>
+                    <input type="text" class="label" value="">
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Bio</div>
+                    <input type="text" class="label" value="">
+                </div>
+
+                <div class="label-line">
+                    <div class="label">Change Password</div>
+                    <input type="text" class="label" value="">
+                </div>
+                <button onclick="window.location.href='#'">Save</button>
+                <button onclick="window.location.href='#'">Cancel</button>
+            </section>
+
+            
+        </div>
+    </div>
+</body>
+
+</html>

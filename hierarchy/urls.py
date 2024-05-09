@@ -14,6 +14,7 @@ urlpatterns = [
     path('dynamic_page/', views.dynamic_page, name='dynamic_page'),
     path('fetch_chapters/', views.fetch_chapters, name='fetch_chapters'),
     path('fetch_topics/', views.fetch_topics, name='fetch_topics'),
+    path('profile/',views.profile,name='profile'),
 
 
 ] 

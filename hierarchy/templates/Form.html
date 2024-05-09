@@ -128,43 +128,67 @@
             var otherInput1 = document.getElementById("otherInput1");
             var ChapterNumber = document.getElementById("Chapter-Number");
             var otherInput2 = document.getElementById("otherInput2");
-
+        
             if (this.value === "other") {
                 otherInput1.classList.remove("hidden");
                 otherInput1.setAttribute("required", true);
-                ChapterNumber.value = "other";
-                ChapterNumber.disabled = true;
+                ChapterNumber.disabled = true; // Disable chapter select only when "Other" is selected
                 otherInput2.classList.remove("hidden");
                 otherInput2.setAttribute("required", true);
             } else {
                 otherInput1.classList.add("hidden");
                 otherInput1.removeAttribute("required");
-                ChapterNumber.disabled = false;
+                ChapterNumber.disabled = false; // Enable chapter select for other course options
                 otherInput2.classList.add("hidden");
                 otherInput2.removeAttribute("required");
+        
+                // Fetch chapters for the selected course
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'fetch_chapters' %}",
+                    data: { course: this.value },
+                    success: function(response) {
+                        // Populate chapters dropdown
+                        var chapterDropdown = document.getElementById("Chapter-Number");
+                        chapterDropdown.innerHTML = ""; // Clear previous options
+                        response.chapters.forEach(function(chapter) {
+                            var option = document.createElement("option");
+                            option.text = chapter;
+                            option.value = chapter;
+                            chapterDropdown.appendChild(option);
+                        });
+                        // Add "Other" option
+                        var otherOption = document.createElement("option");
+                        otherOption.text = "Other";
+                        otherOption.value = "other";
+                        chapterDropdown.appendChild(otherOption);
+                    },
+                    error: function(xhr, errmsg, err) {
+                        alert('Failed to fetch chapters.');
+                    }
+                });
             }
-        });
-
-        document.getElementById("Chapter-Number").addEventListener("change", function() {
-            var otherInput2 = document.getElementById("otherInput2");
-
-            if (this.value === "other") {
-                otherInput2.classList.remove("hidden");
-                otherInput2.setAttribute("required", true);
-            } else {
-                otherInput2.classList.add("hidden");
-                otherInput2.removeAttribute("required");
-            }
-        });
-
-        document.getElementById("myForm").addEventListener("input", function() {
-            var submitButton = document.getElementById("submitButton");
-
-            if (this.checkValidity()) {
-                submitButton.removeAttribute("disabled");
-            } else {
-                submitButton.setAttribute("disabled", "disabled");
-            }
+            document.getElementById("Chapter-Number").addEventListener("change", function() {
+                var otherInput2 = document.getElementById("otherInput2");
+    
+                if (this.value === "other") {
+                    otherInput2.classList.remove("hidden");
+                    otherInput2.setAttribute("required", true);
+                } else {
+                    otherInput2.classList.add("hidden");
+                    otherInput2.removeAttribute("required");
+                }
+            });
+    
+            document.getElementById("myForm").addEventListener("input", function() {
+                var submitButton = document.getElementById("submitButton");
+    
+                if (this.checkValidity()) {
+                    submitButton.removeAttribute("disabled");
+                } else {
+                    submitButton.setAttribute("disabled", "disabled");
+                }
+            });
         });
         
     </script>

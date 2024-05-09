@@ -15,6 +15,10 @@ def home(request):
     return render(request, 'home.html',{'courses':course})
 
 @login_required
+def profile(request):
+    return render(request,'profile.html')
+
+@login_required
 def course(request, course_name):
     smallest_rank = Topic.objects.filter(course__name=course_name).aggregate(min_rank=Min('rank'))['min_rank']
     
@@ -120,14 +124,14 @@ def Dynamic(request):
 
     return render(request, 'Form.html',{'course':course,'chapter':chapter}) 
 
-
 def fetch_chapters(request):
-    if request.method == "GET" and request.is_ajax():
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         course_name = request.GET.get("course")
         if course_name:
             chapters = Chapter.objects.filter(course__name=course_name).values_list("name", flat=True)
             return JsonResponse({"chapters": list(chapters)})
     return JsonResponse({"error": "Invalid request"})
+
 
 def fetch_topics(request):
     course_name = request.GET.get('course')
