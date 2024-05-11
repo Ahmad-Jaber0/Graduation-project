@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import auth, messages
 from django.http import HttpResponse,HttpResponseForbidden,JsonResponse
-from django.contrib.auth import authenticate,login,logout,get_user_model
+from django.contrib.auth import authenticate,login,logout,get_user_model,update_session_auth_hash
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
@@ -17,6 +17,26 @@ def home(request):
 @login_required
 def profile(request):
     return render(request,'profile.html')
+
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        user_profile=User.objects.get(username=request.user.username)
+        user_profile.first_name = request.POST.get('first_name', '')
+        user_profile.last_name = request.POST.get('last_name', '')
+        user_profile.email = request.POST.get('email', '')
+        #user_profile.bio = request.POST['bio']
+        #user_profile.phone_number = request.POST['phone_number']
+        user_profile.save()
+        new_password = request.POST.get('password')
+        if new_password:
+            user_profile.set_password(new_password)
+            user_profile.save()
+            update_session_auth_hash(request, user_profile)
+        return redirect('profile')
+    return redirect('profile')
+
 
 @login_required
 def course(request, course_name):

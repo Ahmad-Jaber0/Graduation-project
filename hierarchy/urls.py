@@ -15,6 +15,8 @@ urlpatterns = [
     path('fetch_chapters/', views.fetch_chapters, name='fetch_chapters'),
     path('fetch_topics/', views.fetch_topics, name='fetch_topics'),
     path('profile/',views.profile,name='profile'),
+    path('update_profile/', views.update_profile, name='update_profile'),
+
 
 
 ] 

@@ -17,7 +17,7 @@
             <div class="logo">
                 <img src="{% static 'images/messi.jpg' %}" alt="AWS">
                 <br>
-                <h1>Aws Nassar</h1>
+                <h1>{{request.user.username}}</h1>
             </div>
             <ul>
                 <hr>
@@ -27,6 +27,7 @@
                 <hr>
                 <li><a href="#settings">Settings</a></li>
                 <li><a href="#logout">Logout</a></li>
+
             </ul>
         </nav>
 
@@ -55,22 +56,22 @@
                 <hr>
                 <div class="label-line">
                     <div class="label">First Name</div>
-                    <div class="label">Aws</div>
+                    <div class="label">{{request.user.first_name}}</div>
                 </div>
                 
                 <div class="label-line">
                     <div class="label">Last Name</div>
-                    <div class="label">Nassar</div>
+                    <div class="label">{{request.user.last_name}}</div>
                 </div>
 
                 <div class="label-line">
                     <div class="label">Username</div>
-                    <div class="label">Night-_-Wolf</div>
+                    <div class="label">{{request.user.username}}</div>
                 </div>
 
                 <div class="label-line">
                     <div class="label">Email</div>
-                    <div class="label">aws.a.nassar@gmail.com</div>
+                    <div class="label">{{request.user.email}}</div>
                 </div>
 
                 <div class="label-line">
@@ -117,42 +118,45 @@
             <section id="settings" class="hidden">
                 <h2>My Profile</h2>
                 <hr>
-                <div class="label-line">
-                    <div class="label">First Name</div>
-                    <input type="text" class="label" value="Aws">
-                </div>
-                
-                <div class="label-line">
-                    <div class="label">Last Name</div>
-                    <input type="text" class="label" value="Nassar">
-                </div>
-
-                <div class="label-line">
-                    <div class="label">Username</div>
-                    <input type="text" class="label" value="Night-_-Wolf" disabled>
-                </div>
-
-                <div class="label-line">
-                    <div class="label">Email</div>
-                    <input type="text" class="label" value="aws.a.nassar@gmail.com">
-                </div>
-
-                <div class="label-line">
-                    <div class="label">Phone Number</div>
-                    <input type="text" class="label" value="">
-                </div>
-
-                <div class="label-line">
-                    <div class="label">Bio</div>
-                    <input type="text" class="label" value="">
-                </div>
-
-                <div class="label-line">
-                    <div class="label">Change Password</div>
-                    <input type="text" class="label" value="">
-                </div>
-                <button onclick="window.location.href='#'">Save</button>
-                <button onclick="window.location.href='#'">Cancel</button>
+                <form action="{% url 'update_profile' %}" method="post">
+                    {% csrf_token %}
+                    <div class="label-line">
+                        <div class="label">First Name</div>
+                        <input type="text" class="label" name="first_name" value="{{ request.user.first_name }}">
+                    </div>
+                    
+                    <div class="label-line">
+                        <div class="label">Last Name</div>
+                        <input type="text" class="label" name="last_name" value="{{ request.user.last_name }}">
+                    </div>
+            
+                    <div class="label-line">
+                        <div class="label">Username</div>
+                        <input type="text" class="label" value="{{ request.user.username }}" disabled>
+                    </div>
+            
+                    <div class="label-line">
+                        <div class="label">Email</div>
+                        <input type="text" class="label" name="email" value="{{ request.user.email }}">
+                    </div>
+            
+                    <div class="label-line">
+                        <div class="label">Phone Number</div>
+                        <input type="text" class="label" name="phone_number" value="">
+                    </div>
+            
+                    <div class="label-line">
+                        <div class="label">Bio</div>
+                        <input type="text" class="label" name="bio" value="">
+                    </div>
+            
+                    <div class="label-line">
+                        <div class="label">Change Password</div>
+                        <input type="password" class="label" name="password">
+                    </div>
+                    <button type="submit">Save</button>
+                    <button type="button" onclick="window.location.href='#'">Cancel</button>
+                </form>
             </section>
 
             
