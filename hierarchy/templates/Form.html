@@ -111,12 +111,10 @@
             <input type="text" id="textInput" name="textInput" required>
         </div>
         <div class="form-group">
-            <label for="textInput">This chapter contains those topiccs:- </label>
-            <p>
-                1.intro
-                <br>
-                2.output
-            </p>
+            <label for="textInput" id="textInput1">This chapter contains those topiccs:- </label>
+            <ul id="topicList">
+                <!-- Fetched topics will be displayed here -->
+            </ul>
             <input type="text" id="topicRank" name="topicRank" placeholder="Enter topic order(1, 2 , 3, ...)" pattern="[1-9][0-9]*" required>
         </div> 
         <button type="submit" class="submit-button" id="submitButton" disabled>Submit</button>
@@ -128,6 +126,10 @@
             var otherInput1 = document.getElementById("otherInput1");
             var ChapterNumber = document.getElementById("Chapter-Number");
             var otherInput2 = document.getElementById("otherInput2");
+            var topicList = document.getElementById("topicList");
+            var textInput1 = document.getElementById("textInput1");
+
+
         
             if (this.value === "other") {
                 otherInput1.classList.remove("hidden");
@@ -135,12 +137,16 @@
                 ChapterNumber.disabled = true; // Disable chapter select only when "Other" is selected
                 otherInput2.classList.remove("hidden");
                 otherInput2.setAttribute("required", true);
+                textInput1.classList.add("hidden");
+                topicList.classList.add("hidden");
             } else {
                 otherInput1.classList.add("hidden");
                 otherInput1.removeAttribute("required");
                 ChapterNumber.disabled = false; // Enable chapter select for other course options
                 otherInput2.classList.add("hidden");
                 otherInput2.removeAttribute("required");
+                textInput1.classList.remove("hidden");
+                topicList.classList.remove("hidden");
         
                 // Fetch chapters for the selected course
                 $.ajax({
@@ -162,34 +168,71 @@
                         otherOption.text = "Other";
                         otherOption.value = "other";
                         chapterDropdown.appendChild(otherOption);
+        
+                        // If a chapter is already selected, fetch topics for it
+                        if (ChapterNumber.value !== "") {
+                            fetchTopics();
+                        }
                     },
                     error: function(xhr, errmsg, err) {
                         alert('Failed to fetch chapters.');
                     }
                 });
             }
-            document.getElementById("Chapter-Number").addEventListener("change", function() {
-                var otherInput2 = document.getElementById("otherInput2");
-    
-                if (this.value === "other") {
-                    otherInput2.classList.remove("hidden");
-                    otherInput2.setAttribute("required", true);
-                } else {
-                    otherInput2.classList.add("hidden");
-                    otherInput2.removeAttribute("required");
-                }
-            });
-    
-            document.getElementById("myForm").addEventListener("input", function() {
-                var submitButton = document.getElementById("submitButton");
-    
-                if (this.checkValidity()) {
-                    submitButton.removeAttribute("disabled");
-                } else {
-                    submitButton.setAttribute("disabled", "disabled");
-                }
-            });
         });
+        
+        document.getElementById("Chapter-Number").addEventListener("change", function() {
+            var otherInput2 = document.getElementById("otherInput2");
+        
+            if (this.value === "other") {
+                otherInput2.classList.remove("hidden");
+                otherInput2.setAttribute("required", true);
+            } else {
+                otherInput2.classList.add("hidden");
+                otherInput2.removeAttribute("required");
+            }
+        
+            // Fetch topics when a chapter is selected
+            fetchTopics();
+        });
+        
+        document.getElementById("myForm").addEventListener("input", function() {
+            var submitButton = document.getElementById("submitButton");
+        
+            if (this.checkValidity()) {
+                submitButton.removeAttribute("disabled");
+            } else {
+                submitButton.setAttribute("disabled", "disabled");
+            }
+        });
+        
+        function fetchTopics() {
+            var topicList = document.getElementById("topicList");
+        
+            $.ajax({
+                type: "GET",
+                url: "{% url 'fetch_topics' %}",
+                data: { 
+                    course: document.getElementById("Course-Name:").value,
+                    chapter: document.getElementById("Chapter-Number").value 
+                },
+                success: function(response) {
+                    // Clear previous topics
+                    topicList.innerHTML = "";
+        
+                    // Populate topics
+                    response.topics.forEach(function(topic) {
+                        var listItem = document.createElement("li");
+                        listItem.textContent = topic.topic_name;
+                        topicList.appendChild(listItem);
+                    });
+                },
+                error: function(xhr, errmsg, err) {
+                    alert('Failed to fetch topics.');
+                }
+            });
+        }
+        
         
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
