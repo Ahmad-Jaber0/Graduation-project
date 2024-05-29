@@ -5,84 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
-    <style>
-        body {
-            padding: 10em;
-            background-color: rgb(8, 27, 43);
-        }
-
-        /* Stylesheet for the form */
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: whitesmoke;
-            border-radius: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 1em;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.6em;
-            font-weight: bold;
-            color: rgb(18, 164, 189);
-        }
-
-        select,
-        input[type="text"] {
-            width: calc(100% - 10px); /* Adjusted width for better appearance */
-            padding: 10px;
-            font-size: 1em;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        select,
-        input[type="number"] {
-            width: calc(100% - 10px); /* Adjusted width for better appearance */
-            padding: 10px;
-            font-size: 1em;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .submit-button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            background-color: rgb(18, 164, 189);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .submit-button:disabled {
-            background-color: rgb(139, 139, 139);
-        }
-
-        #topicList {
-            margin-top: 1em;
-            list-style: none;
-            padding: 0;
-        }
-
-        #topicList li {
-            margin-bottom: 0.5em;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}">
 </head>
 <body>
+
+    <header>
+        <a href="{% url 'home'%}" class="logo">LoomingCode</a>
+    
+        <nav class="navigation" id="nav-middle">
+            <a href="{% url 'home'%}">Home</a>
+            <a href="{% url 'home' %}#courses">Courses</a>
+            <a href="{% url 'home' %}#services">Services</a>
+    
+            <a href="{% url 'home' %}#aboute">About</a>
+            <a href="{% url 'home' %}#contact">Contact</a>
+        </nav>
+    
+        <nav class = "navigation" id = "header-icons">
+            <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
+            <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+        </nav>
+    
+    </header>
+    <main class="content-section">
     <form class="form-container" id="myForm" method='post'>
         {% csrf_token %}
         <div class="form-group">
@@ -258,6 +203,35 @@
         });
     });
 </script>
+</main>
+<section class="footerbody">
+    <footer class="footer">
+      <ul class="social-icon">
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-facebook"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-instagram"></ion-icon>
+          </a></li>
+      </ul>
+      <ul class="menu">
+        <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">About</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
+      </ul>
+      <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
+    </footer>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  </section>
 
 </body>
 </html>

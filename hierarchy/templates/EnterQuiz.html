@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Content</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/EnterQuiz.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}" class="logo">LoomingCode</a>
+        <nav class="navigation" id="nav-middle">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'home' %}#courses">Courses</a>
+            <a href="{% url 'home' %}#services">Services</a>
+            <a href="{% url 'home' %}#about">About</a>
+            <a href="{% url 'home' %}#contact">Contact</a>
+        </nav>
+        <nav class="navigation">
+            <a href="#" id="profile"><i class="fa-regular fa-user fa-lg"></i></a>
+            <a href="{% url 'login' %}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+            <a href="{% url 'logout_page' %}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
+        </nav>
+    </header>
+
+    <form id="quizForm" method="POST" action="{% url 'save_quiz' %}">
+        {% csrf_token %}
+        <div class="message" id="message">
+            <div class="label-and-feild-container">
+                <label for="QuestionNumber"><b>Question number:</b></label>
+                <input type="number" id="QuestionNumber" name="question_number" required>
+            </div>
+            <div class="label-and-feild-container"> 
+                <label for="QuestionMark"><b>Question mark:</b></label>
+                <input type="number" id="QuestionMark" name="question_mark" required>
+            </div>
+            <div class="label-and-feild-container"> 
+                <label for="QuestionTopics"><b>Question topics:</b></label>
+                <select id="QuestionTopics" name="question_topics" required multiple>
+                    {% for topic in topics %}
+                    <option value="{{ topic.id }}">{{ topic.topic_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="label-and-feild-container"> 
+                <label for="QuestionSectionsCount"><b>Question sections count:</b></label>
+                <input type="number" id="QuestionSectionsCount" name="question_sections_count" required>
+            </div>
+
+            <div>
+                <center>
+                    <button type="button" id="enterQuestion-button" data-element="enter-question" onclick="func(this)">Enter question</button>
+                    <span></span>
+                    <button type="button" id="CANCEL-button" onclick="closeMessage()">Cancel</button>
+                </center>
+            </div>
+        </div>
+
+        <div id="editor" class="editor" contenteditable></div>
+        
+        <div class="savebtn-cancelbtn-container">
+            <input type="hidden" id="correctAnswers" name="correct_answers[]">
+            <button type="button" class="beautiful-button" id="next-question" onclick="nextQuestion()">Next question</button>
+            <button type="submit" class="beautiful-button" id="generate-html">Save and return</button>
+        </div>
+    </form>
+
+    <script>
+        let qustionNumber;
+        let questionMark;
+        let QuestionTopics = [];
+        let questionSectionsCount;
+        let answerOptions;
+
+        var editor = document.getElementById('editor');
+        editor.focus();
+        const editorElement = document.getElementById('editor');
+        const generateHTMLButton = document.getElementById('generate-html');
+
+        function nextQuestion() {
+            const editorContent = editorElement.innerHTML.trim();
+            if (editorContent) {
+                const safeHTML = editorContent;
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'html_content';
+                input.value = safeHTML;
+                document.getElementById('quizForm').appendChild(input);
+                document.getElementById('quizForm').submit();
+            } else {
+                alert('Please enter content.');
+            }
+        }
+
+        function func(button) {
+            event.stopPropagation();
+
+            const elementType = button.getAttribute('data-element');
+            let elementHtml;
+
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            const parentElement = range.startContainer.parentElement;
+
+            switch (elementType) {
+                case 'code block':
+                    elementHtml = '<div class="outer-container"><i class="fas fa-code code-icon"></i><div class="code-box"><div class="code-content"><br></div></div></div><br>';
+                    break;
+
+                case 'code-word':
+                    elementHtml = '<code class="code-words">&nbsp;<br></code><br>';
+                    break;
+
+                case 'horizental-line':
+                    elementHtml = '<hr><br>';
+                    break;
+
+                case 'enter-question':
+                    qustionNumber = document.getElementById("QuestionNumber").value;
+                    questionMark = document.getElementById("QuestionMark").value;
+                    QuestionTopics = document.getElementById("QuestionTopics").selectedOptions;
+                    questionSectionsCount = document.getElementById("QuestionSectionsCount").value;
+
+                    var options = document.getElementById("QuestionTopics").options;
+                    var selected = false;
+                    for (let i = 0; i < options.length; i++) {
+                        if (options[i].selected == true) {
+                            selected = true;
+                            break;
+                        }
+                    }
+
+                    if (qustionNumber == "" || questionMark == "" || selected == false || questionSectionsCount == "")
+                        alert("please fill the empty fields");
+                    else {
+                        enterQuestion();
+
+                        let s = '<div class="text">';
+                        s += 'Q' + qustionNumber + ": " + '</div><br><br>';
+                        editorElement.innerHTML = s;
+
+                        let q_seq_num = 0;
+                        let ans_options_num = 0;
+                        for (let i = 1; i <= questionSectionsCount; i++) {
+                            q_seq_num = prompt("Enter question section number");
+                            s += q_seq_num + '. <br>';
+                            editorElement.innerHTML = s;
+                            ans_options_num = prompt("Enter number of answer options");
+
+                            let name = 'answer-variable' + qustionNumber + i;
+                            let checkBoxHtml = "";
+                            for (let j = 1; j <= ans_options_num; j++) {
+                                let id = '' + qustionNumber;
+                                id += i;
+                                id += j;
+
+                                checkBoxHtml += '<div><input type="radio" name="';
+                                checkBoxHtml += name;
+                                checkBoxHtml += '" id="';
+                                checkBoxHtml += id;
+                                checkBoxHtml += '" onclick="setCorrectAnswer(' + i + ', this.id)"><label contenteditable>&nbsp;&nbsp;&nbsp;<br></div>';
+                            }
+                            checkBoxHtml += '<br>';
+                            s += checkBoxHtml;
+                            editorElement.innerHTML = s;
+                        }
+                        editorElement.innerHTML = s;
+                    }
+                    break;
+            }
+
+            if (elementHtml) {
+                const newNode = document.createElement('div');
+                newNode.innerHTML = elementHtml;
+                range.insertNode(newNode);
+                range.setStartAfter(newNode);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+
+        function setCorrectAnswer(sectionIndex, id) {
+            let correctAnswers = document.getElementById('correctAnswers').value.split(',');
+            correctAnswers[sectionIndex - 1] = id;
+            document.getElementById('correctAnswers').value = correctAnswers.join(',');
+        }
+
+        function enterQuestion() {
+            var label = document.querySelector('label[for="QuestionNumber"]');
+            label.style.display = 'none';
+            document.getElementById("QuestionNumber").style.display = "none";
+
+            var label = document.querySelector('label[for="QuestionMark"]');
+            label.style.display = 'none';
+            document.getElementById("QuestionMark").style.display = "none";
+
+            var label = document.querySelector('label[for="QuestionTopics"]');
+            label.style.display = 'none';
+            document.getElementById("QuestionTopics").style.display = "none";
+
+            var label = document.querySelector('label[for="QuestionSectionsCount"]');
+            label.style.display = 'none';
+            document.getElementById("QuestionSectionsCount").style.display = "none";
+
+            document.getElementById("enterQuestion-button").style.display = "none";
+            var span = document.querySelector('span');
+            span.style.display = 'none';
+            document.getElementById("CANCEL-button").style.display = "none";
+        }
+
+        function closeMessage() {
+            document.getElementById("message").style.display = "none";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("message").style.display = "block";
+        });
+    </script>
+</body>
+</html>

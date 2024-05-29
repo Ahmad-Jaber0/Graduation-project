@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 import json
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from django.db.models import Min
 
@@ -22,19 +23,24 @@ def profile(request):
 @login_required
 def update_profile(request):
     if request.method == 'POST':
-        user_profile=User.objects.get(username=request.user.username)
+        user_profile = User.objects.get(username=request.user.username)
         user_profile.first_name = request.POST.get('first_name', '')
         user_profile.last_name = request.POST.get('last_name', '')
         user_profile.email = request.POST.get('email', '')
-        #user_profile.bio = request.POST['bio']
-        #user_profile.phone_number = request.POST['phone_number']
+
+        if 'image' in request.FILES:
+            user_profile.image = request.FILES['image']
+
         user_profile.save()
+
         new_password = request.POST.get('password')
         if new_password:
             user_profile.set_password(new_password)
             user_profile.save()
             update_session_auth_hash(request, user_profile)
+
         return redirect('profile')
+
     return redirect('profile')
 
 
@@ -93,6 +99,13 @@ def login(request):
 def LogoutPage(request):
     logout(request)
     return redirect('home')   
+
+
+def dynamic_quiz(request):
+    course = Course.objects.get(name='C++') 
+    topics = Topic.objects.filter(course=course)
+
+    return render(request, 'EnterQuiz.html', {'topics': topics})
 
 def dynamic_page(request):
 
@@ -196,4 +209,90 @@ def course_detail(request, course_name, topic_name):
 
     return render(request, 'base1.html', {'course1': course_name, 'chapters': chapters, 'topics': topics, 'top': topic, 'previous_top': previous_topic, 'next_top': next_topic})
 
+@csrf_exempt
+def save_quiz(request):
+    if request.method == "POST":
+        try:
+            course_name = 'C++'
+            question_number = request.POST.get('question_number')
+            question_mark = request.POST.get('question_mark')
+            question_topics = request.POST.getlist('question_topics')
+            question_sections_count = int(request.POST.get('question_sections_count'))
+            html_content = request.POST.get('html_content')
+            correct_answers = request.POST.get('correct_answers[]')
 
+            # Split the correct_answers string into a list
+            correct_answers_list = correct_answers.split(',')
+
+            print("Received correct answers:", correct_answers_list)
+
+            # Ensure the correct_answers list has the expected number of items
+            if len(correct_answers_list) < question_sections_count:
+                raise ValueError("Not enough correct answers provided.")
+
+            course = Course.objects.get(name=course_name)
+
+            # Create a new QuizQuestion instance
+            quiz_question = QuizQuestion(
+                course=course,
+                question_number=question_number,
+                question_mark=question_mark,
+                sections_count=question_sections_count,
+                html_content=html_content
+            )
+            quiz_question.save()
+
+            # Add topics to the QuizQuestion instance
+            for topic_id in question_topics:
+                topic = Topic.objects.get(id=topic_id)
+                quiz_question.topics.add(topic)
+
+            # Create QuestionSection instances
+            for i in range(question_sections_count):
+                question_section = QuestionSection.objects.create(
+                    question=quiz_question,
+                    section_number=i + 1,
+                    correct_answer_text=correct_answers_list[i]  # Correct field name
+                )
+
+            return redirect('EnterQuiz')
+
+        except Exception as e:
+            print("Error:", e)
+            return redirect('EnterQuiz')  # Redirect to an appropriate error page or display an error message
+    else:
+        return redirect('EnterQuiz')
+    
+
+def quiz(request):
+    quiz=QuizQuestion.objects.get(id=20)
+
+    return render(request,'QuestionPage.html',{'quiz':quiz})
+
+
+def check_answer(request):
+    if request.method == 'POST':
+        course_id = request.POST.get('course_id')
+        quiz_id = request.POST.get('quiz_id')
+
+        try:
+            quiz = QuizQuestion.objects.get(id=quiz_id, course_id=course_id)
+            sections = quiz.sections.filter(question_id=quiz_id)
+
+            # Process only the sections belonging to the current quiz
+            for section in sections:
+                section_id = section.id
+                user_answer = request.POST.get(f'user_answer_{section_id}')
+                # Here you can compare user's answer with correct answer and process accordingly
+                # For example:
+                print(section_id)
+                print(user_answer)
+                is_correct = user_answer == section.correct_answer_text
+                # You can then store the result or perform any further processing
+
+            print(is_correct)
+            return JsonResponse({'status': 'Success'})
+        except QuizQuestion.DoesNotExist:
+            return JsonResponse({'error': 'Question not found'}, status=404)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)

@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/Home.css' %}">
@@ -30,23 +31,17 @@
 
 
 <section class="WelcomeSection" style="background-image: url('{% static 'images/main.png' %}');">
-    <div class="word" id="Welcome-to-word">Welcome to</div>
-    <div class="word">
-        <span id="LoomingCode-word">LoomingCode</span>
-    </div>
-    <p>unlock your learning ambitions</p>
-    <p id="smallparagraph">
-        LoomingCode: Where Ideas Take Flight.
-        Your passport to the coding universe. Let's start coding!
-    </p>
-
-    <p>
-        <button>
-            create new account
-        </button>
-    </p>
-
-    <br>
+    <div class = "word" style = "color: white;font-weight: 400;font-size:50px;">Welcome to</div> 
+        <div class = "word"> 
+        <span style = "font-size: 70px; font-weight: 600;color: yellow">LoomingCode</span>
+        </div>
+        <p>unlock your learning ambitions</p>
+        <p id = "smallparagraph">LoomingCode: Where Ideas Take Flight.
+            Your passport to the coding universe. Let's start coding!</p>
+        <p>
+            <a href="{% url 'signup'%}"><button type="button">create new account</button></a>
+        </p>
+        <br>
 
     <p>
         <ul class="example-2">
@@ -234,7 +229,6 @@
             <div class= "info">
                 <h4>Aws Nassar</h4>
                 <h4>Phone</h4>
-                <p>+972569605424</p>
                 <h4>Gmail</h4>
                 <p>aws..a.nassar@gmail.com</p>
                 <div>
@@ -254,7 +248,6 @@
             <div class= "info">
                 <h4>Aseel Attili</h4>
                 <h4>Phone</h4>
-                <p>+972599736269</p>
                 <h4>Gmail</h4>
                 <p>aseelattili2@gmail.com</p>
                 <div>
@@ -273,7 +266,6 @@
             <div class= "info">
                 <h4>Ahmad Jaber</h4>
                 <h4>Phone</h4>
-                <p>+972597885283</p>
                 <h4>Gmail</h4>
                 <p>jaber5834@gmail.com</p>
                 <div>

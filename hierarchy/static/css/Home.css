@@ -150,8 +150,10 @@ header{
     font-weight: 500;
 }
 
-button {
+.button {
     position: relative;
+    left:0;
+    top: 0;
     padding: 10px 20px;
     border-radius: 7px;
     border: 1px solid yellow;
@@ -168,7 +170,7 @@ button {
     transition: all 0.2s ease-in;
   }
   
-  button:hover {
+  .button:hover {
     cursor: pointer;
     color:yellow;
     background: #001b65;
@@ -178,13 +180,13 @@ button {
     transition: all 0.2s ease-out;
   }
   
-  button:hover::before {
+  .button:hover::before {
     -webkit-animation: sh02 0.5s 0s linear;
     -moz-animation: sh02 0.5s 0s linear;
     animation: sh02 0.5s 0s linear;
   }
   
-  button::before {
+  .button::before {
     content: '';
     display: block;
     width: 0px;
@@ -218,7 +220,7 @@ button {
     }
   }
   
-  button:active {
+  .button:active {
     box-shadow: 0 0 0 0 transparent;
     -webkit-transition: box-shadow 0.2s ease-in;
     -moz-transition: box-shadow 0.2s ease-in;
@@ -341,6 +343,9 @@ button {
     margin-right: 15em;
 }
 
+
+/*courses section*/
+
 .CoursesContainer{
     display:flex;
     justify-content: left;
@@ -395,14 +400,67 @@ button {
     z-index: 2;
   }
 
+
+
+/*rating stars*/
+.rating{
+  text-align: center;
+  }
+  
+  .rating > input {
+    display: none; /* Hide the radio buttons */
+  }
+  
+  .rating > label {
+    cursor: pointer;
+    font-size: 1.7em;
+    color: #666; /* Default color for stars */
+    transition: color 0.2s;
+  }
+  
+  .rating > label:before {
+    content: '★';
+  }
+  
+  /* Color the stars yellow when they are selected */
+  .rating .selected {
+    color: #ffa723;
+  }
+
+  
+
+
+.textSection .CoursesContainer .save_button{
+  cursor:pointer;
+  border-radius: 5px;
+  transition: opacity 0.1s ease; /* Smooth transition */
+  transition: 0.4s ease;
+}
+.textSection .CoursesContainer .save_button:hover{
+  background-color: rgb(191, 191, 255);
+}
+
   
 .textSection .CoursesContainer .CourseIcon{
-    margin-top:2em;
+    margin-top:0em;
     text-align: center;
 }
 
+.textSection .CoursesContainer .CourseIcon img{
+  height:144px;
+  width: 144px;
+}
+
+.rating .rate_value{
+  color:white;
+  font-weight: 400;
+}
+.rating .rating_participants_count{
+  color:white;font-weight: 400;
+}
+
 .textSection .CoursesContainer h3{
-    margin-top: 25px;
+    margin-top: 0.25em;
     margin-left: 3px;
     margin-right: 3px;
     text-align: center;
@@ -411,10 +469,11 @@ button {
     color:white;
 }
 
-.textSection .CoursesContainer button{
-    margin-left: 1.7em;
-    margin-top: 1.7em;
+.textSection .CoursesContainer .button{
+    margin-left: 1.65em;
+    margin-top: 1em;
 }
+
 
 
 
@@ -643,7 +702,7 @@ in the flex container*/
 
 
 
-  /*make it responsive*/
+/*make it responsive*/
 
 @media (min-width: 200px) and (max-width: 249px){
     body{
@@ -727,7 +786,7 @@ in the flex container*/
     padding-top:3em;
     font-size:3.5em;
   }
-  button {
+  .button {
     margin-top: 1.7em;
     font-size: 0.7em;
     padding: 2px 6px;
@@ -761,6 +820,148 @@ in the flex container*/
     font-size: 3.5em;
     margin-right: 0em;
   }
+
+
+
+
+
+
+  /*courses section*/
+
+  .card {
+    margin-left: 15%;
+    margin-right: 20px;
+    margin-top: 40px;
+    position: relative;
+    width: 139px;
+    height: 180px;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0 0 transparent;
+    transition: all 0.5s ease-in;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card:hover{
+  box-shadow: 0 0 30px 10px yellow;
+  transition: all 0.4s ease-out;
+  transform:scale(1.1);
+  }
+  
+  .card b {
+    position: absolute;
+    inset: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+  }
+  
+  
+  
+  /*rating stars*/
+  .rating{
+  text-align: center;
+  }
+  
+  .rating > input {
+    display: none; /* Hide the radio buttons */
+  }
+  
+  .rating > label {
+    cursor: pointer;
+    font-size: 4em;
+    color: #666; /* Default color for stars */
+    transition: color 0.2s;
+  }
+  
+  .rating > label:before {
+    content: '★';
+  }
+  
+  /* Color the stars yellow when they are selected */
+  .rating .selected {
+    color: #ffa723;
+  }
+  
+  
+  
+  
+  .textSection .CoursesContainer .save_button{
+  cursor:pointer;
+  border-radius: 5px;
+  transition: opacity 0.1s ease; /* Smooth transition */
+  transition: 0.4s ease;
+  }
+  .textSection .CoursesContainer .save_button:hover{
+  background-color: rgb(191, 191, 255);
+  }
+  .textSection .CoursesContainer .save_button img{
+    width:14px;
+    height: 14px;
+  }
+  
+  
+  .textSection .CoursesContainer .CourseIcon{
+    margin-top:0em;
+    text-align: center;
+  }
+  .textSection .CoursesContainer .CourseIcon img{
+    height:60px;
+    width: 60px;
+  }
+  
+  .rating .rate_value{
+  color:white;
+  font-weight: 400;
+  font-size:2.5em;
+  }
+  .rating .rating_participants_count{
+  color:white;
+  font-weight: 400;
+  font-size:2.5em;
+  }
+  
+  .textSection .CoursesContainer h3{
+    margin-top: 0.25em;
+    margin-left: 3px;
+    margin-right: 3px;
+    text-align: center;
+    font-size:3.5em;
+    font-weight: 600;
+    color:white;
+  }
+  
+  .textSection .CoursesContainer .button{
+    border-radius: 5px;
+    padding: 2.5px 5px;
+    font-size: 2.3em;
+    margin-left: 2.4em;
+    margin-top: 1em;
+  }
+
+
+
+
 
 
 
@@ -860,6 +1061,74 @@ in the flex container*/
   margin-left: 0.4em;
 }
 
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 0.7rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.5rem;
+  font-weight: 300;
+}
+
+
+
+
+
 }
 
 
@@ -948,7 +1217,7 @@ in the flex container*/
     padding-top:3em;
     font-size:4em;
   }
-  button {
+  .button {
     margin-top: 1.7em;
     font-size: 0.8em;
     padding: 3px 7px;
@@ -981,6 +1250,146 @@ in the flex container*/
     font-size: 4em;
     margin-right: 0em;
   }
+
+
+
+
+
+  /*courses section*/
+
+  .card {
+    margin-left: 15%;
+    margin-right: 20px;
+    margin-top: 40px;
+    position: relative;
+    width: 139px;
+    height: 200px;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0 0 transparent;
+    transition: all 0.5s ease-in;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card:hover{
+  box-shadow: 0 0 30px 10px yellow;
+  transition: all 0.4s ease-out;
+  transform:scale(1.1);
+  }
+  
+  .card b {
+    position: absolute;
+    inset: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+  }
+  
+  
+  
+  /*rating stars*/
+  .rating{
+  text-align: center;
+  }
+  
+  .rating > input {
+    display: none; /* Hide the radio buttons */
+  }
+  
+  .rating > label {
+    cursor: pointer;
+    font-size: 4em;
+    color: #666; /* Default color for stars */
+    transition: color 0.2s;
+  }
+  
+  .rating > label:before {
+    content: '★';
+  }
+  
+  /* Color the stars yellow when they are selected */
+  .rating .selected {
+    color: #ffa723;
+  }
+  
+  
+  
+  
+  .textSection .CoursesContainer .save_button{
+  cursor:pointer;
+  border-radius: 5px;
+  transition: opacity 0.1s ease; /* Smooth transition */
+  transition: 0.4s ease;
+  }
+  .textSection .CoursesContainer .save_button:hover{
+  background-color: rgb(191, 191, 255);
+  }
+  .textSection .CoursesContainer .save_button img{
+    width:14px;
+    height: 14px;
+  }
+  
+  
+  .textSection .CoursesContainer .CourseIcon{
+    margin-top:0em;
+    text-align: center;
+  }
+  .textSection .CoursesContainer .CourseIcon img{
+    height:60px;
+    width: 60px;
+  }
+  
+  .rating .rate_value{
+  color:white;
+  font-weight: 400;
+  font-size:2.5em;
+  }
+  .rating .rating_participants_count{
+  color:white;
+  font-weight: 400;
+  font-size:2.5em;
+  }
+  
+  .textSection .CoursesContainer h3{
+    margin-top: 0.25em;
+    margin-left: 3px;
+    margin-right: 3px;
+    text-align: center;
+    font-size:3.5em;
+    font-weight: 600;
+    color:white;
+  }
+  
+  .textSection .CoursesContainer .button{
+    padding: 5px 10px;
+    font-size: 2.5em;
+    margin-left: 1.6em;
+    margin-top: 1em;
+  }
+
+
+
+
 
 
 
@@ -1071,6 +1480,74 @@ in the flex container*/
   margin-left: 0.4em;
 }
 
+
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 0.6rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.5rem;
+  font-weight: 300;
+}
+
+
+
+
 }
 
 
@@ -1158,7 +1635,7 @@ in the flex container*/
     padding-top:1.5em;
     font-size:3em;
   }
-  button {
+  .button {
     margin-top: 1.7em;
     font-size: 0.7em;
     padding: 5px 10px;
@@ -1192,6 +1669,146 @@ in the flex container*/
     font-size: 3em;
     margin-right: 0em;
   }
+
+
+
+
+
+
+  /*courses section*/
+
+  .card {
+    margin-left: 20%;
+    margin-right: 20px;
+    margin-top: 40px;
+    position: relative;
+    width: 139px;
+    height: 200px;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0 0 transparent;
+    transition: all 0.5s ease-in;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card:hover{
+  box-shadow: 0 0 30px 10px yellow;
+  transition: all 0.4s ease-out;
+  transform:scale(1.1);
+  }
+  
+  .card b {
+    position: absolute;
+    inset: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+  }
+  
+  
+  
+  /*rating stars*/
+  .rating{
+  text-align: center;
+  }
+  
+  .rating > input {
+    display: none; /* Hide the radio buttons */
+  }
+  
+  .rating > label {
+    cursor: pointer;
+    font-size: 3em;
+    color: #666; /* Default color for stars */
+    transition: color 0.2s;
+  }
+  
+  .rating > label:before {
+    content: '★';
+  }
+  
+  /* Color the stars yellow when they are selected */
+  .rating .selected {
+    color: #ffa723;
+  }
+  
+  
+  
+  
+  .textSection .CoursesContainer .save_button{
+  cursor:pointer;
+  border-radius: 5px;
+  transition: opacity 0.1s ease; /* Smooth transition */
+  transition: 0.4s ease;
+  }
+  .textSection .CoursesContainer .save_button:hover{
+  background-color: rgb(191, 191, 255);
+  }
+  .textSection .CoursesContainer .save_button img{
+    width:14px;
+    height: 14px;
+  }
+  
+  
+  .textSection .CoursesContainer .CourseIcon{
+    margin-top:0em;
+    text-align: center;
+  }
+  .textSection .CoursesContainer .CourseIcon img{
+    height:60px;
+    width: 60px;
+  }
+  
+  .rating .rate_value{
+  color:white;
+  font-weight: 400;
+  font-size:2em;
+  }
+  .rating .rating_participants_count{
+  color:white;
+  font-weight: 400;
+  font-size:2em;
+  }
+  
+  .textSection .CoursesContainer h3{
+    margin-top: 0.25em;
+    margin-left: 3px;
+    margin-right: 3px;
+    text-align: center;
+    font-size:2.7em;
+    font-weight: 600;
+    color:white;
+  }
+  
+  .textSection .CoursesContainer .button{
+    padding: 5px 10px;
+    font-size: 1.8em;
+    margin-left: 2.2em;
+    margin-top: 1em;
+  }
+
+
+
 
 
 
@@ -1283,6 +1900,72 @@ in the flex container*/
   margin-left: 0.4em;
 }
 
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1.2rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 0.72rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.6rem;
+  font-weight: 300;
+}
+
+
+
 }
 
 
@@ -1370,7 +2053,7 @@ in the flex container*/
     padding-top:1.5em;
     font-size:3em;
   }
-  button {
+  .button {
     margin-top: 1.7em;
     font-size: 0.5em;
   }
@@ -1402,6 +2085,145 @@ in the flex container*/
     font-size: 3em;
     margin-right: 0em;
   }
+
+
+
+
+
+
+  /*courses section*/
+
+  .card {
+    margin-left: 25%;
+    margin-right: 20px;
+    margin-top: 40px;
+    position: relative;
+    width: 139px;
+    height: 200px;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0 0 transparent;
+    transition: all 0.5s ease-in;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card:hover{
+  box-shadow: 0 0 30px 10px yellow;
+  transition: all 0.4s ease-out;
+  transform:scale(1.1);
+  }
+  
+  .card b {
+    position: absolute;
+    inset: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+  }
+  
+  
+  
+  /*rating stars*/
+  .rating{
+  text-align: center;
+  }
+  
+  .rating > input {
+    display: none; /* Hide the radio buttons */
+  }
+  
+  .rating > label {
+    cursor: pointer;
+    font-size: 3em;
+    color: #666; /* Default color for stars */
+    transition: color 0.2s;
+  }
+  
+  .rating > label:before {
+    content: '★';
+  }
+  
+  /* Color the stars yellow when they are selected */
+  .rating .selected {
+    color: #ffa723;
+  }
+  
+  
+  
+  
+  .textSection .CoursesContainer .save_button{
+  cursor:pointer;
+  border-radius: 5px;
+  transition: opacity 0.1s ease; /* Smooth transition */
+  transition: 0.4s ease;
+  }
+  .textSection .CoursesContainer .save_button:hover{
+  background-color: rgb(191, 191, 255);
+  }
+  .textSection .CoursesContainer .save_button img{
+    width:14px;
+    height: 14px;
+  }
+  
+  
+  .textSection .CoursesContainer .CourseIcon{
+    margin-top:0em;
+    text-align: center;
+  }
+  .textSection .CoursesContainer .CourseIcon img{
+    height:60px;
+    width: 60px;
+  }
+  
+  .rating .rate_value{
+  color:white;
+  font-weight: 400;
+  font-size:2em;
+  }
+  .rating .rating_participants_count{
+  color:white;
+  font-weight: 400;
+  font-size:2em;
+  }
+  
+  .textSection .CoursesContainer h3{
+    margin-top: 0.25em;
+    margin-left: 3px;
+    margin-right: 3px;
+    text-align: center;
+    font-size:2.7em;
+    font-weight: 600;
+    color:white;
+  }
+  
+  .textSection .CoursesContainer .button{
+    padding: 5px 10px;
+    font-size: 1.8em;
+    margin-left: 1.5em;
+    margin-top: 1em;
+  }
+
+
 
 
 
@@ -1492,6 +2314,73 @@ in the flex container*/
   margin-left: 0.4em;
 }
 
+
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 0.9rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+
+
+
 }
 
 
@@ -1578,7 +2467,7 @@ in the flex container*/
     padding-top:1.5em;
     font-size:3.3em;
   }
-  button {
+  .button {
     margin-top: 1.7em;
     font-size: 0.7em;
   }
@@ -1610,6 +2499,145 @@ in the flex container*/
     font-size: 3em;
     margin-right: 0em;
   }
+
+
+
+
+
+
+  /*courses section*/
+
+  .card {
+    margin-right: 20px;
+    margin-top: 40px;
+    position: relative;
+    width: 139px;
+    height: 230px;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0 0 transparent;
+    transition: all 0.5s ease-in;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card:hover{
+  box-shadow: 0 0 30px 10px yellow;
+  transition: all 0.4s ease-out;
+  transform:scale(1.1);
+  }
+  
+  .card b {
+    position: absolute;
+    inset: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+  }
+  
+  
+  
+  /*rating stars*/
+  .rating{
+  text-align: center;
+  }
+  
+  .rating > input {
+    display: none; /* Hide the radio buttons */
+  }
+  
+  .rating > label {
+    cursor: pointer;
+    font-size: 2.7em;
+    color: #666; /* Default color for stars */
+    transition: color 0.2s;
+  }
+  
+  .rating > label:before {
+    content: '★';
+  }
+  
+  /* Color the stars yellow when they are selected */
+  .rating .selected {
+    color: #ffa723;
+  }
+  
+  
+  
+  
+  .textSection .CoursesContainer .save_button{
+  cursor:pointer;
+  border-radius: 5px;
+  transition: opacity 0.1s ease; /* Smooth transition */
+  transition: 0.4s ease;
+  }
+  .textSection .CoursesContainer .save_button:hover{
+  background-color: rgb(191, 191, 255);
+  }
+  .textSection .CoursesContainer .save_button img{
+    width:16px;
+    height: 16px;
+  }
+  
+  
+  .textSection .CoursesContainer .CourseIcon{
+    margin-top:0em;
+    text-align: center;
+  }
+  .textSection .CoursesContainer .CourseIcon img{
+    height:80px;
+    width: 80px;
+  }
+  
+  .rating .rate_value{
+  color:white;
+  font-weight: 400;
+  font-size:1.5em;
+  }
+  .rating .rating_participants_count{
+  color:white;
+  font-weight: 400;
+  font-size:1.5em;
+  }
+  
+  .textSection .CoursesContainer h3{
+    margin-top: 0.25em;
+    margin-left: 3px;
+    margin-right: 3px;
+    text-align: center;
+    font-size:2.7em;
+    font-weight: 600;
+    color:white;
+  }
+  
+  .textSection .CoursesContainer .button{
+    padding: 5px 10px;
+    font-size: 1.8em;
+    margin-left: 1.4em;
+    margin-top: 1em;
+  }
+
+
+
 
 
 
@@ -1702,6 +2730,73 @@ in the flex container*/
 }
 
 
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 0.9rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+
+
+
+
 }
 
 
@@ -1787,7 +2882,7 @@ in the flex container*/
     padding-top:1.5em;
     font-size:3.3em;
   }
-  button {
+  .button {
     margin-top: 1.7em;
     font-size: 0.7em;
   }
@@ -1819,6 +2914,145 @@ in the flex container*/
     font-size: 3em;
     margin-right: 0em;
   }
+
+
+
+
+
+
+  /*courses section*/
+
+  .card {
+    margin-right: 25px;
+    margin-top: 40px;
+    position: relative;
+    width: 150px;
+    height: 230px;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 0 0 transparent;
+    transition: all 0.5s ease-in;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(4deg,blue,yellow);
+  }
+  
+  .card:hover{
+  box-shadow: 0 0 30px 10px yellow;
+  transition: all 0.4s ease-out;
+  transform:scale(1.1);
+  }
+  
+  .card b {
+    position: absolute;
+    inset: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+  }
+  
+  
+  
+  /*rating stars*/
+  .rating{
+  text-align: center;
+  }
+  
+  .rating > input {
+    display: none; /* Hide the radio buttons */
+  }
+  
+  .rating > label {
+    cursor: pointer;
+    font-size: 2.7em;
+    color: #666; /* Default color for stars */
+    transition: color 0.2s;
+  }
+  
+  .rating > label:before {
+    content: '★';
+  }
+  
+  /* Color the stars yellow when they are selected */
+  .rating .selected {
+    color: #ffa723;
+  }
+  
+  
+  
+  
+  .textSection .CoursesContainer .save_button{
+  cursor:pointer;
+  border-radius: 5px;
+  transition: opacity 0.1s ease; /* Smooth transition */
+  transition: 0.4s ease;
+  }
+  .textSection .CoursesContainer .save_button:hover{
+  background-color: rgb(191, 191, 255);
+  }
+  .textSection .CoursesContainer .save_button img{
+    width:16px;
+    height: 16px;
+  }
+  
+  
+  .textSection .CoursesContainer .CourseIcon{
+    margin-top:0em;
+    text-align: center;
+  }
+  .textSection .CoursesContainer .CourseIcon img{
+    height:80px;
+    width: 80px;
+  }
+  
+  .rating .rate_value{
+  color:white;
+  font-weight: 400;
+  font-size:1.5em;
+  }
+  .rating .rating_participants_count{
+  color:white;
+  font-weight: 400;
+  font-size:1.5em;
+  }
+  
+  .textSection .CoursesContainer h3{
+    margin-top: 0.25em;
+    margin-left: 3px;
+    margin-right: 3px;
+    text-align: center;
+    font-size:2.7em;
+    font-weight: 600;
+    color:white;
+  }
+  
+  .textSection .CoursesContainer .button{
+    padding: 5px 10px;
+    font-size: 1.8em;
+    margin-left: 2em;
+    margin-top: 1em;
+  }
+
+
+
 
 
 
@@ -1910,6 +3144,75 @@ in the flex container*/
   margin-left: 0.4em;
 }
 
+
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 0.9rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+
+
+
+
+
 }
 
 
@@ -1993,7 +3296,7 @@ in the flex container*/
     padding-top:1.5em;
     font-size:2.8em;
   }
-  button {
+  .button {
     margin-top: 1.7em;
     font-size: 0.6em;
   }
@@ -2024,6 +3327,145 @@ in the flex container*/
     font-size: 2.8em;
     margin-right: 0em;
   }
+
+
+
+
+
+
+  /*courses section*/
+
+.card {
+  margin-right: 40px;
+  margin-top: 40px;
+  position: relative;
+  width: 169px;
+  height: 265px;
+  background: #f00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 0 transparent;
+  transition: all 0.5s ease-in;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card:hover{
+box-shadow: 0 0 30px 10px yellow;
+transition: all 0.4s ease-out;
+transform:scale(1.1);
+}
+
+.card b {
+  position: absolute;
+  inset: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+
+
+/*rating stars*/
+.rating{
+text-align: center;
+}
+
+.rating > input {
+  display: none; /* Hide the radio buttons */
+}
+
+.rating > label {
+  cursor: pointer;
+  font-size: 2.5em;
+  color: #666; /* Default color for stars */
+  transition: color 0.2s;
+}
+
+.rating > label:before {
+  content: '★';
+}
+
+/* Color the stars yellow when they are selected */
+.rating .selected {
+  color: #ffa723;
+}
+
+
+
+
+.textSection .CoursesContainer .save_button{
+cursor:pointer;
+border-radius: 5px;
+transition: opacity 0.1s ease; /* Smooth transition */
+transition: 0.4s ease;
+}
+.textSection .CoursesContainer .save_button:hover{
+background-color: rgb(191, 191, 255);
+}
+.textSection .CoursesContainer .save_button img{
+  width:20px;
+  height: 20px;
+}
+
+
+.textSection .CoursesContainer .CourseIcon{
+  margin-top:0em;
+  text-align: center;
+}
+.textSection .CoursesContainer .CourseIcon img{
+  height:100px;
+  width: 100px;
+}
+
+.rating .rate_value{
+color:white;
+font-weight: 400;
+font-size:1.5em;
+}
+.rating .rating_participants_count{
+color:white;
+font-weight: 400;
+font-size:1.5em;
+}
+
+.textSection .CoursesContainer h3{
+  margin-top: 0.25em;
+  margin-left: 3px;
+  margin-right: 3px;
+  text-align: center;
+  font-size:2.7em;
+  font-weight: 600;
+  color:white;
+}
+
+.textSection .CoursesContainer .button{
+  padding: 5px 10px;
+  font-size: 1.7em;
+  margin-left: 2em;
+  margin-top: 1em;
+}
+
+
+
 
 
 
@@ -2114,6 +3556,73 @@ in the flex container*/
   margin-left: 0.4em;
 }
 
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1.7rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 1.02rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+
+
+
 }
 
 
@@ -2200,7 +3709,7 @@ in the flex container*/
     padding-top:1.5em;
     font-size:2.1em;
   }
-  button {
+  .button {
     margin-top: 1.7em;
     font-size: 0.6em;
   }
@@ -2232,6 +3741,144 @@ in the flex container*/
     font-size: 2.1em;
     margin-right: 0em;
   }
+
+
+
+
+
+/*courses section*/
+
+.card {
+  margin-right: 40px;
+  margin-top: 40px;
+  position: relative;
+  width: 170px;
+  height: 265px;
+  background: #f00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 0 transparent;
+  transition: all 0.5s ease-in;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card:hover{
+box-shadow: 0 0 30px 10px yellow;
+transition: all 0.4s ease-out;
+transform:scale(1.1);
+}
+
+.card b {
+  position: absolute;
+  inset: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+
+
+/*rating stars*/
+.rating{
+text-align: center;
+}
+
+.rating > input {
+  display: none; /* Hide the radio buttons */
+}
+
+.rating > label {
+  cursor: pointer;
+  font-size: 2em;
+  color: #666; /* Default color for stars */
+  transition: color 0.2s;
+}
+
+.rating > label:before {
+  content: '★';
+}
+
+/* Color the stars yellow when they are selected */
+.rating .selected {
+  color: #ffa723;
+}
+
+
+
+
+.textSection .CoursesContainer .save_button{
+cursor:pointer;
+border-radius: 5px;
+transition: opacity 0.1s ease; /* Smooth transition */
+transition: 0.4s ease;
+}
+.textSection .CoursesContainer .save_button:hover{
+background-color: rgb(191, 191, 255);
+}
+.textSection .CoursesContainer .save_button img{
+  width:20px;
+  height: 20px;
+}
+
+
+.textSection .CoursesContainer .CourseIcon{
+  margin-top:0em;
+  text-align: center;
+}
+.textSection .CoursesContainer .CourseIcon img{
+  height:100px;
+  width: 100px;
+}
+
+.rating .rate_value{
+color:white;
+font-weight: 400;
+font-size:1.3em;
+}
+.rating .rating_participants_count{
+color:white;
+font-weight: 400;
+font-size:1.3em;
+}
+
+.textSection .CoursesContainer h3{
+  margin-top: 0.25em;
+  margin-left: 3px;
+  margin-right: 3px;
+  text-align: center;
+  font-size:1.8em;
+  font-weight: 600;
+  color:white;
+}
+
+.textSection .CoursesContainer .button{
+  padding: 5px 10px;
+  font-size: 1.2em;
+  margin-left: 2.5em;
+  margin-top: 1em;
+}
+
+
+
 
 
 
@@ -2320,6 +3967,74 @@ in the flex container*/
 .info .right-three-icons{
   margin-left: 0.4em;
 }
+
+
+
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1.7rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 1.02rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+
 
 }
 
@@ -2404,7 +4119,7 @@ in the flex container*/
         padding-top:1.5em;
         font-size:2.1em;
       }
-      button {
+      .button {
         margin-top: 1.7em;
         font-size: 0.6em;
       }
@@ -2436,6 +4151,142 @@ in the flex container*/
         font-size: 2.1em;
         margin-right: 0em;
       }
+
+
+
+
+
+/*courses section*/
+
+.card {
+  margin-right: 40px;
+  margin-top: 40px;
+  position: relative;
+  width: 199px;
+  height: 280px;
+  background: #f00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 0 transparent;
+  transition: all 0.5s ease-in;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card:hover{
+box-shadow: 0 0 30px 10px yellow;
+transition: all 0.4s ease-out;
+transform:scale(1.1);
+}
+
+.card b {
+  position: absolute;
+  inset: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+
+
+/*rating stars*/
+.rating{
+text-align: center;
+}
+
+.rating > input {
+  display: none; /* Hide the radio buttons */
+}
+
+.rating > label {
+  cursor: pointer;
+  font-size: 2em;
+  color: #666; /* Default color for stars */
+  transition: color 0.2s;
+}
+
+.rating > label:before {
+  content: '★';
+}
+
+/* Color the stars yellow when they are selected */
+.rating .selected {
+  color: #ffa723;
+}
+
+
+
+
+.textSection .CoursesContainer .save_button{
+cursor:pointer;
+border-radius: 5px;
+transition: opacity 0.1s ease; /* Smooth transition */
+transition: 0.4s ease;
+}
+.textSection .CoursesContainer .save_button:hover{
+background-color: rgb(191, 191, 255);
+}
+.textSection .CoursesContainer .save_button img{
+  width:20px;
+  height: 20px;
+}
+
+
+.textSection .CoursesContainer .CourseIcon{
+  margin-top:0em;
+  text-align: center;
+}
+.textSection .CoursesContainer .CourseIcon img{
+  height:100px;
+  width: 100px;
+}
+
+.rating .rate_value{
+color:white;
+font-weight: 400;
+font-size:1.3em;
+}
+.rating .rating_participants_count{
+color:white;
+font-weight: 400;
+font-size:1.3em;
+}
+
+.textSection .CoursesContainer h3{
+  margin-top: 0.25em;
+  margin-left: 3px;
+  margin-right: 3px;
+  text-align: center;
+  font-size:1.8em;
+  font-weight: 600;
+  color:white;
+}
+
+.textSection .CoursesContainer .button{
+  font-size: 1.2em;
+  margin-left: 3.1em;
+  margin-top: 1em;
+}
+      
+
 
 
 
@@ -2527,6 +4378,74 @@ in the flex container*/
 .info .right-three-icons{
   margin-left: 0.4em;
 }
+
+
+
+
+
+/*footer section*/
+.footer {
+  position: relative;
+  width: 100%;
+  background: #3586ff;
+  min-height: 100px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social-icon,
+.menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+  list-style: none;
+}
+
+.social-icon__link {
+  font-size: 1.7rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+.social-icon__link:hover {
+  transform: translateY(-10px);
+}
+
+.menu__link {
+  font-size: 1.02rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+  text-decoration: none;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover {
+  opacity: 1;
+}
+
+.footer p {
+  color: #fff;
+  margin: 15px 0 10px 0;
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+
+
 
 }
 
@@ -2613,7 +4532,7 @@ in the flex container*/
         padding-top:1.5em;
         font-size:1.7em;
       }
-      button {
+      .button {
         margin-top: 1.7em;
         font-size: 0.6em;
       }
@@ -2645,6 +4564,137 @@ in the flex container*/
         font-size: 1.7em;
         margin-right: 0em;
       }
+
+
+
+
+
+
+/*courses section*/
+
+.card {
+  margin-right: 40px;
+  margin-top: 40px;
+  position: relative;
+  width: 250px;
+  height: 360px;
+  background: #f00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 0 transparent;
+  transition: all 0.5s ease-in;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card:hover{
+box-shadow: 0 0 30px 10px yellow;
+transition: all 0.4s ease-out;
+transform:scale(1.1);
+}
+
+.card b {
+  position: absolute;
+  inset: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+
+
+/*rating stars*/
+.rating{
+text-align: center;
+}
+
+.rating > input {
+  display: none; /* Hide the radio buttons */
+}
+
+.rating > label {
+  cursor: pointer;
+  font-size: 1.7em;
+  color: #666; /* Default color for stars */
+  transition: color 0.2s;
+}
+
+.rating > label:before {
+  content: '★';
+}
+
+/* Color the stars yellow when they are selected */
+.rating .selected {
+  color: #ffa723;
+}
+
+
+
+
+.textSection .CoursesContainer .save_button{
+cursor:pointer;
+border-radius: 5px;
+transition: opacity 0.1s ease; /* Smooth transition */
+transition: 0.4s ease;
+}
+.textSection .CoursesContainer .save_button:hover{
+background-color: rgb(191, 191, 255);
+}
+
+
+.textSection .CoursesContainer .CourseIcon{
+  margin-top:0em;
+  text-align: center;
+}
+.textSection .CoursesContainer .CourseIcon img{
+  height:128px;
+  width: 128px;
+}
+
+.rating .rate_value{
+color:white;
+font-weight: 400;
+}
+.rating .rating_participants_count{
+color:white;font-weight: 400;
+}
+
+.textSection .CoursesContainer h3{
+  margin-top: 0.25em;
+  margin-left: 3px;
+  margin-right: 3px;
+  text-align: center;
+  font-size:1.8em;
+  font-weight: 600;
+  color:white;
+}
+
+.textSection .CoursesContainer .button{
+  font-size: 1.2em;
+  margin-left: 3.2em;
+  margin-top: 1em;
+}
+
+
+
 
 
 
@@ -2731,6 +4781,9 @@ in the flex container*/
 
 }
 
+
+
+
 @media (min-width: 819px) and (max-width: 940px){
     body{
         font-size: 12px;
@@ -2806,7 +4859,7 @@ in the flex container*/
     padding-top:1.5em;
     font-size:1.3em;
   }
-  button {
+  .button {
     margin-top: 1.5em;
     font-size: 0.6em;
   }
@@ -2836,6 +4889,136 @@ in the flex container*/
   font-size: 1.5em;
   margin-right: 0em;
 }
+
+
+
+
+
+
+/*courses section*/
+
+.card {
+  margin-right: 40px;
+  margin-top: 40px;
+  position: relative;
+  width: 280px;
+  height: 400px;
+  background: #f00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 0 transparent;
+  transition: all 0.5s ease-in;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card:hover{
+box-shadow: 0 0 30px 10px yellow;
+transition: all 0.4s ease-out;
+transform:scale(1.1);
+}
+
+.card b {
+  position: absolute;
+  inset: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+
+
+/*rating stars*/
+.rating{
+text-align: center;
+}
+
+.rating > input {
+  display: none; /* Hide the radio buttons */
+}
+
+.rating > label {
+  cursor: pointer;
+  font-size: 1.7em;
+  color: #666; /* Default color for stars */
+  transition: color 0.2s;
+}
+
+.rating > label:before {
+  content: '★';
+}
+
+/* Color the stars yellow when they are selected */
+.rating .selected {
+  color: #ffa723;
+}
+
+
+
+
+.textSection .CoursesContainer .save_button{
+cursor:pointer;
+border-radius: 5px;
+transition: opacity 0.1s ease; /* Smooth transition */
+transition: 0.4s ease;
+}
+.textSection .CoursesContainer .save_button:hover{
+background-color: rgb(191, 191, 255);
+}
+
+
+.textSection .CoursesContainer .CourseIcon{
+  margin-top:0em;
+  text-align: center;
+}
+.textSection .CoursesContainer .CourseIcon img{
+  height:144px;
+  width: 144px;
+}
+
+.rating .rate_value{
+color:white;
+font-weight: 400;
+}
+.rating .rating_participants_count{
+color:white;font-weight: 400;
+}
+
+.textSection .CoursesContainer h3{
+  margin-top: 0.25em;
+  margin-left: 3px;
+  margin-right: 3px;
+  text-align: center;
+  font-size:1.8em;
+  font-weight: 600;
+  color:white;
+}
+
+.textSection .CoursesContainer .button{
+  font-size: 1.2em;
+  margin-left: 3.7em;
+  margin-top: 1em;
+}
+
+
 
 
 
@@ -2920,8 +5103,9 @@ in the flex container*/
 .info .right-three-icons{
   margin-left: 0.4em;
 }
-
 }
+
+
 
 @media (min-width: 940px) and (max-width: 1006px){
     body{
@@ -2959,10 +5143,11 @@ in the flex container*/
     padding-top:1.5em;
     font-size:1.3em;
   }
-  button {
+  .button {
     margin-top: 1.5em;
     font-size: 0.6em;
   }
+  
   .example-2 .icon-content a {
     width: 2.8em;
     height: 2.8em;
@@ -2992,6 +5177,141 @@ in the flex container*/
   font-size: 1.5em;
   margin-right: 0em;
 }
+
+
+
+
+
+
+
+
+
+/*courses section*/
+
+.card {
+  margin-right: 40px;
+  margin-top: 40px;
+  position: relative;
+  width: 280px;
+  height: 400px;
+  background: #f00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 0 transparent;
+  transition: all 0.5s ease-in;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(4deg,blue,yellow);
+}
+
+.card:hover{
+box-shadow: 0 0 30px 10px yellow;
+transition: all 0.4s ease-out;
+transform:scale(1.1);
+}
+
+.card b {
+  position: absolute;
+  inset: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+
+
+/*rating stars*/
+.rating{
+text-align: center;
+}
+
+.rating > input {
+  display: none; /* Hide the radio buttons */
+}
+
+.rating > label {
+  cursor: pointer;
+  font-size: 1.7em;
+  color: #666; /* Default color for stars */
+  transition: color 0.2s;
+}
+
+.rating > label:before {
+  content: '★';
+}
+
+/* Color the stars yellow when they are selected */
+.rating .selected {
+  color: #ffa723;
+}
+
+
+
+
+.textSection .CoursesContainer .save_button{
+cursor:pointer;
+border-radius: 5px;
+transition: opacity 0.1s ease; /* Smooth transition */
+transition: 0.4s ease;
+}
+.textSection .CoursesContainer .save_button:hover{
+background-color: rgb(191, 191, 255);
+}
+
+
+.textSection .CoursesContainer .CourseIcon{
+  margin-top:0em;
+  text-align: center;
+}
+.textSection .CoursesContainer .CourseIcon img{
+  height:144px;
+  width: 144px;
+}
+
+.rating .rate_value{
+color:white;
+font-weight: 400;
+}
+.rating .rating_participants_count{
+color:white;font-weight: 400;
+}
+
+.textSection .CoursesContainer h3{
+  margin-top: 0.25em;
+  margin-left: 3px;
+  margin-right: 3px;
+  text-align: center;
+  font-size:1.8em;
+  font-weight: 600;
+  color:white;
+}
+
+.textSection .CoursesContainer .button{
+  font-size: 1.2em;
+  margin-left: 2.2em;
+  margin-top: 1em;
+}
+
+
+
+
 
 
 

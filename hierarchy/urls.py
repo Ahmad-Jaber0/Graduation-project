@@ -16,7 +16,9 @@ urlpatterns = [
     path('fetch_topics/', views.fetch_topics, name='fetch_topics'),
     path('profile/',views.profile,name='profile'),
     path('update_profile/', views.update_profile, name='update_profile'),
-
-
+    path('EnterQuiz/',views.dynamic_quiz,name='EnterQuiz'),
+    path('save_quiz/', views.save_quiz, name='save_quiz'),
+    path('quiz/',views.quiz),
+    path('check_answer/', views.check_answer, name='check_answer'),
 
 ] 

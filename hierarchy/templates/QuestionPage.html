@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/QuestionPage.css' %}">
+
+    <title>LoomingCode</title>
+    <!--<title>CodingLife</title>-->
+</head>
+<body>
+  <header>
+    <a href="{% url 'home'%}" class="logo">LoomingCode</a>
+
+    <nav class="navigation" id="nav-middle">
+        <a href="{% url 'home'%}">Home</a>
+        <a href="{% url 'home' %}#courses">Courses</a>
+        <a href="{% url 'home' %}#services">Services</a>
+
+        <a href="{% url 'home' %}#aboute">About</a>
+        <a href="{% url 'home' %}#contact">Contact</a>
+    </nav>
+
+    <nav class = "navigation" id = "header-icons">
+        <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
+        <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+    </nav>
+
+</header>
+
+    <main class="content-section">
+      <div class="container">
+        <h1>Question 1 <span style="float: right;">(2 Marks)</span></h1>
+        <div class="question">
+          {{ quiz.html_content | safe }}        
+        </div>
+        <input type="hidden" name="course_id" value="{{ quiz.course.id }}">
+        <input type="hidden" name="quiz_id" value="{{ quiz.id }}">
+        <input type="hidden" id="selected_answer" name="selected_answer" value="">
+        <div class="button-container">
+          <button class="skip">Skip</button>
+          <button class="submit-answer">Submit Answer</button>
+        </div>
+      </div>
+    </main>
+  
+    <section class="footerbody">
+      <footer class="footer">
+        <ul class="social-icon">
+          <li class="social-icon__item"><a class="social-icon__link" href="#">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a></li>
+          <li class="social-icon__item"><a class="social-icon__link" href="#">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a></li>
+          <li class="social-icon__item"><a class="social-icon__link" href="#">
+              <ion-icon name="logo-linkedin"></ion-icon>
+            </a></li>
+          <li class="social-icon__item"><a class="social-icon__link" href="#">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a></li>
+        </ul>
+        <ul class="menu">
+          <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
+          <li class="menu__item"><a class="menu__link" href="#">About</a></li>
+          <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
+          <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
+          <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
+        </ul>
+        <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
+      </footer>
+      <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </section>
+  
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          document.querySelector('.submit-answer').addEventListener('click', function() {
+              const selectedAnswers = {};
+    
+              // Select all radio buttons within the question container
+              const questionContainers = document.querySelectorAll('.question-container');
+              questionContainers.forEach(function(container) {
+                  const questionId = container.dataset.questionId;
+                  const selectedRadioButton = container.querySelector('input[type="radio"]:checked');
+                  if (selectedRadioButton) {
+                      selectedAnswers[questionId] = selectedRadioButton.value;
+                  } else {
+                      selectedAnswers[questionId] = null;
+                  }
+              });
+    
+              // Now selectedAnswers object contains user's answers for each question
+              const formData = new FormData();
+              formData.append('course_id', '{{ quiz.course.id }}');
+              formData.append('quiz_id', '{{ quiz.id }}');
+              formData.append('selected_answers', JSON.stringify(selectedAnswers));
+    
+              // Get CSRF token from cookies
+              const csrftoken = getCookie('csrftoken');
+    
+              fetch('{% url "check_answer" %}', {
+                  method: 'POST',
+                  body: formData,
+                  headers: {
+                      'X-CSRFToken': csrftoken
+                  }
+              })
+              .then(response => response.json())
+              .then(data => {
+                  // Handle the response data here
+                  console.log(data);
+              })
+              .catch(error => {
+                  console.error('Error:', error);
+              });
+          });
+      });
+    
+      // Function to get CSRF token from cookies
+      function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  if (cookie.startsWith(name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+    </script>
+    
+    
+  
+  
+  
+  
+  
+  </body>
+  </html>

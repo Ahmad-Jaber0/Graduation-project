@@ -17,7 +17,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-
+    image = models.ImageField(default='default.jpg')
 
 class Course(models.Model):
     name = models.CharField(max_length=255)
@@ -71,3 +71,29 @@ def update_topic_ranks(sender, instance, **kwargs):
             # Increment the rank of existing topics with rank greater than the new rank
             Topic.objects.filter(chapter=instance.chapter, rank__gt=instance.rank).update(rank=models.F('rank') + 1)
 
+class QuizQuestion(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    question_number = models.IntegerField()
+    question_mark = models.IntegerField()
+    topics = models.ManyToManyField('Topic')
+    sections_count = models.IntegerField()
+    html_content = models.TextField(null=True)  # Field to store HTML content of the question
+
+    def __str__(self):
+        return f"Question {self.question_number} - Course: {self.course.name}"
+
+class QuestionSection(models.Model):
+    question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE, related_name='sections')
+    section_number = models.IntegerField()
+    correct_answer_text = models.CharField(null=True,max_length=255)  # Field to store the text of the correct answer
+
+    def __str__(self):
+        return f"Section {self.section_number} of Question {self.question.question_number}"
+
+class UserAnswer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    section = models.ForeignKey(QuestionSection, on_delete=models.CASCADE)
+    is_correct = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.user.username}'s answer for Section {self.section.section_number} - Correct: {self.is_correct}"

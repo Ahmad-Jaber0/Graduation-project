@@ -1,27 +1,34 @@
 from django.contrib import admin
-
 from .models import *
 
-
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username','first_name','last_name','email','role','id']
+    list_display = ['username', 'first_name', 'last_name', 'email', 'role','image','id']
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['name','date','instructor','id']
+    list_display = ['name', 'date', 'instructor', 'id']
 
 class ChapterAdmin(admin.ModelAdmin):
-    list_display = ['course','name','id']
+    list_display = ['course', 'name', 'id']
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ['topic_name','chapter','course','code_html','rank','id']
+    list_display = ['topic_name', 'chapter', 'course', 'code_html', 'rank', 'id']
 
 
+class QuizQuestionAdmin(admin.ModelAdmin):
+    list_display = ['course', 'question_number', 'question_mark', 'display_topics', 'sections_count', 'html_content', 'id']
+
+    def display_topics(self, obj):
+        return ", ".join([topic.topic_name for topic in obj.topics.all()])
 
 
-admin.site.register(User,UserAdmin)
-admin.site.register(Course,CourseAdmin)
-admin.site.register(Chapter,ChapterAdmin)
-admin.site.register(Topic,TopicAdmin)
+class QuestionSectionAdmin(admin.ModelAdmin):
+    list_display = ['question', 'section_number', 'correct_answer_text', 'id']
 
 
+admin.site.register(User, UserAdmin)
+admin.site.register(Course, CourseAdmin)
+admin.site.register(Chapter, ChapterAdmin)
+admin.site.register(Topic, TopicAdmin)
+admin.site.register(QuizQuestion, QuizQuestionAdmin)
+admin.site.register(QuestionSection, QuestionSectionAdmin)
 

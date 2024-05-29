@@ -4,14 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AWS Profile</title>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}"> 
     <script src="{% static 'JS/profile.js' %}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-circle-progress/1.2.2/circle-progress.min.js"></script>
 </head>
+<header>
+    <a href="{% url 'home'%}" class="logo">LoomingCode</a>
+
+    <nav class="navigation" id="nav-middle">
+        <a href="{% url 'home'%}">Home</a>
+        <a href="{% url 'home' %}#courses">Courses</a>
+        <a href="{% url 'home' %}#services">Services</a>
+
+        <a href="{% url 'home' %}#aboute">About</a>
+        <a href="{% url 'home' %}#contact">Contact</a>
+    </nav>
+
+    <nav class = "navigation" id = "header-icons">
+        <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
+        <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+    </nav>
+
+</header>
 <body>
+    <main class="content-section">
     <div class="container">
         <nav>
             <div class="logo">
@@ -21,13 +40,16 @@
             </div>
             <ul>
                 <hr>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#profile">My Profile</a></li>
-                <li><a href="#courses">Enrolled Courses</a></li>
+                <li><a href="#dashboard"><span class="side_bar_icon"><i class="fas fa-chart-line"></i></span> Dashboard</a></li>
+                <li><a href="#profile"><span class="side_bar_icon"><i class="fas fa-user"></i></span> My Profile</a></li>
+                <li><a href="#courses"><span class="side_bar_icon"><i class="fas fa-check-circle"></i></span> Enrolled Courses</a></li>
+                <li><a href="#Saved-Courses"><span class="side_bar_icon"><i class="fas fa-bookmark"></i></span> Saved Courses</a></li>
+                {% if request.user.role == "Manager" %}
+                <li><a href="#moderator-permissions"><span class="side_bar_icon"><i class="fas fa-user-shield"></i></span> Moderator Permissions</a></li>
+                {%endif%}
                 <hr>
-                <li><a href="#settings">Settings</a></li>
-                <li><a href="#logout">Logout</a></li>
-
+                <li><a href="#settings"><span class="side_bar_icon"><i class="fas fa-cog"></i></span> Settings</a></li>
+                <li><a href="{% url 'logout_page'%}"><span class="side_bar_icon"><i class="fas fa-sign-out-alt"></i></span> Logout</a></li>
             </ul>
         </nav>
 
@@ -38,6 +60,10 @@
                 <hr>
                 <div class="enrolled-courses">
                     <span>Enrolled Courses</span>
+                    <span class="count">0</span>
+                </div>
+                <div class="enrolled-courses">
+                    <span>Active Courses</span>
                     <span class="count">0</span>
                 </div>
                 <div class="enrolled-courses">
@@ -79,6 +105,10 @@
                     <div class="label">Bio</div>
                     <div class="label">________</div>
                 </div>
+                <div class="label-line">
+                    <div class="label">Role</div>
+                    <div class="label Bio">{{request.user.role}}</div>
+                </div>
             </section>
 
 
@@ -93,71 +123,220 @@
                     </div>
                     <div class="text">HTML & CSS</div>
                     </div>
-                    <div class="card js">
-                        <div class="circle">
-                        <div class="bar"></div>
-                        <div class="box"><span></span></div>
-                    </div>
-                    <div class="text">JavaScript</div>
-                    </div>
-                    <div class="card react">
-                        <div class="circle">
-                        <div class="bar"></div>
-                        <div class="box"><span></span></div>
-                    </div>
-                    <div class="text">React JS</div>
-                    </div>
-                </div>
+                    <div class="wrapper">
+                        <div class="card">
+                            <div class="circle">
+                            <div class="bar"></div>
+                            <div class="box"><span></span></div>
+                        </div>
+                        <div class="text">HTML & CSS</div>
+                        </div>
+
             </section>
+
+            <section id="Saved-Courses" class="hidden">
+                <h2>Saved Courses</h2>
+                <hr>
+                <div class = "CoursesContainer">
+                    <div class="card">
+                        <b>    
+                            <div class = "CourseIcon">
+                                <img src="images/cicon.png" loading = "lazy">
+                            </div> 
+                            
+                            <div class="rating">
+                                <input value="5" name="rate" id="star5" type="radio">
+                                <label title="text" for="star5"></label>
+                                <input value="4" name="rate" id="star4" type="radio">
+                                <label title="text" for="star4"></label>
+                                <input value="3" name="rate" id="star3" type="radio" checked="">
+                                <label title="text" for="star3"></label>
+                                <input value="2" name="rate" id="star2" type="radio">
+                                <label title="text" for="star2"></label>
+                                <input value="1" name="rate" id="star1" type="radio">
+                                <label title="text" for="star1"></label>
+                                &nbsp
+                                <span class = "rate_value" id = "rate_value">5.00</span>
+                                <span class = "rating_participants_count">(<span id = "rating_participants_count">12</span>)</span>
+                            </div>
+                            <h3>C course</h3>
+                            <button id = "cButton" class = "button" >OPEN COURSE</button>
+                        </b>
+                    </div>
+                
+                      <div class = "CoursesContainer">
+                          <div class="card">
+                              <b>    
+                                <div class = "CourseIcon">
+                                    <img src="images/cicon.png" loading = "lazy">
+                                </div> 
+                                
+                                <div class="rating">
+                                    <input value="5" name="rate" id="star5" type="radio">
+                                    <label title="text" for="star5"></label>
+                                    <input value="4" name="rate" id="star4" type="radio">
+                                    <label title="text" for="star4"></label>
+                                    <input value="3" name="rate" id="star3" type="radio" checked="">
+                                    <label title="text" for="star3"></label>
+                                    <input value="2" name="rate" id="star2" type="radio">
+                                    <label title="text" for="star2"></label>
+                                    <input value="1" name="rate" id="star1" type="radio">
+                                    <label title="text" for="star1"></label>
+                                    &nbsp
+                                    <span class = "rate_value" id = "rate_value">5.00</span>
+                                    <span class = "rating_participants_count">(<span id = "rating_participants_count">12</span>)</span>
+                                </div>
+                                <h3>C course</h3>
+                                <button id = "cButton" class = "button" >OPEN COURSE</button>
+                            </b>
+                        </div>
+  
+                         <div class = "CoursesContainer">
+                    <div class="card">
+                        <b>    
+                            <div class = "CourseIcon">
+                                <img src="images/cicon.png" loading = "lazy">
+                            </div> 
+                            
+                            <div class="rating">
+                                <input value="5" name="rate" id="star5" type="radio">
+                                <label title="text" for="star5"></label>
+                                <input value="4" name="rate" id="star4" type="radio">
+                                <label title="text" for="star4"></label>
+                                <input value="3" name="rate" id="star3" type="radio" checked="">
+                                <label title="text" for="star3"></label>
+                                <input value="2" name="rate" id="star2" type="radio">
+                                <label title="text" for="star2"></label>
+                                <input value="1" name="rate" id="star1" type="radio">
+                                <label title="text" for="star1"></label>
+                                &nbsp;
+                                <span class = "rate_value" id = "rate_value">5.00</span>
+                                <span class = "rating_participants_count">(<span id = "rating_participants_count">12</span>)</span>
+                            </div>
+                            <h3>C course</h3>
+                            <button id = "cButton" class = "button" >OPEN COURSE</button>
+                        </b>
+                    </div>
+            </section>
+    
+                <section id="moderator-permissions" class="hidden">
+                    <h2>Moderator Permissions</h2>
+                    <hr>
+                    <div class="label-line">
+                        <div class="label"><i class="fas fa-plus-circle"></i> &nbsp; Add a Course Page</div>
+                        <div class="label"><a href="{% url 'form'%}"><button type="button">Add</button></a></div>
+                        
+                    </div>
+                    <hr>
+    
+                    <div class="label-line">
+                        <div class="label"><i class="fas fa-edit"></i> &nbsp; Edit a Course Page</div>
+                        <div class="label"><button>Edit</button></div>
+                    </div>
+                    <hr>
+    
+                    <div class="label-line">
+                        <div class="label"><i class="fas fa-trash-alt"></i> &nbsp; Delete a Course Page</div>
+                        <div class="label"><button>Delete</button></div>
+                    </div>
+                    <hr>
+    
+                </section>
 
 
             <section id="settings" class="hidden">
                 <h2>My Profile</h2>
                 <hr>
-                <form action="{% url 'update_profile' %}" method="post">
+                <div class="logo">
+                    <h1>Profile Picture</h1>
+                    <br>
+                    <div class="profile-img-container">
+                        <div class="profile-img">
+                            <img src="{% if request.user.image %}{{ request.user.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" alt="Profile Image">
+                        </div>
+                        <button type="button" class="edit-btn" id="upload-button">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    
+                </div>
+                <form id="profile-form" action="{% url 'update_profile' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="label-line">
                         <div class="label">First Name</div>
-                        <input type="text" class="label" name="first_name" value="{{ request.user.first_name }}">
-                    </div>
-                    
-                    <div class="label-line">
                         <div class="label">Last Name</div>
-                        <input type="text" class="label" name="last_name" value="{{ request.user.last_name }}">
                     </div>
-            
+                    <div class="label-line">
+                        <input type="text" class="TextInput" name="first_name" value="{{ request.user.first_name }}">
+                        <input type="text" class="TextInput" name="last_name" value="{{ request.user.last_name }}">
+                    </div>
                     <div class="label-line">
                         <div class="label">Username</div>
-                        <input type="text" class="label" value="{{ request.user.username }}" disabled>
-                    </div>
-            
-                    <div class="label-line">
                         <div class="label">Email</div>
-                        <input type="text" class="label" name="email" value="{{ request.user.email }}">
                     </div>
-            
+                    <div class="label-line">
+                        <input type="text" class="TextInput" value="{{ request.user.username }}" disabled>
+                        <input type="text" class="TextInput" name="email" value="{{ request.user.email }}">
+                    </div>
                     <div class="label-line">
                         <div class="label">Phone Number</div>
-                        <input type="text" class="label" name="phone_number" value="">
+                        <input type="text" class="TextInput" name="phone_number" value="">
                     </div>
-            
                     <div class="label-line">
                         <div class="label">Bio</div>
-                        <input type="text" class="label" name="bio" value="">
+                        <textarea class="TextInput" name="bio"></textarea>
                     </div>
-            
                     <div class="label-line">
                         <div class="label">Change Password</div>
-                        <input type="password" class="label" name="password">
+                        <input type="password" class="TextInput" name="password">
                     </div>
                     <button type="submit">Save</button>
                     <button type="button" onclick="window.location.href='#'">Cancel</button>
+                    <input type="file" id="image-upload" name="image" accept="image/*" style="display: none;">
                 </form>
-            </section>
+                
 
-            
-        </div>
-    </div>
+            </section>
+                </main>
+
+    <section class="footerbody">
+        <footer class="footer">
+        <ul class="social-icon">
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                <ion-icon name="logo-facebook"></ion-icon>
+            </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                <ion-icon name="logo-twitter"></ion-icon>
+            </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                <ion-icon name="logo-linkedin"></ion-icon>
+            </a></li>
+            <li class="social-icon__item"><a class="social-icon__link" href="#">
+                <ion-icon name="logo-instagram"></ion-icon>
+            </a></li>
+        </ul>
+        <ul class="menu">
+            <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
+            <li class="menu__item"><a class="menu__link" href="#">About</a></li>
+            <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
+            <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
+            <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
+        </ul>
+        <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
+        </footer>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </section>
+    <script>
+        document.getElementById('upload-button').addEventListener('click', function() {
+            document.getElementById('image-upload').click();
+        });
+    
+        document.getElementById('image-upload').addEventListener('change', function() {
+            var form = document.getElementById('profile-form');
+            form.submit();
+        });
+    </script>
 </body>
 
 </html>
