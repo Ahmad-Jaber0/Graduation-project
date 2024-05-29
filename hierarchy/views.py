@@ -13,6 +13,7 @@ from django.db.models import Min
 
 def home(request):
     course=Course.objects.all()
+    print('hi')
     return render(request, 'home.html',{'courses':course})
 
 @login_required
