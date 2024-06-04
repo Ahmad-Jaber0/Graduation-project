@@ -45,13 +45,21 @@ def update_profile(request):
     return redirect('profile')
 
 
-@login_required
 def course(request, course_name):
-    smallest_rank = Topic.objects.filter(course__name=course_name).aggregate(min_rank=Min('rank'))['min_rank']
-    
-    topic = Topic.objects.filter(course__name=course_name, rank=smallest_rank).first()  
-    
-    return redirect('course_detail', course_name=course_name, topic_name=topic.topic_name)
+    # Get the course object
+    course = get_object_or_404(Course, name=course_name)
+
+    # Get the first chapter in this course ordered by name
+    first_chapter = Chapter.objects.filter(
+        course=course).order_by('name').first()
+
+    if first_chapter:
+        # Get the first topic in the first chapter ordered by rank
+        first_topic = Topic.objects.filter(
+            chapter=first_chapter).order_by('rank').first()
+
+        if first_topic:
+            return redirect('course_detail', course_name=course_name, topic_name=first_topic.topic_name)
 
 
 def SignupPage(request):
@@ -100,13 +108,6 @@ def login(request):
 def LogoutPage(request):
     logout(request)
     return redirect('home')   
-
-
-def dynamic_quiz(request):
-    course = Course.objects.get(name='C++') 
-    topics = Topic.objects.filter(course=course)
-
-    return render(request, 'EnterQuiz.html', {'topics': topics})
 
 def dynamic_page(request):
 
@@ -210,11 +211,19 @@ def course_detail(request, course_name, topic_name):
 
     return render(request, 'base1.html', {'course1': course_name, 'chapters': chapters, 'topics': topics, 'top': topic, 'previous_top': previous_topic, 'next_top': next_topic})
 
+
+def dynamic_quiz(request):
+    course = Course.objects.get(name='Python') 
+    topics = Topic.objects.filter(course=course)
+
+    return render(request, 'EnterQuiz.html', {'topics': topics})
+
+
 @csrf_exempt
 def save_quiz(request):
     if request.method == "POST":
         try:
-            course_name = 'C++'
+            course_name = 'Python'
             question_number = request.POST.get('question_number')
             question_mark = request.POST.get('question_mark')
             question_topics = request.POST.getlist('question_topics')
@@ -248,13 +257,18 @@ def save_quiz(request):
                 topic = Topic.objects.get(id=topic_id)
                 quiz_question.topics.add(topic)
 
-            # Create QuestionSection instances
+            # Create QuestionSection instances and save options
             for i in range(question_sections_count):
                 question_section = QuestionSection.objects.create(
                     question=quiz_question,
                     section_number=i + 1,
                     correct_answer_text=correct_answers_list[i]  # Correct field name
                 )
+
+                # Get the options for this section
+                options = request.POST.getlist(f'question_section_{i + 1}_options')
+                for option_text in options:
+                    QuestionOption.objects.create(section=question_section, option_text=option_text, option_id=f'{i + 1}{options.index(option_text) + 1}')
 
             return redirect('EnterQuiz')
 
@@ -263,36 +277,44 @@ def save_quiz(request):
             return redirect('EnterQuiz')  # Redirect to an appropriate error page or display an error message
     else:
         return redirect('EnterQuiz')
-    
+
 
 def quiz(request):
-    quiz=QuizQuestion.objects.get(id=20)
+    quiz=QuizQuestion.objects.get(id=28)
 
     return render(request,'QuestionPage.html',{'quiz':quiz})
 
 
+
+@csrf_exempt
 def check_answer(request):
     if request.method == 'POST':
         course_id = request.POST.get('course_id')
         quiz_id = request.POST.get('quiz_id')
+        selected_answers = json.loads(request.POST.get('selected_answers', '{}'))
 
         try:
             quiz = QuizQuestion.objects.get(id=quiz_id, course_id=course_id)
-            sections = quiz.sections.filter(question_id=quiz_id)
+            sections = QuestionSection.objects.filter(question=quiz)
 
-            # Process only the sections belonging to the current quiz
+            results = {}
             for section in sections:
-                section_id = section.id
-                user_answer = request.POST.get(f'user_answer_{section_id}')
-                # Here you can compare user's answer with correct answer and process accordingly
-                # For example:
-                print(section_id)
-                print(user_answer)
+                section_id = str(section.section_number)
+                user_answer = selected_answers.get(section_id)
                 is_correct = user_answer == section.correct_answer_text
-                # You can then store the result or perform any further processing
+                results[section_id] = {
+                    'user_answer': user_answer,
+                    'is_correct': is_correct,
+                }
+                # Save the user's answer
+                UserAnswer.objects.create(
+                    user=request.user,
+                    section=section,
+                    is_correct=is_correct
+                )
 
-            print(is_correct)
-            return JsonResponse({'status': 'Success'})
+            print(results)
+            return JsonResponse({'status': 'Success', 'results': results})
         except QuizQuestion.DoesNotExist:
             return JsonResponse({'error': 'Question not found'}, status=404)
 

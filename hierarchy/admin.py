@@ -25,10 +25,19 @@ class QuestionSectionAdmin(admin.ModelAdmin):
     list_display = ['question', 'section_number', 'correct_answer_text', 'id']
 
 
+class UserAnswerAdmin(admin.ModelAdmin):
+    list_display=['user','section','is_correct']
+
+
+class QuestionOptionAdmin(admin.ModelAdmin):
+    list_display=['section','option_text','option_id']
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Chapter, ChapterAdmin)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(QuizQuestion, QuizQuestionAdmin)
 admin.site.register(QuestionSection, QuestionSectionAdmin)
+admin.site.register(UserAnswer,UserAnswerAdmin)
+admin.site.register(QuestionOption,QuestionOptionAdmin)
 

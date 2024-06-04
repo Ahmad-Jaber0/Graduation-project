@@ -68,146 +68,100 @@
     </form>
 
     <script>
-        let qustionNumber;
+        let questionNumber;
         let questionMark;
-        let QuestionTopics = [];
+        let questionTopics = [];
         let questionSectionsCount;
-        let answerOptions;
 
-        var editor = document.getElementById('editor');
-        editor.focus();
         const editorElement = document.getElementById('editor');
-        const generateHTMLButton = document.getElementById('generate-html');
+        const quizForm = document.getElementById('quizForm');
 
         function nextQuestion() {
             const editorContent = editorElement.innerHTML.trim();
             if (editorContent) {
-                const safeHTML = editorContent;
                 const input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'html_content';
-                input.value = safeHTML;
-                document.getElementById('quizForm').appendChild(input);
-                document.getElementById('quizForm').submit();
+                input.value = editorContent;
+                quizForm.appendChild(input);
+
+                // Create inputs for each section's options
+                for (let i = 0; i < questionSectionsCount; i++) {
+                    const options = document.querySelectorAll(`input[name="answer-variable${questionNumber}${i + 1}"]`);
+                    options.forEach(option => {
+                        const optionInput = document.createElement('input');
+                        optionInput.type = 'hidden';
+                        optionInput.name = `question_section_${i + 1}_options`;
+                        optionInput.value = option.nextElementSibling.innerText.trim();
+                        quizForm.appendChild(optionInput);
+                    });
+                }
+
+                quizForm.submit();
             } else {
                 alert('Please enter content.');
             }
         }
 
         function func(button) {
-            event.stopPropagation();
-
             const elementType = button.getAttribute('data-element');
-            let elementHtml;
-
             const selection = window.getSelection();
             const range = selection.getRangeAt(0);
-            const parentElement = range.startContainer.parentElement;
 
             switch (elementType) {
-                case 'code block':
-                    elementHtml = '<div class="outer-container"><i class="fas fa-code code-icon"></i><div class="code-box"><div class="code-content"><br></div></div></div><br>';
-                    break;
-
-                case 'code-word':
-                    elementHtml = '<code class="code-words">&nbsp;<br></code><br>';
-                    break;
-
-                case 'horizental-line':
-                    elementHtml = '<hr><br>';
-                    break;
-
                 case 'enter-question':
-                    qustionNumber = document.getElementById("QuestionNumber").value;
+                    questionNumber = document.getElementById("QuestionNumber").value;
                     questionMark = document.getElementById("QuestionMark").value;
-                    QuestionTopics = document.getElementById("QuestionTopics").selectedOptions;
+                    questionTopics = Array.from(document.getElementById("QuestionTopics").selectedOptions).map(option => option.value);
                     questionSectionsCount = document.getElementById("QuestionSectionsCount").value;
 
-                    var options = document.getElementById("QuestionTopics").options;
-                    var selected = false;
-                    for (let i = 0; i < options.length; i++) {
-                        if (options[i].selected == true) {
-                            selected = true;
-                            break;
-                        }
+                    if (!questionNumber || !questionMark || questionTopics.length === 0 || !questionSectionsCount) {
+                        alert("Please fill in all fields.");
+                        return;
                     }
 
-                    if (qustionNumber == "" || questionMark == "" || selected == false || questionSectionsCount == "")
-                        alert("please fill the empty fields");
-                    else {
-                        enterQuestion();
-
-                        let s = '<div class="text">';
-                        s += 'Q' + qustionNumber + ": " + '</div><br><br>';
-                        editorElement.innerHTML = s;
-
-                        let q_seq_num = 0;
-                        let ans_options_num = 0;
-                        for (let i = 1; i <= questionSectionsCount; i++) {
-                            q_seq_num = prompt("Enter question section number");
-                            s += q_seq_num + '. <br>';
-                            editorElement.innerHTML = s;
-                            ans_options_num = prompt("Enter number of answer options");
-
-                            let name = 'answer-variable' + qustionNumber + i;
-                            let checkBoxHtml = "";
-                            for (let j = 1; j <= ans_options_num; j++) {
-                                let id = '' + qustionNumber;
-                                id += i;
-                                id += j;
-
-                                checkBoxHtml += '<div><input type="radio" name="';
-                                checkBoxHtml += name;
-                                checkBoxHtml += '" id="';
-                                checkBoxHtml += id;
-                                checkBoxHtml += '" onclick="setCorrectAnswer(' + i + ', this.id)"><label contenteditable>&nbsp;&nbsp;&nbsp;<br></div>';
-                            }
-                            checkBoxHtml += '<br>';
-                            s += checkBoxHtml;
-                            editorElement.innerHTML = s;
-                        }
-                        editorElement.innerHTML = s;
-                    }
+                    enterQuestion();
+                    addQuestionToEditor();
                     break;
             }
+        }
 
-            if (elementHtml) {
-                const newNode = document.createElement('div');
-                newNode.innerHTML = elementHtml;
-                range.insertNode(newNode);
-                range.setStartAfter(newNode);
-                selection.removeAllRanges();
-                selection.addRange(range);
+        function enterQuestion() {
+            document.querySelector('label[for="QuestionNumber"]').style.display = 'none';
+            document.getElementById("QuestionNumber").style.display = "none";
+            document.querySelector('label[for="QuestionMark"]').style.display = 'none';
+            document.getElementById("QuestionMark").style.display = "none";
+            document.querySelector('label[for="QuestionTopics"]').style.display = 'none';
+            document.getElementById("QuestionTopics").style.display = "none";
+            document.querySelector('label[for="QuestionSectionsCount"]').style.display = 'none';
+            document.getElementById("QuestionSectionsCount").style.display = "none";
+            document.getElementById("enterQuestion-button").style.display = "none";
+            document.querySelector('span').style.display = 'none';
+            document.getElementById("CANCEL-button").style.display = "none";
+        }
+
+        function addQuestionToEditor() {
+            let content = `<div class="text">Q${questionNumber}: </div><br><br>`;
+            for (let i = 1; i <= questionSectionsCount; i++) {
+                const sectionNumber = prompt("Enter question section number");
+                content += `${sectionNumber}. <br>`;
+                const ansOptionsNum = prompt("Enter number of answer options");
+                const name = `answer-variable${questionNumber}${i}`;
+                let checkBoxHtml = "";
+                for (let j = 1; j <= ansOptionsNum; j++) {
+                    const id = `${questionNumber}${i}${j}`;
+                    checkBoxHtml += `<div><input type="radio" name="${name}" id="${id}" onclick="setCorrectAnswer(${i}, this.id)"><label contenteditable>&nbsp;&nbsp;&nbsp;<br></div>`;
+                }
+                checkBoxHtml += '<br>';
+                content += checkBoxHtml;
             }
+            editorElement.innerHTML = content;
         }
 
         function setCorrectAnswer(sectionIndex, id) {
             let correctAnswers = document.getElementById('correctAnswers').value.split(',');
             correctAnswers[sectionIndex - 1] = id;
             document.getElementById('correctAnswers').value = correctAnswers.join(',');
-        }
-
-        function enterQuestion() {
-            var label = document.querySelector('label[for="QuestionNumber"]');
-            label.style.display = 'none';
-            document.getElementById("QuestionNumber").style.display = "none";
-
-            var label = document.querySelector('label[for="QuestionMark"]');
-            label.style.display = 'none';
-            document.getElementById("QuestionMark").style.display = "none";
-
-            var label = document.querySelector('label[for="QuestionTopics"]');
-            label.style.display = 'none';
-            document.getElementById("QuestionTopics").style.display = "none";
-
-            var label = document.querySelector('label[for="QuestionSectionsCount"]');
-            label.style.display = 'none';
-            document.getElementById("QuestionSectionsCount").style.display = "none";
-
-            document.getElementById("enterQuestion-button").style.display = "none";
-            var span = document.querySelector('span');
-            span.style.display = 'none';
-            document.getElementById("CANCEL-button").style.display = "none";
         }
 
         function closeMessage() {

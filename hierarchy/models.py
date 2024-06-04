@@ -90,6 +90,12 @@ class QuestionSection(models.Model):
     def __str__(self):
         return f"Section {self.section_number} of Question {self.question.question_number}"
 
+
+class QuestionOption(models.Model):
+    section = models.ForeignKey(QuestionSection, on_delete=models.CASCADE)
+    option_text = models.TextField()  # Store the actual option content
+    option_id = models.CharField(max_length=255)  # Reference ID used in the frontend
+
 class UserAnswer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     section = models.ForeignKey(QuestionSection, on_delete=models.CASCADE)
