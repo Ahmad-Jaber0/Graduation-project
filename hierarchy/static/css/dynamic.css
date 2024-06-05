@@ -369,3 +369,7 @@ tr:nth-child(odd) {
 tr:nth-child(even) {
   background-color: #38444d;
 }
+
+.text a{
+  color: black;
+}

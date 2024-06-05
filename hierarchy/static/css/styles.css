@@ -76,15 +76,15 @@ header {
 }
 
 .sidebar {
-  flex: 1 1 0;
-  /*height: 100%;*/
-  width: auto;
+  flex: 0 0 300px;
+  width: 300px;
+
   overflow-y: auto;
   max-width: 300px;
   padding: 2rem 1rem;
   background-color: #15202B;
   padding-top: 7rem;
-  z-index: 4; /* Ensure sidebar appears above other elements */
+  z-index: 4;
 }
 
 .content {
@@ -108,7 +108,7 @@ header {
   border-radius: 99px;
   background-color: #424242;
   cursor: pointer;
-  z-index: 4; /* Ensure app appears above other elements */
+  z-index: 4; 
 }
 
 .menu-zoom {
@@ -186,6 +186,8 @@ header {
   text-decoration: none;
   transition: 0.2s linear;
   font-size: 1.18rem;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .sidebar .menu .menu-item:hover{
@@ -257,7 +259,7 @@ header {
   margin-top: 20px;
   margin-bottom: 20px;
   position: relative;
-  z-index: 3; /* Ensure the code box appears below the navbar */
+  z-index: 3; 
 }
 
 .code-icon {
@@ -285,11 +287,11 @@ header {
 
 /* code tag */
 .code-words{
-  color: #FF9999;
+  color: blue;
   padding-left: 4px;
   padding-right: 4px;
-  font-size: 1.4rem;
-  background-color: #313D47;
+  font-size: 1.3rem;
+  background-color: rgb(222, 222, 222);
 }
 
 /* Heading 1 */
@@ -340,11 +342,6 @@ hr {
   font-size: 1.5rem;
 }
 
-.note .code-words{
-  color: #DC143C;
-  background-color: transparent;
-  font-size: 1.5rem;
-}
 
 .note .heading-two{
   border-color: rgba(255, 0, 0, 0.849);
@@ -354,9 +351,6 @@ hr {
   color:black;
 }
 
-.note .code-box {
-    background-color: white;
-}
 
 
 /* Table Tag */
@@ -444,6 +438,10 @@ main figcaption {
   margin: 0 auto; 
   font-size: 0.9em;
   color: rgb(0, 166, 255);
+}
+
+.note a{
+  color: black;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------

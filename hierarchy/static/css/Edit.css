@@ -64,78 +64,78 @@ header {
 /*------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------Main Content-------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------*/
-.content-section {
-  padding: 120px 100px 60px 100px;
-  min-height: calc(100vh - 180px); 
-  background-color: rgb(8, 27, 43);
-}
-
-/* Stylesheet for the form */
-.form-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: whitesmoke;
-    border-radius: 8px;
-}
-
-.form-group {
-    margin-bottom: 1em;
-}
-
-label {
-    display: block;
-    margin-bottom: 0.6em;
-    font-weight: bold;
-    color: rgb(18, 164, 189);
-}
-
-select,
-input[type="text"]{
-    width: calc(100% - 10px); /* Adjusted width for better appearance */
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    outline: none;
-}
-
-input[type="number"] {
-    width: calc(100% - 10px); /* Adjusted width for better appearance */
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    outline: none;
-    -webkit-appearance: none; /* Remove default appearance on WebKit-based browsers */
-}
-
-/* Adjust the appearance of the number input on different browsers */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.hidden {
-    display: none;
-}
-
-.submit-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: rgb(18, 164, 189);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.submit-button:disabled {
-    background-color: rgb(139, 139, 139);
-}
+    .content-section {
+        padding: 120px 100px 60px 100px;
+        min-height: calc(100vh - 180px); 
+        background-color: rgb(8, 27, 43);
+    }
+    
+    .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: whitesmoke;
+        border-radius: 8px;
+    }
+    
+    .form-group {
+        margin-bottom: 1em;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 0.6em;
+        font-weight: bold;
+        color: rgb(18, 164, 189);
+    }
+    
+    select,
+    input[type="text"] {
+        width: calc(100% - 10px); 
+        padding: 10px;
+        font-size: 1em;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        outline: none;
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+    .submit-button {
+        display: block;
+        width: 48%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: rgb(18, 164, 189);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 1%;
+    }
+    
+    .submit-button:disabled {
+        background-color: rgb(139, 139, 139);
+    }
+    
+    input[type="checkbox"] {
+        margin-top: 1rem;
+        padding: 1rem;
+        font-size: 1em;
+    }
+    
+    hr {
+        border: 0.1rem solid rgb(70, 186, 206);
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+    }
 
 /*------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------Footer----------------------------------------------------------

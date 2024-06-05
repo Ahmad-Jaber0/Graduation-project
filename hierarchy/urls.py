@@ -18,7 +18,11 @@ path('<str:course_name>/<path:topic_name>/', views.course_detail, name='course_d
     path('update_profile/', views.update_profile, name='update_profile'),
     path('EnterQuiz/',views.dynamic_quiz,name='EnterQuiz'),
     path('save_quiz/', views.save_quiz, name='save_quiz'),
-    path('quiz/',views.quiz),
+    path('quiz/<str:course_name>/', views.quiz,name='quiz'),
     path('check_answer/', views.check_answer, name='check_answer'),
+    path('form-edit/',views.Edit_course,name='edit'),
+    path('update/', views.update_course_chapter_topic, name='update_course_chapter_topic'),
+    path('form-Del/',views.Del_course,name='Del'),
+    path('delete/', views.delete_course_chapter_topic, name='delete_course_chapter_topic'),
 
 ] 

@@ -80,6 +80,13 @@
             <span class="tooltiptext">horizental line</span>
         </div>
 
+        <div class="tooltip">
+            <button class="toolbarelements" data-element="hyper-link" onclick="func(this)"><img src="{% static 'images/link.png' %}"></button>
+            <span class="tooltiptext">Add hyper Link</span>
+        </div>
+
+
+
     </div>
 
     <div id= "editor" class= "editor"  contenteditable></div>
@@ -87,7 +94,9 @@
     <div class="savebtn-cancelbtn-container">
         <button style="margin-left: 10px;" class="beautiful-button" id="generate-html">Done</button>
     </div>
-
+    {% if topic %}
+    <div id="topic-code" data-code-html="{{ topic.code_html|escapejs }}"></div>
+{% endif %}
     <script>
         var editor = document.getElementById('editor');
         editor.focus();
@@ -203,8 +212,20 @@
                 break;
 
             case 'horizental-line':
-                elementHtml = '<hr><br>';
+                elementHtml = '<div class="text"><br><hr><br></div>';
                 break;
+
+            case 'hyper-link':
+                const text = prompt('Enter the text:');
+                const link = prompt('Enter the URL:');
+
+                if (text && link) {
+                    elementHtml = `<div class="text"><a href="${link}" target="_blank">${text}</a><br></div>`;
+                } else {
+                    alert('Please enter both text and URL.');
+
+                }
+                break;  
 
         }
             
@@ -282,12 +303,14 @@
             });
 
 
-            <!--edit--> 
-            
-            parseHTMLButton.addEventListener('click', () => {
-                    editorElement.innerHTML = htmlCode;
-                
-            });   
+            document.addEventListener('DOMContentLoaded', function() {
+                const editorElement = document.getElementById('editor');
+                const topicCodeElement = document.getElementById('topic-code');
+    
+                if (topicCodeElement) {
+                    editorElement.innerHTML = topicCodeElement.getAttribute('data-code-html');
+                }
+            });
         </script>
     </body>
     </html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Edit.css' %}">
+    <title>Delete Page Form</title>
+</head>
+<body>
+    <header>
+        <a href="{% url 'home'%}" class="logo">LoomingCode</a>
+        <nav class="navigation" id="nav-middle">
+            <a href="{% url 'home'%}">Home</a>
+            <a href="{% url 'home' %}#courses">Courses</a>
+            <a href="{% url 'home' %}#services">Services</a>
+            <a href="{% url 'home' %}#aboute">About</a>
+            <a href="{% url 'home' %}#contact">Contact</a>
+        </nav>
+        <nav class="navigation" id="header-icons">
+            <a href="{% url 'profile'%}" id="profile"><i class="fa-regular fa-user fa-lg"></i></a>
+            <a href="{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+        </nav>
+    </header>
+
+    <main class="content-section">
+        <form class="form-container" id="myForm" method="post" action="{% url 'delete_course_chapter_topic' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="Course-Name">Course Name:</label>
+                <select id="Course-Name" name="Course-Name" required>
+                    <option value="" disabled selected>Select an option</option>
+                    {% for course in courses %}
+                        <option value="{{ course.name }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+                <label>
+                    <input type="checkbox" id="DeleteEntireCourse" name="DeleteEntireCourse"> Delete Entire Course
+                </label>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="Chapter-Number">Chapter Number:</label>
+                <select id="Chapter-Number" name="Chapter-Number" required disabled>
+                    <option value="" disabled selected>Select an option</option>
+                </select>
+                <label>
+                    <input type="checkbox" id="DeleteEntireChapter" name="DeleteEntireChapter"> Delete Entire Chapter
+                </label>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="topicName">Topic Name:</label>
+                <select id="topicName" name="topicName" required disabled>
+                    <option value="" disabled selected>Select an option</option>
+                </select>
+            </div>
+
+            <div class="button-container">
+                <button type="submit" class="submit-button" id="saveExitButton" name="saveExitButton" disabled>Delete & Exit</button>
+                <a href="{% url 'profile' %}"><button type="button" class="submit-button" id="cancelButton">Cancel</button></a>
+            </div>
+        </form>
+        
+        <script>
+          const courseSelect = document.getElementById('Course-Name');
+          const chapterSelect = document.getElementById('Chapter-Number');
+          const topicSelect = document.getElementById('topicName');
+          const deleteCourseCheckbox = document.getElementById('DeleteEntireCourse');
+          const deleteChapterCheckbox = document.getElementById('DeleteEntireChapter');
+          const saveExitButton = document.getElementById('saveExitButton');
+      
+          courseSelect.addEventListener('change', () => {
+              if (!deleteCourseCheckbox.checked) {
+                  chapterSelect.disabled = false;
+                  fetchChapters(courseSelect.value);
+              }
+              updateButtonState();
+          });
+      
+          chapterSelect.addEventListener('change', () => {
+              if (!deleteChapterCheckbox.checked) {
+                  topicSelect.disabled = false;
+                  fetchTopics(courseSelect.value, chapterSelect.value);
+              }
+              updateButtonState();
+          });
+      
+          topicSelect.addEventListener('change', updateButtonState);
+      
+          deleteCourseCheckbox.addEventListener('change', () => {
+              chapterSelect.disabled = deleteCourseCheckbox.checked;
+              topicSelect.disabled = deleteCourseCheckbox.checked || deleteChapterCheckbox.checked;
+              if (deleteCourseCheckbox.checked) {
+                  deleteChapterCheckbox.checked = false;
+                  deleteChapterCheckbox.disabled = true;
+              } else {
+                  deleteChapterCheckbox.disabled = false;
+              }
+              updateButtonState();
+          });
+      
+          deleteChapterCheckbox.addEventListener('change', () => {
+              topicSelect.disabled = deleteChapterCheckbox.checked;
+              updateButtonState();
+          });
+      
+          function updateButtonState() {
+              const isCourseSelected = courseSelect.value !== "";
+              const isChapterSelected = chapterSelect.value !== "";
+              const isTopicSelected = topicSelect.value !== "";
+              const isDeleteCourseChecked = deleteCourseCheckbox.checked;
+              const isDeleteChapterChecked = deleteChapterCheckbox.checked;
+      
+              if ((isCourseSelected && isChapterSelected && isTopicSelected) || 
+                  (isCourseSelected && isDeleteCourseChecked) ||
+                  (isCourseSelected && isChapterSelected && isDeleteChapterChecked)) {
+                  saveExitButton.disabled = false;
+              } else {
+                  saveExitButton.disabled = true;
+              }
+          }
+      
+          function fetchChapters(courseName) {
+              fetch(`/fetch_chapters/?course=${encodeURIComponent(courseName)}`)
+                  .then(response => response.json())
+                  .then(data => {
+                      chapterSelect.innerHTML = '<option value="" disabled selected>Select an option</option>';
+                      data.chapters.forEach(chapter => {
+                          const option = document.createElement('option');
+                          option.value = chapter;
+                          option.textContent = chapter;
+                          chapterSelect.appendChild(option);
+                      });
+                      chapterSelect.removeAttribute("disabled");
+                      updateButtonState();
+                  })
+                  .catch(error => {
+                      console.error('Error fetching chapters:', error);
+                      alert("An error occurred while fetching chapters.");
+                  });
+          }
+      
+          function fetchTopics(courseName, chapterName) {
+              fetch(`/fetch_topics/?course=${encodeURIComponent(courseName)}&chapter=${encodeURIComponent(chapterName)}`)
+                  .then(response => response.json())
+                  .then(data => {
+                      topicSelect.innerHTML = '<option value="" disabled selected>Select an option</option>';
+                      data.topics.forEach(topic => {
+                          const option = document.createElement('option');
+                          option.value = topic.id;
+                          option.textContent = topic.topic_name;
+                          topicSelect.appendChild(option);
+                      });
+                      topicSelect.removeAttribute("disabled");
+                      updateButtonState();
+                  })
+                  .catch(error => {
+                      console.error('Error fetching topics:', error);
+                      alert("An error occurred while fetching topics.");
+                  });
+          }
+      
+          document.getElementById("cancelButton").addEventListener("click", function() {
+              window.location.href = "{% url 'profile' %}";
+          });
+      </script>
+      
+    </main>
+
+    <section class="footerbody">
+        <footer class="footer">
+            <ul class="social-icon">
+                <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-facebook"></ion-icon>
+                </a></li>
+                <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-twitter"></ion-icon>
+                </a></li>
+                <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                </a></li>
+                <li class="social-icon__item"><a class="social-icon__link" href="#">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                </a></li>
+            </ul>
+            <ul class="menu">
+                <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
+                <li class="menu__item"><a class="menu__link" href="#">About</a></li>
+                <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
+                <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
+                <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
+            </ul>
+            <p>&copy;2024 LoomingCode | All Rights Reserved</p>
+        </footer>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </section>
+</body>
+</html>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import auth, messages
-from django.http import HttpResponse,HttpResponseForbidden,JsonResponse
+from django.http import HttpResponse,HttpResponseForbidden,JsonResponse, HttpResponseBadRequest
 from django.contrib.auth import authenticate,login,logout,get_user_model,update_session_auth_hash
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,6 @@ from django.db.models import Min
 
 def home(request):
     course=Course.objects.all()
-    print('hi')
     return render(request, 'home.html',{'courses':course})
 
 @login_required
@@ -160,13 +159,13 @@ def Dynamic(request):
     return render(request, 'Form.html',{'course':course,'chapter':chapter}) 
 
 def fetch_chapters(request):
-    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    if request.method == "GET" :
         course_name = request.GET.get("course")
+        print(course_name)
         if course_name:
             chapters = Chapter.objects.filter(course__name=course_name).values_list("name", flat=True)
             return JsonResponse({"chapters": list(chapters)})
     return JsonResponse({"error": "Invalid request"})
-
 
 def fetch_topics(request):
     course_name = request.GET.get('course')
@@ -176,6 +175,89 @@ def fetch_topics(request):
     topics = Topic.objects.filter(course__name=course_name, chapter__name=chapter_number).values('id', 'topic_name')
 
     return JsonResponse({'topics': list(topics)})
+
+
+def Edit_course(request):
+    course=Course.objects.all()
+    return render(request,'Edit.html',{'courses':course})
+
+def Del_course(request):
+    course=Course.objects.all()
+    return render(request,'Delete.html',{'courses':course})
+
+
+def delete_course_chapter_topic(request):
+    if request.method == 'POST':
+        course_name = request.POST.get('Course-Name')
+        chapter_name = request.POST.get('Chapter-Number')
+        topic_id = request.POST.get('topicName')
+
+        if request.POST.get('DeleteEntireCourse'):
+            course = get_object_or_404(Course, name=course_name)
+            course.delete()
+        elif request.POST.get('DeleteEntireChapter'):
+            chapter = get_object_or_404(Chapter, course__name=course_name, name=chapter_name)
+            chapter.delete()
+        else:
+            topic = get_object_or_404(Topic, id=topic_id, chapter__name=chapter_name, chapter__course__name=course_name)
+            topic.delete()
+
+        return redirect('profile')
+
+
+def update_course_chapter_topic(request):
+    if request.method == 'POST':
+        print(request.POST)  # Add this line to see the entire POST data
+        course_name = request.POST.get('Course-Name')
+        chapter_name = request.POST.get('Chapter-Number')
+        topic_id = request.POST.get('topicName')
+
+        print("Course Name:", course_name)
+        print("Chapter Name:", chapter_name)
+        print("Topic ID:", topic_id)
+        print(request.POST.get('courseNewName'))
+
+        if not course_name or not chapter_name or not topic_id:
+            return HttpResponseBadRequest('Missing required fields')
+
+        course = get_object_or_404(Course, name=course_name)
+        chapter = get_object_or_404(Chapter, course=course, name=chapter_name)
+        topic = get_object_or_404(Topic, id=topic_id, chapter=chapter)
+
+        if request.POST.get('courseNewName'):
+            new_course_name = request.POST.get('New-Course-Name')
+            print('courseNewName:', new_course_name)
+            course.name = new_course_name
+            course.save()
+            print("Course name updated to:", new_course_name)
+
+        if request.POST.get('chapterNewNumber'):
+            new_chapter_name = request.POST.get('New-Chapter-Number')
+            print('chapterNewNumber:', new_chapter_name)
+            chapter.name = new_chapter_name
+            chapter.save()
+            print("Chapter name updated to:", new_chapter_name)
+
+        if request.POST.get('topicNewName'):
+            new_topic_name = request.POST.get('New-Topic-Name')
+            print('topicNewName:', new_topic_name)
+            topic.topic_name = new_topic_name
+            topic.save()
+            print("Topic name updated to:", new_topic_name)
+
+        if request.POST.get('topicNewOrder'):
+            new_topic_order = request.POST.get('New-Topic-Order')
+            print('topicNewOrder:', new_topic_order)
+            topic.rank = new_topic_order
+            topic.save()
+            print("Topic order updated to:", new_topic_order)
+
+        print(request.POST.get('saveEditButton'))
+        
+        if request.POST.get('saveEditButton'):
+            return render(request, 'dynamic.html', {'topic': topic})
+
+        return JsonResponse({'status': 'success', 'message': 'Update successful'})
 
 
 def update_code_html(request, topic_id):
@@ -212,11 +294,18 @@ def course_detail(request, course_name, topic_name):
     return render(request, 'base1.html', {'course1': course_name, 'chapters': chapters, 'topics': topics, 'top': topic, 'previous_top': previous_topic, 'next_top': next_topic})
 
 
-def dynamic_quiz(request):
-    course = Course.objects.get(name='Python') 
-    topics = Topic.objects.filter(course=course)
+import sys
 
-    return render(request, 'EnterQuiz.html', {'topics': topics})
+def dynamic_quiz(request, course_name):
+    try:
+        course = Course.objects.get(name=course_name)
+        topics = Topic.objects.filter(course=course)
+        return render(request, 'EnterQuiz.html', {'topics': topics, 'course_name': course_name})
+    except Course.DoesNotExist:
+        return render(request, 'EnterQuiz.html', {'error': f'Course "{course_name}" does not exist.'})
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}", file=sys.stderr)
+        return render(request, 'EnterQuiz.html', {'error': 'An unexpected error occurred.'})
 
 
 @csrf_exempt
@@ -279,10 +368,11 @@ def save_quiz(request):
         return redirect('EnterQuiz')
 
 
-def quiz(request):
-    quiz=QuizQuestion.objects.get(id=28)
+def quiz(request, course_name):
+    course = get_object_or_404(Course, name=course_name)
+    quiz_question = QuizQuestion.objects.filter(course=course).order_by('question_number').first()
 
-    return render(request,'QuestionPage.html',{'quiz':quiz})
+    return render (request, 'QuestionPage.html', {'quiz':quiz_question})
 
 
 
@@ -319,3 +409,5 @@ def check_answer(request):
             return JsonResponse({'error': 'Question not found'}, status=404)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
