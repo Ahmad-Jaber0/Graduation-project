@@ -26,7 +26,7 @@ class QuestionSectionAdmin(admin.ModelAdmin):
 
 
 class UserAnswerAdmin(admin.ModelAdmin):
-    list_display=['user','section','is_correct']
+    list_display=['user','section','is_correct','id']
 
 
 class QuestionOptionAdmin(admin.ModelAdmin):

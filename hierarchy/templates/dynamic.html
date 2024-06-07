@@ -95,7 +95,7 @@
         <button style="margin-left: 10px;" class="beautiful-button" id="generate-html">Done</button>
     </div>
     {% if topic %}
-    <div id="topic-code" data-code-html="{{ topic.code_html|escapejs }}"></div>
+    <div id="topic-code" data-code-html="{{ topic.code_html| safe  }}"></div>
 {% endif %}
     <script>
         var editor = document.getElementById('editor');

@@ -70,13 +70,14 @@
             </div>
 
             <div class="button-container">
-                <button type="submit" class="submit-button" id="saveExitButton" name="saveExitButton" disabled>Save & Exit</button>
-                <button type="submit" class="submit-button" id="saveEditButton" name="saveEditButton" disabled>Save & Edit Topic Content</button>
+                <button type="submit" class="submit-button" id="saveExitButton" disabled>Save & Exit</button>
+                <button type="submit" class="submit-button" id="saveEditButton" disabled>Save & Edit Topic Content</button>
             </div>
             <div class="button-container">
                 <button type="submit" class="submit-button" id="editContentButton" disabled>Edit topic content</button>
                 <a href="{% url 'profile' %}"><button type="button" class="submit-button" id="cancelButton">Cancel</button></a>
             </div>
+            <input type="hidden" name="button_clicked" id="buttonClicked" value="">
         </form>
         
         <script>
@@ -210,7 +211,7 @@
             });
 
             document.getElementById("cancelButton").addEventListener("click", function() {
-                window.location.href = "{% url 'profile' %}";
+                window.location.href = "index.html";
             });
 
             document.getElementById("Course-Name").addEventListener("change", function() {
@@ -258,49 +259,40 @@
                     });
             });
 
-            <script>
-    document.getElementById("myForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-        const submitter = event.submitter;
-
-        if (submitter && submitter.name) {
-            formData.append(submitter.name, submitter.value);
-        }
-
-        fetch("{% url 'update_course_chapter_topic' %}", {
-            method: "POST",
-            body: formData,
-            headers: {
-                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
-            }
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-                return;
-            }
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                alert(data.message);
-                window.location.href = "{% url 'profile' %}";
-            } else {
-                alert('An error occurred: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Form submission error:', error);
-            alert("An error occurred while submitting the form.");
-        });
-    });
-</script>
-
+            document.getElementById("myForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+            
+                const formData = new FormData(this);
+            
+                fetch("{% url 'update_course_chapter_topic' %}", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+                    }
+                })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                        return;
+                    }
+                    if (response.ok && response.headers.get('content-type').includes('text/html')) {
+                        return response.text().then(html => {
+                            document.open();
+                            document.write(html);
+                            document.close();
+                        });
+                    }
+                    return response.json().then(data => {
+                        console.log("Form submission response:", data);
+                    });
+                })
+                .catch(error => {
+                    console.error('Form submission error:', error);
+                    alert("An error occurred while submitting the form.");
+                });
+            });
+        </script>
     </main>
     <footer class="footer">
         <div class="footer-content">

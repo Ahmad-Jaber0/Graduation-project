@@ -10,6 +10,8 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from django.db.models import Min
+from django.urls import reverse
+import numpy as np
 
 def home(request):
     course=Course.objects.all()
@@ -207,57 +209,59 @@ def delete_course_chapter_topic(request):
 
 def update_course_chapter_topic(request):
     if request.method == 'POST':
-        print(request.POST)  # Add this line to see the entire POST data
+        button_clicked = request.POST.get('button_clicked')
+
+        print(button_clicked)
+        print('jjj')
+        
+
         course_name = request.POST.get('Course-Name')
         chapter_name = request.POST.get('Chapter-Number')
         topic_id = request.POST.get('topicName')
-
-        print("Course Name:", course_name)
-        print("Chapter Name:", chapter_name)
-        print("Topic ID:", topic_id)
-        print(request.POST.get('courseNewName'))
-
-        if not course_name or not chapter_name or not topic_id:
-            return HttpResponseBadRequest('Missing required fields')
-
-        course = get_object_or_404(Course, name=course_name)
-        chapter = get_object_or_404(Chapter, course=course, name=chapter_name)
-        topic = get_object_or_404(Topic, id=topic_id, chapter=chapter)
-
-        if request.POST.get('courseNewName'):
-            new_course_name = request.POST.get('New-Course-Name')
-            print('courseNewName:', new_course_name)
-            course.name = new_course_name
-            course.save()
-            print("Course name updated to:", new_course_name)
-
-        if request.POST.get('chapterNewNumber'):
-            new_chapter_name = request.POST.get('New-Chapter-Number')
-            print('chapterNewNumber:', new_chapter_name)
-            chapter.name = new_chapter_name
-            chapter.save()
-            print("Chapter name updated to:", new_chapter_name)
-
-        if request.POST.get('topicNewName'):
-            new_topic_name = request.POST.get('New-Topic-Name')
-            print('topicNewName:', new_topic_name)
-            topic.topic_name = new_topic_name
-            topic.save()
-            print("Topic name updated to:", new_topic_name)
-
-        if request.POST.get('topicNewOrder'):
-            new_topic_order = request.POST.get('New-Topic-Order')
-            print('topicNewOrder:', new_topic_order)
-            topic.rank = new_topic_order
-            topic.save()
-            print("Topic order updated to:", new_topic_order)
-
-        print(request.POST.get('saveEditButton'))
         
-        if request.POST.get('saveEditButton'):
+
+        if not (course_name and chapter_name and topic_id):
+            return JsonResponse({'error': 'Missing required fields'}, status=400)
+
+        try:
+            course = get_object_or_404(Course, name=course_name)
+            chapter = get_object_or_404(Chapter, course=course, name=chapter_name)
+            topic = get_object_or_404(Topic, id=topic_id, chapter=chapter)
             return render(request, 'dynamic.html', {'topic': topic})
 
-        return JsonResponse({'status': 'success', 'message': 'Update successful'})
+            if request.POST.get('courseNewName'):
+                new_course_name = request.POST.get('New-Course-Name')
+                course.name = new_course_name
+                course.save()
+
+            if request.POST.get('chapterNewNumber'):
+                new_chapter_name = request.POST.get('New-Chapter-Number')
+                chapter.name = new_chapter_name
+                chapter.save()
+
+            if request.POST.get('topicNewName'):
+                new_topic_name = request.POST.get('New-Topic-Name')
+                topic.topic_name = new_topic_name
+                topic.save()
+
+            if request.POST.get('topicNewOrder'):
+                new_topic_order = request.POST.get('New-Topic-Order')
+                topic.rank = new_topic_order
+                topic.save()
+
+            if button_clicked == 'saveEditButton':
+                print('jojo')
+                return render(request, 'dynamic.html', {'topic': topic})
+
+            return redirect('profile')
+
+        except Exception as e:
+            return JsonResponse({'error': 'An error occurred while processing the form submission'}, status=500)
+
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
+
+
 
 
 def update_code_html(request, topic_id):
@@ -296,13 +300,13 @@ def course_detail(request, course_name, topic_name):
 
 import sys
 
-def dynamic_quiz(request, course_name):
+def dynamic_quiz(request):
     try:
-        course = Course.objects.get(name=course_name)
+        course = Course.objects.get(name='Python')
         topics = Topic.objects.filter(course=course)
-        return render(request, 'EnterQuiz.html', {'topics': topics, 'course_name': course_name})
+        return render(request, 'EnterQuiz.html', {'topics': topics, 'course_name': 'Python'})
     except Course.DoesNotExist:
-        return render(request, 'EnterQuiz.html', {'error': f'Course "{course_name}" does not exist.'})
+        return render(request, 'EnterQuiz.html', {'error': f'Course "{'Python'}" does not exist.'})
     except Exception as e:
         print(f"An unexpected error occurred: {e}", file=sys.stderr)
         return render(request, 'EnterQuiz.html', {'error': 'An unexpected error occurred.'})
@@ -368,18 +372,26 @@ def save_quiz(request):
         return redirect('EnterQuiz')
 
 
-def quiz(request, course_name):
-    course = get_object_or_404(Course, name=course_name)
-    quiz_question = QuizQuestion.objects.filter(course=course).order_by('question_number').first()
+def quiz(request):
+    course = get_object_or_404(Course, name='Python')
+    current_question_number = int(request.GET.get('question_number', 1))
+    quiz_question = QuizQuestion.objects.filter(course=course, question_number=current_question_number).first()
+    next_question_number = current_question_number + 1
+    next_question = QuizQuestion.objects.filter(course=course, question_number=next_question_number).first()
 
-    return render (request, 'QuestionPage.html', {'quiz':quiz_question})
-
-
+    if quiz_question:
+        return render(request, 'QuestionPage.html', {
+            'quiz': quiz_question,
+            'next_question_number': next_question_number if next_question else None
+        })
+    else:
+        return redirect('course', course_name=course.name)
 
 @csrf_exempt
 def check_answer(request):
     if request.method == 'POST':
         course_id = request.POST.get('course_id')
+        course = get_object_or_404(Course, id=course_id)
         quiz_id = request.POST.get('quiz_id')
         selected_answers = json.loads(request.POST.get('selected_answers', '{}'))
 
@@ -396,18 +408,101 @@ def check_answer(request):
                     'user_answer': user_answer,
                     'is_correct': is_correct,
                 }
-                # Save the user's answer
                 UserAnswer.objects.create(
                     user=request.user,
                     section=section,
                     is_correct=is_correct
                 )
 
-            print(results)
-            return JsonResponse({'status': 'Success', 'results': results})
+            next_question_number = quiz.question_number + 1
+            next_question = QuizQuestion.objects.filter(course_id=course_id, question_number=next_question_number).first()
+
+            if next_question:
+                next_question_url = request.build_absolute_uri(
+                    reverse('quiz') + f'?question_number={next_question_number}')
+                return JsonResponse({'status': 'Success', 'results': results, 'next_question_url': next_question_url})
+            else:
+                course_page_url = request.build_absolute_uri(
+                    reverse('course', args=[course.name]))
+                return JsonResponse({'status': 'Success', 'results': results, 'course_page_url': course_page_url})
+
         except QuizQuestion.DoesNotExist:
             return JsonResponse({'error': 'Question not found'}, status=404)
-
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
+def course_matrix_view(request):
+    # Retrieve the course by name
+    course = get_object_or_404(Course, name='Python')
+
+    # Get all chapters and questions related to the course
+    chapters = Chapter.objects.filter(course=course).order_by('id')
+    questions = QuizQuestion.objects.filter(course=course).order_by('question_number')
+
+    num_chapters = chapters.count()
+    num_questions = questions.count()
+
+    # Initialize the matrix with zeros
+    matrix = np.zeros((num_chapters, num_questions), dtype=int)
+
+    chapter_index_map = {chapter.id: idx for idx, chapter in enumerate(chapters)}
+    row_sums = np.zeros(num_chapters, dtype=int)  # Initialize array to store row sums
+
+    for question_idx, question in enumerate(questions):
+        topics = question.topics.all()
+        for topic in topics:
+            chapter_id = topic.chapter_id
+            if chapter_id in chapter_index_map:
+                chapter_idx = chapter_index_map[chapter_id]
+                matrix[chapter_idx][question_idx] += 1
+
+    # Calculate row sums
+    for chapter_idx in range(num_chapters):
+        row_sums[chapter_idx] = np.sum(matrix[chapter_idx])
+
+    user = request.user
+
+    scores_array = []
+    for question in questions:
+        sections = QuestionSection.objects.filter(question=question)
+        num_sections = sections.count()
+
+        # Count the correct answers across all sections for the current question
+        correct_answers = UserAnswer.objects.filter(user=user, section__in=sections, is_correct=True).count()
+
+        # Calculate the score fraction
+        total_marks = question.question_mark
+        score_fraction = correct_answers / num_sections if num_sections > 0 else 0
+
+        scores_array.append(score_fraction)
+
+    # Convert scores_array to a numpy array
+    scores_array = np.array(scores_array)
+
+    # Perform element-wise multiplication of matrix and scores_array
+    chapter_scores = np.dot(matrix, scores_array)
+
+    # Normalize chapter_scores
+    min_score = np.min(chapter_scores)
+    max_score = np.max(chapter_scores)
+    normalized = (chapter_scores - min_score) / (max_score - min_score)
+
+    # Calculate Threshold
+    total_row_sum = np.sum(row_sums)
+    threshold = row_sums / total_row_sum
+    print(matrix)
+    print(row_sums)
+    print(scores_array)
+    print(chapter_scores)
+    print(normalized)
+    print(threshold)
+    ch=0
+
+    for i in range(len(threshold)):
+        if(normalized[i]<threshold[i]):
+            ch=i
+            break
+    ch=ch+1
+
+
+    return HttpResponse("Hello world!")
