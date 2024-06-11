@@ -24,6 +24,5 @@ path('<str:course_name>/<path:topic_name>/', views.course_detail, name='course_d
     path('update/', views.update_course_chapter_topic, name='update_course_chapter_topic'),
     path('form-Del/',views.Del_course,name='Del'),
     path('delete/', views.delete_course_chapter_topic, name='delete_course_chapter_topic'),
-    path('course_matrix/', views.course_matrix_view, name='course_matrix'),
 
 ] 

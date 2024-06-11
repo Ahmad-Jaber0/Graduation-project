@@ -63,20 +63,28 @@ header{
 
 
 .WelcomeSection {
-  text-align:center;
+  text-align: center;
   background: url(images/main.png) no-repeat;
-  background-size: cover;/*to cover whole element*/
+  background-size: cover; /* to cover whole element */
   background-position: 70% 30%;
-  background-attachment:scroll;
-  font-family:'Roboto';
-  padding-top:26vh;
-  min-height:100vh;
+  background-attachment: scroll;
+  font-family: 'Roboto', sans-serif; /* Added a fallback font */
+  padding-top: 26vh;
+  min-height: 100vh;
   width: 100%;
-  overflow:hidden;
+  overflow: hidden;
+  /* Vendor prefixes and standard properties for backface-visibility */
   -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /* Vendor prefixes and standard properties for perspective */
   -webkit-perspective: 1000;
-  -webkit-transform: translate3d(0,0,0);
+  perspective: 1000;
+  /* Vendor prefixes and standard properties for transform */
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
+
+
 
 .WelcomeSection #Welcome-to-word{
   color: white;

@@ -73,6 +73,32 @@
         {% if previous_top %}
   <button class="previous" onclick="window.location.href='{% url 'course_detail' course1 previous_top.topic_name %}'">Previous</button>
   {% else %}
+  
+  <div class="message" id="message">
+    <div>
+        <center>
+            <img src="{% static 'images/helping-hand.png' %}" loading="lazy" alt="helping-hand">
+        </center>
+    </div>
+    <div>
+        <h3>Let us help you!</h3>
+        <p>
+            Start a <b>quiz</b> now to find the best starting chapter for you.
+            This quiz will help you determine the best chapter to start with,
+            saving you learning time!
+        </p>
+    </div>
+    <div>
+        <center>
+            <a href="{% url 'quiz' %}">
+                <button id="start-quiz-button">Start Quiz</button>
+            </a>
+            <span> </span>
+            <button id="no-thanks-button" onclick="closeMessage()">No Thanks</button>
+        </center>
+    </div>
+</div>
+
   <button class="previous" onclick="window.location.href='{% url 'home'%}'"> Home</button>
   {% endif %}
   
@@ -90,6 +116,7 @@
     
 
     <!-- Sidebar Toggle Script -->
+    
     <script>
       const menu_toggle = document.querySelector('.menu-toggle');
       const sidebar = document.querySelector('.sidebar');
@@ -97,6 +124,23 @@
       menu_toggle.addEventListener('click', () => {
         menu_toggle.classList.toggle('is-active');
         sidebar.classList.toggle('is-active');
+        
+        function closeMessage(){
+          const message = document.querySelector(".message");
+          const noThanksButton = document.getElementById("no-thanks-button");
+      
+          // Check if both elements exist
+          if (message && noThanksButton) {
+              // Hide the message container
+              message.style.display = "none";
+              
+              // Change the color of the 'No Thanks' button
+              noThanksButton.style.color = "red";
+          } else {
+              console.error("Element(s) not found: Message or 'No Thanks' button.");
+          }
+          }
+    
       });
     </script>
     <section class = "footerbody">

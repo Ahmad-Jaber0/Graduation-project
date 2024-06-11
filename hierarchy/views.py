@@ -385,7 +385,14 @@ def quiz(request):
             'next_question_number': next_question_number if next_question else None
         })
     else:
-        return redirect('course', course_name=course.name)
+        chapter_to_review = calculate_course_matrix(request.user, course.name)
+        if chapter_to_review:
+            return redirect('course', course_name=course.name)
+        else:
+            return redirect('course', course_name=course.name)
+        
+        
+
 
 @csrf_exempt
 def check_answer(request):
@@ -422,31 +429,32 @@ def check_answer(request):
                     reverse('quiz') + f'?question_number={next_question_number}')
                 return JsonResponse({'status': 'Success', 'results': results, 'next_question_url': next_question_url})
             else:
-                course_page_url = request.build_absolute_uri(
-                    reverse('course', args=[course.name]))
-                return JsonResponse({'status': 'Success', 'results': results, 'course_page_url': course_page_url})
+                chapter_to_review = calculate_course_matrix(request.user, course.name)
+                if chapter_to_review:
+                    message = f"You should review Chapter {chapter_to_review}."
+                else:
+                    message = "Congratulations! You've done well in all chapters."
+                return JsonResponse({'status': 'Success', 'results': results, 'message': message})
 
         except QuizQuestion.DoesNotExist:
             return JsonResponse({'error': 'Question not found'}, status=404)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
-def course_matrix_view(request):
-    # Retrieve the course by name
-    course = get_object_or_404(Course, name='Python')
 
-    # Get all chapters and questions related to the course
+def calculate_course_matrix(user, course_name):
+    print(course_name)
+    course = get_object_or_404(Course, name=course_name)
+
     chapters = Chapter.objects.filter(course=course).order_by('id')
     questions = QuizQuestion.objects.filter(course=course).order_by('question_number')
 
     num_chapters = chapters.count()
     num_questions = questions.count()
 
-    # Initialize the matrix with zeros
     matrix = np.zeros((num_chapters, num_questions), dtype=int)
-
     chapter_index_map = {chapter.id: idx for idx, chapter in enumerate(chapters)}
-    row_sums = np.zeros(num_chapters, dtype=int)  # Initialize array to store row sums
+    row_sums = np.zeros(num_chapters, dtype=int)
 
     for question_idx, question in enumerate(questions):
         topics = question.topics.all()
@@ -456,53 +464,30 @@ def course_matrix_view(request):
                 chapter_idx = chapter_index_map[chapter_id]
                 matrix[chapter_idx][question_idx] += 1
 
-    # Calculate row sums
     for chapter_idx in range(num_chapters):
         row_sums[chapter_idx] = np.sum(matrix[chapter_idx])
-
-    user = request.user
 
     scores_array = []
     for question in questions:
         sections = QuestionSection.objects.filter(question=question)
         num_sections = sections.count()
 
-        # Count the correct answers across all sections for the current question
         correct_answers = UserAnswer.objects.filter(user=user, section__in=sections, is_correct=True).count()
-
-        # Calculate the score fraction
-        total_marks = question.question_mark
         score_fraction = correct_answers / num_sections if num_sections > 0 else 0
-
         scores_array.append(score_fraction)
 
-    # Convert scores_array to a numpy array
     scores_array = np.array(scores_array)
-
-    # Perform element-wise multiplication of matrix and scores_array
     chapter_scores = np.dot(matrix, scores_array)
 
-    # Normalize chapter_scores
     min_score = np.min(chapter_scores)
     max_score = np.max(chapter_scores)
     normalized = (chapter_scores - min_score) / (max_score - min_score)
 
-    # Calculate Threshold
     total_row_sum = np.sum(row_sums)
     threshold = row_sums / total_row_sum
-    print(matrix)
-    print(row_sums)
-    print(scores_array)
-    print(chapter_scores)
-    print(normalized)
-    print(threshold)
-    ch=0
 
     for i in range(len(threshold)):
-        if(normalized[i]<threshold[i]):
-            ch=i
-            break
-    ch=ch+1
+        if normalized[i] < threshold[i]:
+            return i + 1  # Chapter indices are 1-based
 
-
-    return HttpResponse("Hello world!")
+    return None
