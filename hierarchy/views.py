@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import auth, messages
-from django.http import HttpResponse,HttpResponseForbidden,JsonResponse, HttpResponseBadRequest
+from django.http import HttpResponse,HttpResponseForbidden,JsonResponse, HttpResponseBadRequest,HttpResponseRedirect
 from django.contrib.auth import authenticate,login,logout,get_user_model,update_session_auth_hash
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -12,14 +12,45 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Min
 from django.urls import reverse
 import numpy as np
+from django.views.decorators.http import require_POST
 
 def home(request):
     course=Course.objects.all()
     return render(request, 'home.html',{'courses':course})
 
+@require_POST
+def save_course(request):
+    course_id = request.POST.get('course_id')
+    if not course_id:
+        return JsonResponse({'success': False, 'message': 'No course_id provided'})
+
+    course = get_object_or_404(Course, id=course_id)
+    user = request.user  # Assuming user is authenticated
+
+    try:
+        # Check if the course is already saved by the user
+        saved = SavedCourse.objects.get(user=user, course=course)
+        saved.delete()  # Remove the saved course
+        return JsonResponse({'success': True, 'message': 'Course removed successfully'})##########3 remmeber change this text
+    except SavedCourse.DoesNotExist:
+        # Create a new SavedCourse instance for the user
+        saved_course = SavedCourse(user=user, course=course)
+        saved_course.save()
+        return JsonResponse({'success': True, 'message': 'Course saved successfully'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
+
 @login_required
 def profile(request):
-    return render(request,'profile.html')
+    user = request.user
+    user_courses = UserCourseProgress.objects.filter(user=user)
+    
+    for user_course in user_courses:
+        user_course.progress_percentage = user_course.get_progress_percentage()
+    course=SavedCourse.objects.filter(user=user)
+    course1=Course.objects.all()
+
+    return render(request, 'profile.html', {'user_courses': user_courses,'courses':course,'course1':course1})
 
 
 @login_required
@@ -277,16 +308,16 @@ def update_code_html(request, topic_id):
             return JsonResponse({'success': False, 'error': 'Topic not found.'}, status=404)
     return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
 
+@login_required
 def course_detail(request, course_name, topic_name):
-    course = Course.objects.get(name=course_name)
+    course = get_object_or_404(Course, name=course_name)
     chapters = Chapter.objects.filter(course=course)
-    topics = Topic.objects.filter(course=course).order_by('chapter', 'rank')  # Order topics by chapter and rank
-    topic = Topic.objects.get(course=course,topic_name=topic_name)
+    topics = Topic.objects.filter(course=course).order_by('chapter', 'rank')
+    topic = get_object_or_404(Topic, course=course, topic_name=topic_name)
 
     previous_topic = None
     next_topic = None
 
-    # Find previous and next topics within the same chapter
     for i, t in enumerate(topics):
         if t == topic:
             if i > 0:
@@ -295,11 +326,32 @@ def course_detail(request, course_name, topic_name):
                 next_topic = topics[i + 1]
             break
 
-    return render(request, 'base1.html', {'course1': course_name, 'chapters': chapters, 'topics': topics, 'top': topic, 'previous_top': previous_topic, 'next_top': next_topic})
+    if request.user.is_authenticated:
+        course_progress, _ = UserCourseProgress.objects.get_or_create(user=request.user, course=course)
+        topic_progress, created = UserTopicProgress.objects.get_or_create(user=request.user, topic=topic)
+        if not topic_progress.completed:
+            topic_progress.completed = True
+            topic_progress.save()
 
+        course_progress.last_accessed_topic = topic_progress
+        course_progress.save()
+
+        completed_topic_ids = UserTopicProgress.objects.filter(user=request.user, topic__course=course, completed=True).values_list('topic_id', flat=True)
+    else:
+        completed_topic_ids = []
+
+    return render(request, 'base1.html', {
+        'course1': course_name,
+        'chapters': chapters,
+        'topics': topics,
+        'top': topic,
+        'previous_top': previous_topic,
+        'next_top': next_topic,
+        'progress_percentage': course_progress.get_progress_percentage() if request.user.is_authenticated else 0,
+        'completed_topic_ids': completed_topic_ids
+    })
 
 import sys
-
 def dynamic_quiz(request):
     try:
         course = Course.objects.get(name='Python')
@@ -310,6 +362,7 @@ def dynamic_quiz(request):
     except Exception as e:
         print(f"An unexpected error occurred: {e}", file=sys.stderr)
         return render(request, 'EnterQuiz.html', {'error': 'An unexpected error occurred.'})
+        
 
 
 @csrf_exempt
@@ -386,6 +439,7 @@ def quiz(request):
         })
     else:
         chapter_to_review = calculate_course_matrix(request.user, course.name)
+        
         if chapter_to_review:
             return redirect('course', course_name=course.name)
         else:

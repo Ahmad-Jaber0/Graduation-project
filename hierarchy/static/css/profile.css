@@ -191,7 +191,7 @@ ul li a .side_bar_icon {
   outline: none;
   background-color: #37577a;
   padding: 10px 20px;
-  font-size: 20px;
+  font-size: 0.8em;
   font-weight: 700;
   color: #fff;
   border-radius: 100px;
@@ -296,25 +296,28 @@ ul li a .side_bar_icon {
 
 /* For Progess Circle Bar */
 .container .wrapper{
-    width: 800px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }
+
 .container .wrapper .card{
-    background: #1a2d43;
-    width: calc(33% - 20px);
-    height: 300px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-direction: column;
-    box-shadow: 0px 10px 15px rgba(0,0,0,0.1);
-    margin-top: 1em;
-    margin-bottom: 3em;
+  background: #1a2d43;
+  height: 300px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.1);
+  width: 100%;
 }
+
+/* New class for styling each grid item */
+.container .wrapper .grid-item {
+  grid-column: span 1; /* Each card spans one column */
+}
+
 .container .wrapper .card .circle{
     position: relative;
     height: 150px;
@@ -578,6 +581,20 @@ color:white;font-weight: 400;
 .label-line button{
   margin: 0px;
 }
+
+select,
+    input[type="text"] {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        outline: none;
+        color: white;
+        background-color: #37577a;
+        font-size: 1.2em;
+        margin-top: 0.7em;
+        margin-bottom: 0.5em;
+        font-size: 1.3em;
+        font-weight: bold;
+    }
 
 /*------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------Footer----------------------------------------------------------

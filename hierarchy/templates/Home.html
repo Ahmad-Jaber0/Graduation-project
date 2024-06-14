@@ -11,8 +11,7 @@
     <!--<title>CodingLife</title>-->
 </head>
 <header>
-    <a href="{% url 'home'%}" class="logo">LoomingCode</a>
-
+    <a href="{% url 'home' %}" class="logo">LoomingCode</a>
     <nav class="navigation" id="nav-middle">
         <a href="{% url 'home'%}">Home</a>
         <a href="{% url 'home' %}#courses">Courses</a>
@@ -21,12 +20,11 @@
         <a href="{% url 'home' %}#aboute">About</a>
         <a href="{% url 'home' %}#contact">Contact</a>
     </nav>
-
     <nav class = "navigation" id = "header-icons">
         <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
         <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+        <a href="{% url 'logout_page' %}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
     </nav>
-
 </header>
 
 
@@ -123,19 +121,18 @@
 <section class="textSection" id="courses">
     <h1>Courses</h1>
     <div class="CoursesContainer">
-        <!--it is a parent container to contain all cards-->
         {% for course in courses %}
-        <div class="card">
+        <div class="card" data-course-id="{{ course.id }}">
             <b>
-                <button class = "save_button" onclick="saveCousre(this)">
-                    
-                    <img src = "{% static 'images/icons8-save-32.png' %}">
+                <button class="save_button" onclick="saveCourse(this)">
+                    <img src="{% static 'images/icons8-save-32.png' %}">
                 </button>
 
                 <div class="CourseIcon">
-                    <img src="{% static 'images/c++icon.png' %}" loading="lazy" >
+                    <img src="{% static 'images/c++icon.png' %}" loading="lazy">
                 </div>
                 <div class="rating">
+                    <!-- Rating input elements -->
                     <input value="5" name="rate" id="star5" type="radio">
                     <label title="text" for="star5"></label>
                     <input value="4" name="rate" id="star4" type="radio">
@@ -147,17 +144,20 @@
                     <input value="1" name="rate" id="star1" type="radio">
                     <label title="text" for="star1"></label>
                     &nbsp
-                    <span class = "rate_value" id = "rate_value">5.00</span>
-                    <span class = "rating_participants_count">(<span id = "rating_participants_count">12</span>)</span>
+                    <span class="rate_value" id="rate_value">5.00</span>
+                    <span class="rating_participants_count">(<span id="rating_participants_count">12</span>)</span>
                 </div>
-                <h3>{{course.name}}</h3>
-                <a href="{% url 'course' course.name %}"> <button id = "cButton" class = "button">OPEN COURSE</button></a>
+                <h3>{{ course.name }}</h3>
+                <a href="{% url 'course' course.name %}">
+                    <button id="cButton" class="button">OPEN COURSE</button>
+                </a>
             </b>
         </div>
         {% endfor %}
-
     </div>
 </section>
+
+
 
 <div>
     <hr style="border: 1px solid blue">
@@ -345,7 +345,39 @@
 </section>
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function saveCourse(button) {
+        const courseCard = $(button).closest('.card');
+        const courseId = courseCard.data('course-id');  // Retrieve the course ID from data attribute
 
+        $.ajax({
+            url: "{% url 'save_course' %}",
+            type: "POST",
+            data: {
+                'course_id': courseId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'  // Ensure CSRF token is included
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert("Course saved successfully!");
+                } else {
+                    alert("Failed to save the course: " + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("An error occurred: " + error);
+            }
+        });
+    }
+</script>
+
+<script>
+    function saveCousre(button){
+        button.style.backgroundColor = "rgb(191, 191, 255)";
+    }
+
+</script>
 
 </body>
 </html>

@@ -20,24 +20,41 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Show the first section by default
-    showSection('dashboard');
+    showSection('profile');
 
-    //progress bar
-    let options = {
-        startAngle: -1.55,
-        size: 150,
-        value: 0.85,
-        fill: {gradient: ['#007C91', '#14FEFF']}
-      }
-      $(".circle .bar").circleProgress(options).on('circle-animation-progress',
-      function(event, progress, stepValue){
-        $(this).parent().find("span").text(String(stepValue.toFixed(2).substr(2)) + "%");
-      });
-      $(".js .bar").circleProgress({
-        value: 0.70
-      });
-      $(".react .bar").circleProgress({
-        value: 0.60
-      });
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.circle .bar').forEach(bar => {
+            let progressValue = parseFloat(bar.dataset.progress); // Retrieve data-progress attribute
+            let options = {
+                startAngle: -1.55,
+                size: 150,
+                value: progressValue, // Convert progressValue to a percentage between 0 and 1
+                fill: { gradient: ['#007C91', '#14FEFF'] }
+            };
+    
+            // Initialize circle progress with options
+            $(bar).circleProgress(options).on('circle-animation-progress', function(event, progress, stepValue) {
+                $(this).parent().find("span").text(String(Math.round(progressValue)) + "%");
+            });
+        });
+    });
+    
+    });
+    
+    
+
+
+document.querySelectorAll('ul li a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
 });

@@ -5,7 +5,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ['username', 'first_name', 'last_name', 'email', 'role','image','id']
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['name', 'date', 'instructor', 'id']
+    list_display = ['name', 'date', 'instructor', 'id','check_boolean']
 
 class ChapterAdmin(admin.ModelAdmin):
     list_display = ['course', 'name', 'id']
@@ -32,6 +32,12 @@ class UserAnswerAdmin(admin.ModelAdmin):
 class QuestionOptionAdmin(admin.ModelAdmin):
     list_display=['section','option_text','option_id']
 
+class UserTopicProgressAmin(admin.ModelAdmin):
+    list_display=['user','topic','completed']
+
+class UserCourseProgressAdmin(admin.ModelAdmin):
+    list_display=['user','course','progress']
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Chapter, ChapterAdmin)
@@ -40,4 +46,7 @@ admin.site.register(QuizQuestion, QuizQuestionAdmin)
 admin.site.register(QuestionSection, QuestionSectionAdmin)
 admin.site.register(UserAnswer,UserAnswerAdmin)
 admin.site.register(QuestionOption,QuestionOptionAdmin)
+
+admin.site.register(UserTopicProgress,UserTopicProgressAmin)
+admin.site.register(UserCourseProgress,UserCourseProgressAdmin)
 

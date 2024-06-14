@@ -12,8 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-circle-progress/1.2.2/circle-progress.min.js"></script>
 </head>
 <header>
-    <a href="{% url 'home'%}" class="logo">LoomingCode</a>
-
+    <a href="{% url 'home' %}" class="logo">LoomingCode</a>
     <nav class="navigation" id="nav-middle">
         <a href="{% url 'home'%}">Home</a>
         <a href="{% url 'home' %}#courses">Courses</a>
@@ -22,12 +21,11 @@
         <a href="{% url 'home' %}#aboute">About</a>
         <a href="{% url 'home' %}#contact">Contact</a>
     </nav>
-
     <nav class = "navigation" id = "header-icons">
         <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
         <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+        <a href="{% url 'logout_page' %}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
     </nav>
-
 </header>
 <body>
     <main class="content-section">
@@ -40,7 +38,6 @@
             </div>
             <ul>
                 <hr>
-                <li><a href="#dashboard"><span class="side_bar_icon"><i class="fas fa-chart-line"></i></span> Dashboard</a></li>
                 <li><a href="#profile"><span class="side_bar_icon"><i class="fas fa-user"></i></span> My Profile</a></li>
                 <li><a href="#courses"><span class="side_bar_icon"><i class="fas fa-check-circle"></i></span> Enrolled Courses</a></li>
                 <li><a href="#Saved-Courses"><span class="side_bar_icon"><i class="fas fa-bookmark"></i></span> Saved Courses</a></li>
@@ -49,30 +46,11 @@
                 {%endif%}
                 <hr>
                 <li><a href="#settings"><span class="side_bar_icon"><i class="fas fa-cog"></i></span> Settings</a></li>
-                <li><a href="{% url 'logout_page'%}"><span class="side_bar_icon"><i class="fas fa-sign-out-alt"></i></span> Logout</a></li>
             </ul>
         </nav>
 
 
         <div class="content">
-            <section id="dashboard" class="hidden">
-                <h2>Dashboard</h2>
-                <hr>
-                <div class="enrolled-courses">
-                    <span>Enrolled Courses</span>
-                    <span class="count">0</span>
-                </div>
-                <div class="enrolled-courses">
-                    <span>Active Courses</span>
-                    <span class="count">0</span>
-                </div>
-                <div class="enrolled-courses">
-                    <span>Completed Courses</span>
-                    <span class="count">0</span>
-                </div>
-            </section>
-
-
             <section id="profile" class="hidden">
                 <h2>My Profile</h2>
                 <hr>
@@ -112,39 +90,38 @@
             </section>
 
 
+
             <section id="courses" class="hidden">
                 <h2>Enrolled Courses</h2>
                 <hr>
                 <div class="wrapper">
-                    <div class="card">
+                    {% for user_course in user_courses %}
+                    <div class="card grid-item">
                         <div class="circle">
-                        <div class="bar"></div>
-                        <div class="box"><span></span></div>
-                    </div>
-                    <div class="text">HTML & CSS</div>
-                    </div>
-                    <div class="wrapper">
-                        <div class="card">
-                            <div class="circle">
-                            <div class="bar"></div>
+                            <div class="bar" data-progress="{{ user_course.progress }}"></div>
                             <div class="box"><span></span></div>
                         </div>
-                        <div class="text">HTML & CSS</div>
-                        </div>
-
+                        <div class="text">{{ user_course.course.name }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
             </section>
+            
 
             <section id="Saved-Courses" class="hidden">
                 <h2>Saved Courses</h2>
                 <hr>
-                <div class = "CoursesContainer">
-                    <div class="card">
-                        <b>    
-                            <div class = "CourseIcon">
-                                <img src="images/cicon.png" loading = "lazy">
-                            </div> 
-                            
+                <div class="CoursesContainer">
+                    {% for course in courses %}
+                    <div class="card" data-course-id=" {{ course.course.id }}">
+                        <b>
+
+            
+                            <div class="CourseIcon">
+                                <img src="{% static 'images/c++icon.png' %}" loading="lazy">
+                            </div>
                             <div class="rating">
+                                <!-- Rating input elements -->
                                 <input value="5" name="rate" id="star5" type="radio">
                                 <label title="text" for="star5"></label>
                                 <input value="4" name="rate" id="star4" type="radio">
@@ -156,67 +133,17 @@
                                 <input value="1" name="rate" id="star1" type="radio">
                                 <label title="text" for="star1"></label>
                                 &nbsp
-                                <span class = "rate_value" id = "rate_value">5.00</span>
-                                <span class = "rating_participants_count">(<span id = "rating_participants_count">12</span>)</span>
+                                <span class="rate_value" id="rate_value">5.00</span>
+                                <span class="rating_participants_count">(<span id="rating_participants_count">12</span>)</span>
                             </div>
-                            <h3>C course</h3>
-                            <button id = "cButton" class = "button" >OPEN COURSE</button>
+                            <h3>{{ course.course.name }}</h3>
+                            <a href="{% url 'course' course.course.name %}">
+                                <button id="cButton" class="button">OPEN COURSE</button>
+                            </a>
                         </b>
                     </div>
-                
-                      <div class = "CoursesContainer">
-                          <div class="card">
-                              <b>    
-                                <div class = "CourseIcon">
-                                    <img src="images/cicon.png" loading = "lazy">
-                                </div> 
-                                
-                                <div class="rating">
-                                    <input value="5" name="rate" id="star5" type="radio">
-                                    <label title="text" for="star5"></label>
-                                    <input value="4" name="rate" id="star4" type="radio">
-                                    <label title="text" for="star4"></label>
-                                    <input value="3" name="rate" id="star3" type="radio" checked="">
-                                    <label title="text" for="star3"></label>
-                                    <input value="2" name="rate" id="star2" type="radio">
-                                    <label title="text" for="star2"></label>
-                                    <input value="1" name="rate" id="star1" type="radio">
-                                    <label title="text" for="star1"></label>
-                                    &nbsp
-                                    <span class = "rate_value" id = "rate_value">5.00</span>
-                                    <span class = "rating_participants_count">(<span id = "rating_participants_count">12</span>)</span>
-                                </div>
-                                <h3>C course</h3>
-                                <button id = "cButton" class = "button" >OPEN COURSE</button>
-                            </b>
-                        </div>
-  
-                         <div class = "CoursesContainer">
-                    <div class="card">
-                        <b>    
-                            <div class = "CourseIcon">
-                                <img src="images/cicon.png" loading = "lazy">
-                            </div> 
-                            
-                            <div class="rating">
-                                <input value="5" name="rate" id="star5" type="radio">
-                                <label title="text" for="star5"></label>
-                                <input value="4" name="rate" id="star4" type="radio">
-                                <label title="text" for="star4"></label>
-                                <input value="3" name="rate" id="star3" type="radio" checked="">
-                                <label title="text" for="star3"></label>
-                                <input value="2" name="rate" id="star2" type="radio">
-                                <label title="text" for="star2"></label>
-                                <input value="1" name="rate" id="star1" type="radio">
-                                <label title="text" for="star1"></label>
-                                &nbsp;
-                                <span class = "rate_value" id = "rate_value">5.00</span>
-                                <span class = "rating_participants_count">(<span id = "rating_participants_count">12</span>)</span>
-                            </div>
-                            <h3>C course</h3>
-                            <button id = "cButton" class = "button" >OPEN COURSE</button>
-                        </b>
-                    </div>
+                    {% endfor %}
+                </div>
             </section>
     
                 <section id="moderator-permissions" class="hidden">
@@ -240,7 +167,16 @@
                         <div class="label"><a href="{% url 'Del'%}"><button>Delete</button></a></div>
                     </div>
                     <hr>
-    
+                    <div class="label-line">
+                        <div class="label"><i class="fas fa-question"></i> &nbsp; Add a Quiz Question/s</div>
+                        <select id="Course-Name" name="Course-Name" required>
+                            <option value="" disabled selected>Select an option</option>
+                            {% for course in course1 %}
+                            <option value="{{ course.name }}">{{ course.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <hr>
                 </section>
 
 
@@ -337,6 +273,9 @@
             form.submit();
         });
     </script>
+   
+    
+
 </body>
 
 </html>

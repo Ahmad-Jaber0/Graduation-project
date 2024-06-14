@@ -23,24 +23,49 @@
 
 
   <body>
-    
+    {% if not previous_top%}
+    <div class="message" id="message">
+      <div>
+          <center>
+              <img src="{% static 'images/helping-hand.png' %}" loading="lazy" alt="helping-hand">
+          </center>
+      </div>
+      <div>
+          <h3>Let us help you!</h3>
+          <p>
+              Start a <b>quiz</b> now to find the best starting chapter for you.
+              This quiz will help you determine the best chapter to start with,
+              saving you learning time!
+          </p>
+      </div>
+      <div>
+          <center>
+              <a href="{% url 'quiz' %}">
+                  <button id="start-quiz-button">Start Quiz</button>
+              </a>
+              <span> </span>
+              <button id="no-thanks-button" onclick="closeMessage()">No Thanks</button>
+          </center>
+      </div>
+  </div>
+
+{% endif%}
     <!--navbar-->
     <header>
-      <a href = "{% url 'home'%}" class = "logo">LoomingCode</a>
-
-      <nav class = "navigation" id = "nav-middle">
-        <a href = "{% url 'home'%}">Home</a>
-        <a href="{% url 'home' %}#courses">Courses</a>
-        <a href = "{% url 'home' %}#services">Services</a>
-        <a href = "{% url 'home' %}#aboute">About</a>
-        <a href="{% url 'home' %}#contact">Contact</a>
-    </nav>
-
-      <nav class = "navigation">
-        <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
-          <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+      <a href="{% url 'home' %}" class="logo">LoomingCode</a>
+      <nav class="navigation" id="nav-middle">
+          <a href="{% url 'home'%}">Home</a>
+          <a href="{% url 'home' %}#courses">Courses</a>
+          <a href="{% url 'home' %}#services">Services</a>
+  
+          <a href="{% url 'home' %}#aboute">About</a>
+          <a href="{% url 'home' %}#contact">Contact</a>
       </nav>
-
+      <nav class = "navigation" id = "header-icons">
+          <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
+          <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+          <a href="{% url 'logout_page' %}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
+      </nav>
   </header>
       
       <div class="app">
@@ -53,18 +78,21 @@
    
         <!-- Sidebar Menu -->
         <aside class="sidebar">
-          <h3>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Course Tutorial <br><br></h3>
+          <h3>Course Tutorial</h3>
           <nav class="menu">
             {% for chapter in chapters %}
-
-            <p class="menu-chapter">{{ chapter.name }}</p>
-            {% for topic in topics %}
-            {% if topic.chapter == chapter %}
-            <a href="{% url 'course_detail' course1 topic.topic_name %}" class="menu-item {% if topic.id == top.id %}active{% endif %}">{{ topic.topic_name }}</a>
-            {% endif %}
+              <p class="menu-chapter">{{ chapter.name }}</p>
+              {% for topic in topics %}
+                {% if topic.chapter == chapter %}
+                  <a href="{% url 'course_detail' course1 topic.topic_name %}" class="menu-item {% if topic == top %}active{% endif %}">
+                    {{ topic.topic_name }}
+                    {% if topic.id in completed_topic_ids %}
+                      <i class="fa fa-check-circle fa-lg"></i>  <!-- Check icon for completed topics -->
+                    {% endif %}
+                  </a>
+                {% endif %}
+              {% endfor %}
             {% endfor %}
-            {% endfor %}
-            
           </nav>
         </aside>
         <main class="content">
@@ -74,30 +102,7 @@
   <button class="previous" onclick="window.location.href='{% url 'course_detail' course1 previous_top.topic_name %}'">Previous</button>
   {% else %}
   
-  <div class="message" id="message">
-    <div>
-        <center>
-            <img src="{% static 'images/helping-hand.png' %}" loading="lazy" alt="helping-hand">
-        </center>
-    </div>
-    <div>
-        <h3>Let us help you!</h3>
-        <p>
-            Start a <b>quiz</b> now to find the best starting chapter for you.
-            This quiz will help you determine the best chapter to start with,
-            saving you learning time!
-        </p>
-    </div>
-    <div>
-        <center>
-            <a href="{% url 'quiz' %}">
-                <button id="start-quiz-button">Start Quiz</button>
-            </a>
-            <span> </span>
-            <button id="no-thanks-button" onclick="closeMessage()">No Thanks</button>
-        </center>
-    </div>
-</div>
+  
 
   <button class="previous" onclick="window.location.href='{% url 'home'%}'"> Home</button>
   {% endif %}
@@ -113,6 +118,9 @@
 
 
     </div>
+
+
+    
     
 
     <!-- Sidebar Toggle Script -->

@@ -23,6 +23,7 @@ class Course(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField()
     instructor = models.CharField(max_length=255)
+    check_boolean = models.BooleanField(null=True, blank=True)
     def __str__(self):
         return self.name  
 
@@ -47,6 +48,38 @@ class Topic(models.Model):
     class Meta:
         unique_together = (('topic_name', 'course'),)
 
+class UserTopicProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.topic.topic_name}"
+
+class UserCourseProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.course.name}"
+
+    def update_progress(self):
+        total_topics = Topic.objects.filter(course=self.course).count()
+        completed_topics = UserTopicProgress.objects.filter(user=self.user, topic__course=self.course, completed=True).count()
+        self.progress = (completed_topics / total_topics) * 100 if total_topics > 0 else 0
+        self.save()
+
+    def get_progress_percentage(self):
+        return f"{self.progress:.2f}"
+    
+
+class SavedCourse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.course.name}"
 
 @receiver(pre_save, sender=Topic)
 def update_topic_ranks(sender, instance, **kwargs):
