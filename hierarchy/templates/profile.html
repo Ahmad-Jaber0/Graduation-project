@@ -98,7 +98,7 @@
                     {% for user_course in user_courses %}
                     <div class="card grid-item">
                         <div class="circle">
-                            <div class="bar" data-progress="{{ user_course.progress }}"></div>
+                            <div class="bar" data-progress="{{ user_course.progress_percentage }}"></div>
                             <div class="box"><span></span></div>
                         </div>
                         <div class="text">{{ user_course.course.name }}</div>
@@ -273,7 +273,11 @@
             form.submit();
         });
     </script>
-   
+
+    <script>
+        
+        
+    </script>
     
 
 </body>

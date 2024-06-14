@@ -21,27 +21,26 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     showSection('profile');
-
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.circle .bar').forEach(bar => {
-            let progressValue = parseFloat(bar.dataset.progress); // Retrieve data-progress attribute
-            let options = {
-                startAngle: -1.55,
-                size: 150,
-                value: progressValue, // Convert progressValue to a percentage between 0 and 1
-                fill: { gradient: ['#007C91', '#14FEFF'] }
-            };
     
-            // Initialize circle progress with options
-            $(bar).circleProgress(options).on('circle-animation-progress', function(event, progress, stepValue) {
-                $(this).parent().find("span").text(String(Math.round(progressValue)) + "%");
-            });
+});
+    
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.circle .bar').forEach(bar => {
+        let progressValue = parseFloat(bar.dataset.progress) / 100; // Convert percentage to a value between 0 and 1
+
+        let options = {
+            startAngle: -1.55,
+            size: 150,
+            value: progressValue, // Correctly convert progressValue to a percentage between 0 and 1
+            fill: { gradient: ['#007C91', '#14FEFF'] }
+        };
+
+        // Initialize circle progress with options
+        $(bar).circleProgress(options).on('circle-animation-progress', function(event, progress, stepValue) {
+            $(this).parent().find("span").text(String(Math.round(stepValue * 100)) + "%"); // Use stepValue for animation
         });
     });
-    
-    });
-    
-    
+}); 
 
 
 document.querySelectorAll('ul li a').forEach(anchor => {

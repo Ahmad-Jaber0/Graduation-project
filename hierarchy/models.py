@@ -60,6 +60,7 @@ class UserCourseProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    last_accessed_topic = models.ForeignKey(UserTopicProgress, null=True, blank=True, on_delete=models.SET_NULL, related_name='last_accessed')
 
     def __str__(self):
         return f"{self.user.username} - {self.course.name}"
@@ -72,6 +73,7 @@ class UserCourseProgress(models.Model):
 
     def get_progress_percentage(self):
         return f"{self.progress:.2f}"
+
     
 
 class SavedCourse(models.Model):

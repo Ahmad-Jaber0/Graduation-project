@@ -328,15 +328,20 @@ def course_detail(request, course_name, topic_name):
 
     if request.user.is_authenticated:
         course_progress, _ = UserCourseProgress.objects.get_or_create(user=request.user, course=course)
-        topic_progress, created = UserTopicProgress.objects.get_or_create(user=request.user, topic=topic)
+        topic_progress, _ = UserTopicProgress.objects.get_or_create(user=request.user, topic=topic)
+
         if not topic_progress.completed:
             topic_progress.completed = True
             topic_progress.save()
 
-        course_progress.last_accessed_topic = topic_progress
-        course_progress.save()
+            # Update course progress after marking a topic as completed
+            course_progress.update_progress()
 
-        completed_topic_ids = UserTopicProgress.objects.filter(user=request.user, topic__course=course, completed=True).values_list('topic_id', flat=True)
+        completed_topic_ids = UserTopicProgress.objects.filter(
+            user=request.user,
+            topic__course=course,
+            completed=True
+        ).values_list('topic_id', flat=True)
     else:
         completed_topic_ids = []
 
