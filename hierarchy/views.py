@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import auth, messages
-from django.http import HttpResponse,HttpResponseForbidden,JsonResponse, HttpResponseBadRequest,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseForbidden,JsonResponse, HttpResponseBadRequest,HttpResponseRedirect,HttpResponseNotFound
 from django.contrib.auth import authenticate,login,logout,get_user_model,update_session_auth_hash
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -14,87 +14,8 @@ from django.urls import reverse
 import numpy as np
 from django.views.decorators.http import require_POST
 
-def home(request):
-    course=Course.objects.all()
-    return render(request, 'home.html',{'courses':course})
-
-@require_POST
-def save_course(request):
-    course_id = request.POST.get('course_id')
-    if not course_id:
-        return JsonResponse({'success': False, 'message': 'No course_id provided'})
-
-    course = get_object_or_404(Course, id=course_id)
-    user = request.user  # Assuming user is authenticated
-
-    try:
-        # Check if the course is already saved by the user
-        saved = SavedCourse.objects.get(user=user, course=course)
-        saved.delete()  # Remove the saved course
-        return JsonResponse({'success': True, 'message': 'Course removed successfully'})##########3 remmeber change this text
-    except SavedCourse.DoesNotExist:
-        # Create a new SavedCourse instance for the user
-        saved_course = SavedCourse(user=user, course=course)
-        saved_course.save()
-        return JsonResponse({'success': True, 'message': 'Course saved successfully'})
-    except Exception as e:
-        return JsonResponse({'success': False, 'message': str(e)})
-
-@login_required
-def profile(request):
-    user = request.user
-    user_courses = UserCourseProgress.objects.filter(user=user)
-    
-    for user_course in user_courses:
-        user_course.progress_percentage = user_course.get_progress_percentage()
-    course=SavedCourse.objects.filter(user=user)
-    course1=Course.objects.all()
-
-    return render(request, 'profile.html', {'user_courses': user_courses,'courses':course,'course1':course1})
-
-
-@login_required
-def update_profile(request):
-    if request.method == 'POST':
-        user_profile = User.objects.get(username=request.user.username)
-        user_profile.first_name = request.POST.get('first_name', '')
-        user_profile.last_name = request.POST.get('last_name', '')
-        user_profile.email = request.POST.get('email', '')
-
-        if 'image' in request.FILES:
-            user_profile.image = request.FILES['image']
-
-        user_profile.save()
-
-        new_password = request.POST.get('password')
-        if new_password:
-            user_profile.set_password(new_password)
-            user_profile.save()
-            update_session_auth_hash(request, user_profile)
-
-        return redirect('profile')
-
-    return redirect('profile')
-
-
-def course(request, course_name):
-    # Get the course object
-    course = get_object_or_404(Course, name=course_name)
-
-    # Get the first chapter in this course ordered by name
-    first_chapter = Chapter.objects.filter(
-        course=course).order_by('name').first()
-
-    if first_chapter:
-        # Get the first topic in the first chapter ordered by rank
-        first_topic = Topic.objects.filter(
-            chapter=first_chapter).order_by('rank').first()
-
-        if first_topic:
-            return redirect('course_detail', course_name=course_name, topic_name=first_topic.topic_name)
-
-
-def SignupPage(request):
+#################### auth ################################33
+def SignupPage(request): ############## signipPage :)
     if request.method == 'POST':
         uname = request.POST.get('username')
         email = request.POST.get('email')
@@ -118,7 +39,7 @@ def SignupPage(request):
     return render(request, 'signup.html')
 
 
-def login(request):
+def login(request): ######## loginPage after signup :)
     if request.method == 'POST':
         userName = request.POST.get('userName')
         password = request.POST.get('password')
@@ -137,26 +58,111 @@ def login(request):
 
 
 @login_required
-def LogoutPage(request):
+def LogoutPage(request): ###### Logout and go in the home page :)
     logout(request)
     return redirect('home')   
+############################################
 
-def dynamic_page(request):
-
-    topic_Name = request.GET.get('topic_Name')
-    courseName=request.GET.get('course_name')
-    print(courseName)
-
-    course=get_object_or_404(Course,name=courseName)
-
-    # Get the topic object based on the topic_id
-    topic = get_object_or_404(Topic, topic_name=topic_Name,course=course)
-
-    # Render the dynamic.html template with the topic data
-    return render(request, 'dynamic.html', {'topic': topic})
+############### home page and profile ######################333
+def home(request): ############## present The Home page :)
+    course=Course.objects.all()
+    return render(request, 'home.html',{'courses':course})
 
 @login_required
-def Dynamic(request):
+def profile(request): ############## present The profile page to the user after login :)
+    user = request.user
+    user_courses = UserCourseProgress.objects.filter(user=user)
+    
+    for user_course in user_courses:
+        user_course.progress_percentage = user_course.get_progress_percentage()
+    course=SavedCourse.objects.filter(user=user)
+    course1=Course.objects.all()
+
+    return render(request, 'profile.html', {'user_courses': user_courses,'courses':course,'course1':course1})
+######################################################################3
+
+###################### Course Page #######################33
+
+def course(request, course_name): ##### in the page course when click the Open Course :)
+    # Get the course object
+    course = get_object_or_404(Course, name=course_name)
+
+    # Get the first chapter in this course ordered by name
+    first_chapter = Chapter.objects.filter(
+        course=course).order_by('name').first()
+
+    if first_chapter:
+        # Get the first topic in the first chapter ordered by rank
+        first_topic = Topic.objects.filter(
+            chapter=first_chapter).order_by('rank').first()
+
+        if first_topic:
+            return redirect('course_detail', course_name=course_name, topic_name=first_topic.topic_name)
+
+
+@login_required
+def course_detail(request, course_name, topic_name): ##### present the course Page :)
+    course = get_object_or_404(Course, name=course_name)
+    chapters = Chapter.objects.filter(course=course)
+    topics = Topic.objects.filter(course=course).order_by('chapter', 'rank')
+    topic = get_object_or_404(Topic, course=course, topic_name=topic_name)
+
+    previous_topic = None
+    next_topic = None
+
+    for i, t in enumerate(topics):
+        if t == topic:
+            if i > 0:
+                previous_topic = topics[i - 1]
+            if i < len(topics) - 1:
+                next_topic = topics[i + 1]
+            break
+
+    # Check if the course has any quiz questions
+    has_quiz_questions = QuizQuestion.objects.filter(course=course).exists()
+
+    # Check if the message has been shown for this course
+    user_course_message, created = UserCourseMessage.objects.get_or_create(user=request.user, course=course)
+    show_message = has_quiz_questions and not user_course_message.message_shown
+
+    if request.user.is_authenticated:
+        course_progress, _ = UserCourseProgress.objects.get_or_create(user=request.user, course=course)
+        topic_progress, _ = UserTopicProgress.objects.get_or_create(user=request.user, topic=topic)
+
+        if not topic_progress.completed:
+            topic_progress.completed = True
+            topic_progress.save()
+
+            # Update course progress after marking a topic as completed
+            course_progress.update_progress()
+
+        completed_topic_ids = UserTopicProgress.objects.filter(
+            user=request.user,
+            topic__course=course,
+            completed=True
+        ).values_list('topic_id', flat=True)
+    else:
+        completed_topic_ids = []
+
+    return render(request, 'base1.html', {
+        'course1': course_name,
+        'chapters': chapters,
+        'topics': topics,
+        'top': topic,
+        'previous_top': previous_topic,
+        'next_top': next_topic,
+        'progress_percentage': course_progress.get_progress_percentage() if request.user.is_authenticated else 0,
+        'completed_topic_ids': completed_topic_ids,
+        'show_message': show_message,  # Pass the show_message flag to the template
+        'course_name': course_name
+    })
+
+########################################################
+
+
+########## Dynamic page and form to add course ##################
+@login_required
+def Dynamic(request): ######## this is dynamic if the request is get build the Form html to add course if Post then save the info of this course  :)
     if request.method == 'POST':
         course_name = request.POST.get('Course-Name:')
         chapter_number = request.POST.get('Chapter-Number')
@@ -191,7 +197,24 @@ def Dynamic(request):
 
     return render(request, 'Form.html',{'course':course,'chapter':chapter}) 
 
-def fetch_chapters(request):
+def dynamic_page(request): ##### Dynamic Html after fill the form then render the html to complete content course  :)
+
+    topic_Name = request.GET.get('topic_Name')
+    courseName=request.GET.get('course_name')
+    course=get_object_or_404(Course,name=courseName)
+
+    # Get the topic object based on the topic_id
+    topic = get_object_or_404(Topic, topic_name=topic_Name,course=course)
+
+    # Render the dynamic.html template with the topic data
+    return render(request, 'dynamic.html', {'topic': topic})
+
+################################################################
+
+
+########## API to get chapter and course #################
+
+def fetch_chapters(request):####### Get specifc chapter to this course  :)
     if request.method == "GET" :
         course_name = request.GET.get("course")
         print(course_name)
@@ -200,7 +223,7 @@ def fetch_chapters(request):
             return JsonResponse({"chapters": list(chapters)})
     return JsonResponse({"error": "Invalid request"})
 
-def fetch_topics(request):
+def fetch_topics(request):#######3 Get specifc Topics of this chapter and this course   :)
     course_name = request.GET.get('course')
     chapter_number = request.GET.get('chapter')
 
@@ -209,17 +232,22 @@ def fetch_topics(request):
 
     return JsonResponse({'topics': list(topics)})
 
+#############################################
 
-def Edit_course(request):
+######### Form Edit and delete Course ################
+def Edit_course(request): ######## render Edit Form Course  :)
     course=Course.objects.all()
     return render(request,'Edit.html',{'courses':course})
 
-def Del_course(request):
-    course=Course.objects.all()
+def Del_course(request):####### render Delete Form Course   :)
+    course=Course.objects.all() 
     return render(request,'Delete.html',{'courses':course})
 
+############################################
 
-def delete_course_chapter_topic(request):
+####### change the html or name of course topic ...ect and update code html in dynamic ###############333
+
+def delete_course_chapter_topic(request): ######## after Delete.html then remove course or chapter or topic :)
     if request.method == 'POST':
         course_name = request.POST.get('Course-Name')
         chapter_name = request.POST.get('Chapter-Number')
@@ -238,7 +266,7 @@ def delete_course_chapter_topic(request):
         return redirect('profile')
 
 
-def update_course_chapter_topic(request):
+def update_course_chapter_topic(request):######3 Edit Course ---> Change here :)
     if request.method == 'POST':
         button_clicked = request.POST.get('button_clicked')
 
@@ -292,10 +320,7 @@ def update_course_chapter_topic(request):
     return JsonResponse({'error': 'Invalid method'}, status=405)
 
 
-
-
-
-def update_code_html(request, topic_id):
+def update_code_html(request, topic_id):  ### after dynamic.html save the contet html of the topic :)
     if request.method == 'POST':
         try:
             topic = Topic.objects.get(pk=topic_id)
@@ -308,73 +333,82 @@ def update_code_html(request, topic_id):
             return JsonResponse({'success': False, 'error': 'Topic not found.'}, status=404)
     return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
 
-@login_required
-def course_detail(request, course_name, topic_name):
-    course = get_object_or_404(Course, name=course_name)
-    chapters = Chapter.objects.filter(course=course)
-    topics = Topic.objects.filter(course=course).order_by('chapter', 'rank')
-    topic = get_object_or_404(Topic, course=course, topic_name=topic_name)
+@require_POST
+def save_course(request):######### save course when click in the image saved course and present in the profile :)
+    course_id = request.POST.get('course_id')
+    if not course_id:
+        return JsonResponse({'success': False, 'message': 'No course_id provided'})
 
-    previous_topic = None
-    next_topic = None
+    course = get_object_or_404(Course, id=course_id)
+    user = request.user  # Assuming user is authenticated
 
-    for i, t in enumerate(topics):
-        if t == topic:
-            if i > 0:
-                previous_topic = topics[i - 1]
-            if i < len(topics) - 1:
-                next_topic = topics[i + 1]
-            break
-
-    if request.user.is_authenticated:
-        course_progress, _ = UserCourseProgress.objects.get_or_create(user=request.user, course=course)
-        topic_progress, _ = UserTopicProgress.objects.get_or_create(user=request.user, topic=topic)
-
-        if not topic_progress.completed:
-            topic_progress.completed = True
-            topic_progress.save()
-
-            # Update course progress after marking a topic as completed
-            course_progress.update_progress()
-
-        completed_topic_ids = UserTopicProgress.objects.filter(
-            user=request.user,
-            topic__course=course,
-            completed=True
-        ).values_list('topic_id', flat=True)
-    else:
-        completed_topic_ids = []
-
-    return render(request, 'base1.html', {
-        'course1': course_name,
-        'chapters': chapters,
-        'topics': topics,
-        'top': topic,
-        'previous_top': previous_topic,
-        'next_top': next_topic,
-        'progress_percentage': course_progress.get_progress_percentage() if request.user.is_authenticated else 0,
-        'completed_topic_ids': completed_topic_ids
-    })
-
-import sys
-def dynamic_quiz(request):
     try:
-        course = Course.objects.get(name='Python')
-        topics = Topic.objects.filter(course=course)
-        return render(request, 'EnterQuiz.html', {'topics': topics, 'course_name': 'Python'})
-    except Course.DoesNotExist:
-        return render(request, 'EnterQuiz.html', {'error': f'Course "{'Python'}" does not exist.'})
+        # Check if the course is already saved by the user
+        saved = SavedCourse.objects.get(user=user, course=course)
+        saved.delete()  # Remove the saved course
+        return JsonResponse({'success': True, 'message': 'Course removed successfully'})##########3 remmeber change this text
+    except SavedCourse.DoesNotExist:
+        # Create a new SavedCourse instance for the user
+        saved_course = SavedCourse(user=user, course=course)
+        saved_course.save()
+        return JsonResponse({'success': True, 'message': 'Course saved successfully'})
     except Exception as e:
-        print(f"An unexpected error occurred: {e}", file=sys.stderr)
+        return JsonResponse({'success': False, 'message': str(e)})
+
+@login_required
+def update_profile(request): ##### update the info about the user profile :)
+    if request.method == 'POST':
+        user_profile = User.objects.get(username=request.user.username)
+        user_profile.first_name = request.POST.get('first_name', '')
+        user_profile.last_name = request.POST.get('last_name', '')
+        user_profile.email = request.POST.get('email', '')
+
+        if 'image' in request.FILES:
+            user_profile.image = request.FILES['image']
+
+        user_profile.save()
+
+        new_password = request.POST.get('password')
+        if new_password:
+            user_profile.set_password(new_password)
+            user_profile.save()
+            update_session_auth_hash(request, user_profile)
+
+        return redirect('profile')
+
+    return redirect('profile')
+##########################################################################
+
+######### Dynamic page quiz and save the quiz ####################### -------> we need change here
+
+
+def dynamic_quiz(request, course=None): ### render the EnterQuiz.html and show the form to this quiz :)
+    course_name = request.GET.get('course')
+
+    if not course and not course_name:
+        return HttpResponseBadRequest("Course name is required.")  # Return 400 if course name is missing
+
+    if not course_name:
+        course1 = get_object_or_404(Course, name=course)  # Return 400 if course name is missing
+    else:
+        course1 = get_object_or_404(Course, name=course_name)
+
+    try:
+        topics = Topic.objects.filter(course=course1)  # Fetch the topics related to the course
+
+        return render(request, 'EnterQuiz.html', {'topics': topics, 'course_name': course1})  # Render the template with the topics
+    except Course.DoesNotExist:
+        return render(request, 'EnterQuiz.html', {'error': f'Course "{course_name}" does not exist.'})  # Handle course not found
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
         return render(request, 'EnterQuiz.html', {'error': 'An unexpected error occurred.'})
         
 
-
 @csrf_exempt
-def save_quiz(request):
+def save_quiz(request): ##### save this quiz after add   :)
     if request.method == "POST":
         try:
-            course_name = 'Python'
+            course_name = request.POST.get('Course_name')
             question_number = request.POST.get('question_number')
             question_mark = request.POST.get('question_mark')
             question_topics = request.POST.getlist('question_topics')
@@ -384,8 +418,6 @@ def save_quiz(request):
 
             # Split the correct_answers string into a list
             correct_answers_list = correct_answers.split(',')
-
-            print("Received correct answers:", correct_answers_list)
 
             # Ensure the correct_answers list has the expected number of items
             if len(correct_answers_list) < question_sections_count:
@@ -420,41 +452,46 @@ def save_quiz(request):
                 options = request.POST.getlist(f'question_section_{i + 1}_options')
                 for option_text in options:
                     QuestionOption.objects.create(section=question_section, option_text=option_text, option_id=f'{i + 1}{options.index(option_text) + 1}')
-
-            return redirect('EnterQuiz')
+            # Return success response with course_name
+            return JsonResponse({'success': True, 'course_name': course_name})
 
         except Exception as e:
             print("Error:", e)
-            return redirect('EnterQuiz')  # Redirect to an appropriate error page or display an error message
+            return JsonResponse({'success': False, 'error_message': 'Error saving quiz'})
+
     else:
-        return redirect('EnterQuiz')
+        return JsonResponse({'success': False, 'error_message': 'Invalid request method'})
+    
+########################################################
 
-
-def quiz(request):
-    course = get_object_or_404(Course, name='Python')
+################ Page Quastion and return the number of chapter ---> Recomend 1 
+@login_required
+def quiz(request): ######## Show the quiz of the course to each user 
+    course_name = request.GET.get('course')
+    course = get_object_or_404(Course, name=course_name)
     current_question_number = int(request.GET.get('question_number', 1))
-    quiz_question = QuizQuestion.objects.filter(course=course, question_number=current_question_number).first()
+    
+    try:
+        quiz_question = QuizQuestion.objects.get(course=course, question_number=current_question_number)
+    except QuizQuestion.DoesNotExist:
+        return HttpResponseNotFound("Question not found")
+
+    # Mark the message as shown for this course
+    user_course_message, created = UserCourseMessage.objects.get_or_create(user=request.user, course=course)
+    if not user_course_message.message_shown:
+        user_course_message.message_shown = True
+        user_course_message.save()
+
     next_question_number = current_question_number + 1
     next_question = QuizQuestion.objects.filter(course=course, question_number=next_question_number).first()
 
-    if quiz_question:
-        return render(request, 'QuestionPage.html', {
-            'quiz': quiz_question,
-            'next_question_number': next_question_number if next_question else None
-        })
-    else:
-        chapter_to_review = calculate_course_matrix(request.user, course.name)
-        
-        if chapter_to_review:
-            return redirect('course', course_name=course.name)
-        else:
-            return redirect('course', course_name=course.name)
-        
-        
-
+    return render(request, 'QuestionPage.html', {
+        'quiz': quiz_question,
+        'next_question_number': next_question_number if next_question else None
+    })
 
 @csrf_exempt
-def check_answer(request):
+def check_answer(request): #### check_answer of each user after answer the quastion
     if request.method == 'POST':
         course_id = request.POST.get('course_id')
         course = get_object_or_404(Course, id=course_id)
@@ -480,73 +517,68 @@ def check_answer(request):
                     is_correct=is_correct
                 )
 
-            next_question_number = quiz.question_number + 1
-            next_question = QuizQuestion.objects.filter(course_id=course_id, question_number=next_question_number).first()
+            # Find the next question with a higher question_number
+            next_question = QuizQuestion.objects.filter(
+                course_id=course_id,
+                question_number__gt=quiz.question_number
+            ).order_by('question_number').first()
 
             if next_question:
                 next_question_url = request.build_absolute_uri(
-                    reverse('quiz') + f'?question_number={next_question_number}')
+                    reverse('quiz') + f'?course={course.name}&question_number={next_question.question_number}'
+                )
                 return JsonResponse({'status': 'Success', 'results': results, 'next_question_url': next_question_url})
-            else:
-                chapter_to_review = calculate_course_matrix(request.user, course.name)
-                if chapter_to_review:
-                    message = f"You should review Chapter {chapter_to_review}."
-                else:
-                    message = "Congratulations! You've done well in all chapters."
-                return JsonResponse({'status': 'Success', 'results': results, 'message': message})
+            else:########### recomend 1
+
+                chapters = Chapter.objects.filter(course=course).order_by('id')
+                questions = QuizQuestion.objects.filter(course=course).order_by('question_number')
+
+                num_chapters = chapters.count()
+                num_questions = questions.count()
+
+                matrix = np.zeros((num_chapters, num_questions), dtype=int)
+                chapter_index_map = {chapter.id: idx for idx, chapter in enumerate(chapters)}
+                row_sums = np.zeros(num_chapters, dtype=int)
+
+                for question_idx, question in enumerate(questions):
+                    topics = question.topics.all()
+                    for topic in topics:
+                        chapter_id = topic.chapter_id
+                        if chapter_id in chapter_index_map:
+                            chapter_idx = chapter_index_map[chapter_id]
+                            matrix[chapter_idx][question_idx] += 1
+
+                for chapter_idx in range(num_chapters):
+                    row_sums[chapter_idx] = np.sum(matrix[chapter_idx])
+
+                scores_array = []
+                for question in questions:
+                    sections = QuestionSection.objects.filter(question=question)
+                    num_sections = sections.count()
+
+                    correct_answers = UserAnswer.objects.filter(user=request.user, section__in=sections, is_correct=True).count()
+                    score_fraction = correct_answers / num_sections if num_sections > 0 else 0
+                    scores_array.append(score_fraction)
+
+                scores_array = np.array(scores_array)
+                chapter_scores = np.dot(matrix, scores_array)
+
+                min_score = np.min(chapter_scores)
+                max_score = np.max(chapter_scores)
+                normalized = (chapter_scores - min_score) / (max_score - min_score)
+
+                total_row_sum = np.sum(row_sums)
+                threshold = row_sums / total_row_sum
+
+                for i in range(len(threshold)):
+                    if normalized[i] <= threshold[i]:
+                        message = f"You should review Chapter {i+1}."
+                        chapter_url = reverse('course', kwargs={'course_name': course.name}) + f'#{i+1}'
+                        break
+
+                return JsonResponse({'status': 'Success', 'results': results, 'course_page_url': chapter_url, 'message': message})
 
         except QuizQuestion.DoesNotExist:
             return JsonResponse({'error': 'Question not found'}, status=404)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
-
-
-
-def calculate_course_matrix(user, course_name):
-    print(course_name)
-    course = get_object_or_404(Course, name=course_name)
-
-    chapters = Chapter.objects.filter(course=course).order_by('id')
-    questions = QuizQuestion.objects.filter(course=course).order_by('question_number')
-
-    num_chapters = chapters.count()
-    num_questions = questions.count()
-
-    matrix = np.zeros((num_chapters, num_questions), dtype=int)
-    chapter_index_map = {chapter.id: idx for idx, chapter in enumerate(chapters)}
-    row_sums = np.zeros(num_chapters, dtype=int)
-
-    for question_idx, question in enumerate(questions):
-        topics = question.topics.all()
-        for topic in topics:
-            chapter_id = topic.chapter_id
-            if chapter_id in chapter_index_map:
-                chapter_idx = chapter_index_map[chapter_id]
-                matrix[chapter_idx][question_idx] += 1
-
-    for chapter_idx in range(num_chapters):
-        row_sums[chapter_idx] = np.sum(matrix[chapter_idx])
-
-    scores_array = []
-    for question in questions:
-        sections = QuestionSection.objects.filter(question=question)
-        num_sections = sections.count()
-
-        correct_answers = UserAnswer.objects.filter(user=user, section__in=sections, is_correct=True).count()
-        score_fraction = correct_answers / num_sections if num_sections > 0 else 0
-        scores_array.append(score_fraction)
-
-    scores_array = np.array(scores_array)
-    chapter_scores = np.dot(matrix, scores_array)
-
-    min_score = np.min(chapter_scores)
-    max_score = np.max(chapter_scores)
-    normalized = (chapter_scores - min_score) / (max_score - min_score)
-
-    total_row_sum = np.sum(row_sums)
-    threshold = row_sums / total_row_sum
-
-    for i in range(len(threshold)):
-        if normalized[i] < threshold[i]:
-            return i + 1  # Chapter indices are 1-based
-
-    return None
+##################################################

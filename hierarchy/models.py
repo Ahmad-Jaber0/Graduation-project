@@ -82,6 +82,17 @@ class SavedCourse(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.course.name}"
+    
+
+
+class UserCourseMessage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    message_shown = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.course.name} - {'Shown' if self.message_shown else 'Not Shown'}"
+
 
 @receiver(pre_save, sender=Topic)
 def update_topic_ranks(sender, instance, **kwargs):

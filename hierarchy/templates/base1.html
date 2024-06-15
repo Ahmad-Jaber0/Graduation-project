@@ -24,6 +24,7 @@
 
   <body>
     {% if not previous_top%}
+    {% if show_message %}
     <div class="message" id="message">
       <div>
           <center>
@@ -40,7 +41,7 @@
       </div>
       <div>
           <center>
-              <a href="{% url 'quiz' %}">
+              <a href="{% url 'quiz' %}?course={{ course_name }}">
                   <button id="start-quiz-button">Start Quiz</button>
               </a>
               <span> </span>
@@ -48,6 +49,8 @@
           </center>
       </div>
   </div>
+{% endif %}
+
 
 {% endif%}
     <!--navbar-->
@@ -132,25 +135,13 @@
       menu_toggle.addEventListener('click', () => {
         menu_toggle.classList.toggle('is-active');
         sidebar.classList.toggle('is-active');
-        
-        function closeMessage(){
-          const message = document.querySelector(".message");
-          const noThanksButton = document.getElementById("no-thanks-button");
-      
-          // Check if both elements exist
-          if (message && noThanksButton) {
-              // Hide the message container
-              message.style.display = "none";
-              
-              // Change the color of the 'No Thanks' button
-              noThanksButton.style.color = "red";
-          } else {
-              console.error("Element(s) not found: Message or 'No Thanks' button.");
-          }
+          function closeMessage() {
+              document.getElementById('message').style.display = 'none';
           }
     
       });
     </script>
+
     <section class = "footerbody">
       <footer class="footer">
         <div class="waves">

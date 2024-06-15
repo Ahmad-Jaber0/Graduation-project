@@ -161,7 +161,6 @@
                         <div class="label"><a href="{% url 'edit'%}"><button>Edit</button></a></div>
                     </div>
                     <hr>
-    
                     <div class="label-line">
                         <div class="label"><i class="fas fa-trash-alt"></i> &nbsp; Delete a Course Page</div>
                         <div class="label"><a href="{% url 'Del'%}"><button>Delete</button></a></div>
@@ -169,7 +168,7 @@
                     <hr>
                     <div class="label-line">
                         <div class="label"><i class="fas fa-question"></i> &nbsp; Add a Quiz Question/s</div>
-                        <select id="Course-Name" name="Course-Name" required>
+                        <select id="Course-Name" name="Course-Name" required onchange="loadQuiz(this.value)">
                             <option value="" disabled selected>Select an option</option>
                             {% for course in course1 %}
                             <option value="{{ course.name }}">{{ course.name }}</option>
@@ -275,9 +274,14 @@
     </script>
 
     <script>
-        
-        
-    </script>
+        function loadQuiz(courseName) {
+            if (courseName) {
+                // Adjusted URL to match your Django URL configuration
+                window.location.href = `/EnterQuiz/?course=${courseName}`;
+            }
+        }
+        </script>
+    
     
 
 </body>

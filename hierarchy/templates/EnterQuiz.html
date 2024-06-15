@@ -44,16 +44,8 @@
 
     <form id="quizForm" method="POST" action="{% url 'save_quiz' %}">
         {% csrf_token %}
-        <div class="label-line">
-            <div class="label"><i class="fas fa-question"></i> &nbsp; Add a Quiz Question/s</div>
-            <select id="Course-Name" name="Course-Name" required>
-                <option value="" disabled selected>Select an option</option>
-                {% for course in courses %}
-                <option value="{{ course.name }}">{{ course.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
+        <input type="hidden" id="Course-Name" name="Course_name" value="{{ course_name }}">
+        
         <div class="message" id="message">
             <!-- Form fields here -->
             <div class="label-and-feild-container"> 
@@ -67,7 +59,9 @@
             <div class="label-and-feild-container"> 
                 <label for="QuestionTopics"><b>Question topics:</b></label>
                 <select id="QuestionTopics" name="question_topics" required multiple>
-                    <!-- Topics will be dynamically loaded here -->
+                    {% for topic in topics %}
+                    <option value="{{ topic.id }}">{{ topic.topic_name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="label-and-feild-container"> 
@@ -82,7 +76,7 @@
                 </center>
             </div>
         </div>
-
+    
         <div id="editor" class="editor" contenteditable></div>
         <div class="savebtn-cancelbtn-container">
             <input type="hidden" id="correctAnswers" name="correct_answers[]">
@@ -90,6 +84,8 @@
             <button type="submit" class="beautiful-button" id="generate-html">Save and return</button>
         </div>
     </form>
+    
+
 
     <script>
         // Combined variable declarations
@@ -291,38 +287,50 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
-            $('#Course-Name').change(function() {
-                var selectedCourse = $(this).val();
-
-                $.ajax({
-                    url: "{% url 'EnterQuiz' %}",
-                    type: "POST",
-                    data: {
-                        'course_name': selectedCourse,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            // Clear previous topics
-                            $('#QuestionTopics').empty();
-
-                            // Add new topics to the dropdown
-                            response.topics.forEach(function(topic) {
-                                $('#QuestionTopics').append('<option value="' + topic.id + '">' + topic.name + '</option>');
-                            });
-                        } else {
-                            alert("Error: " + response.error);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert("An error occurred: " + error);
+        document.addEventListener("DOMContentLoaded", function() {
+            const quizForm = document.getElementById('quizForm');
+    
+            quizForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                // Serialize form data
+                const formData = new FormData(quizForm);
+                const saveQuizUrl = "{% url 'save_quiz' %}";
+    
+                // Send POST request via AJAX
+                fetch(saveQuizUrl, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
                     }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Redirect to EnterQuiz view with course_name
+                        const courseName = data.course_name;
+                        window.location.href = `/EnterQuiz/?course=${courseName}`;
+                    } else {
+                        // Handle error case
+                        console.error('Error saving quiz:', data.error_message);
+                        alert('Error saving quiz. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error saving quiz. Please try again.');
                 });
+                
             });
         });
-
-        // Your existing JavaScript functions here...
     </script>
+    
+        
 </body>
 </html>

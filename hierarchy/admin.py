@@ -38,6 +38,9 @@ class UserTopicProgressAmin(admin.ModelAdmin):
 class UserCourseProgressAdmin(admin.ModelAdmin):
     list_display=['user','course','progress']
 
+class UserCourseMessageAdmin(admin.ModelAdmin):
+    list_display=['user','course','message_shown']
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Chapter, ChapterAdmin)
@@ -49,4 +52,5 @@ admin.site.register(QuestionOption,QuestionOptionAdmin)
 
 admin.site.register(UserTopicProgress,UserTopicProgressAmin)
 admin.site.register(UserCourseProgress,UserCourseProgressAdmin)
+admin.site.register(UserCourseMessage,UserCourseMessageAdmin)
 
