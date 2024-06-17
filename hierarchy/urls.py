@@ -1,6 +1,8 @@
-from django.urls import path
+from django.urls import path,re_path
 from . import views
 from django.contrib.auth.views import LogoutView
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('',views.home,name='home'),
@@ -16,7 +18,8 @@ path('<str:course_name>/<path:topic_name>/', views.course_detail, name='course_d
     path('fetch_topics/', views.fetch_topics, name='fetch_topics'),
     path('profile/',views.profile,name='profile'),
     path('update_profile/', views.update_profile, name='update_profile'),
-    path('EnterQuiz/',views.dynamic_quiz,name='EnterQuiz'),
+    #path('EnterQuiz/',views.dynamic_quiz,name='EnterQuiz'),
+    re_path(r'^EnterQuiz/$', views.dynamic_quiz, name='EnterQuiz'),
     path('save_quiz/', views.save_quiz, name='save_quiz'),
     path('quiz/', views.quiz,name='quiz'),
     path('check_answer/', views.check_answer, name='check_answer'),
@@ -26,4 +29,4 @@ path('<str:course_name>/<path:topic_name>/', views.course_detail, name='course_d
     path('delete/', views.delete_course_chapter_topic, name='delete_course_chapter_topic'),
     path('save_course/', views.save_course, name='save_course'),
 
-] 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

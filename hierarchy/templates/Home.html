@@ -16,16 +16,29 @@
         <a href="{% url 'home'%}">Home</a>
         <a href="{% url 'home' %}#courses">Courses</a>
         <a href="{% url 'home' %}#services">Services</a>
-
-        <a href="{% url 'home' %}#aboute">About</a>
+        <a href="{% url 'home' %}#about">About</a>
         <a href="{% url 'home' %}#contact">Contact</a>
     </nav>
-    <nav class = "navigation" id = "header-icons">
-        <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
-        <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
-        <a href="{% url 'logout_page' %}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
+    <nav class="navigation" id="header-icons">
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="profile-link">
+            <div class="profile-icon">
+                <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}" alt="Profile Image">
+            </div>
+        </a>
+        {% else %}
+        <a href="{% url 'login' %}">
+            <i class="fa fa-right-to-bracket fa-lg"></i>
+        </a>
+        {% endif %}
+        <a href="{% url 'logout_page' %}">
+            <i class="fa-solid fa-right-from-bracket fa-lg"></i>
+        </a>
     </nav>
 </header>
+
+
+
 
 
 <section class="WelcomeSection" style="background-image: url('{% static 'images/main.png' %}');">
@@ -127,9 +140,9 @@
                 <button class="save_button" onclick="saveCourse(this)">
                     <img src="{% static 'images/icons8-save-32.png' %}">
                 </button>
-
+    
                 <div class="CourseIcon">
-                    <img src="{% static 'images/c++icon.png' %}" loading="lazy">
+                    <img src="{{ course.profile_image.url }}" alt="Course Image" loading="lazy">
                 </div>
                 <div class="rating">
                     <!-- Rating input elements -->
@@ -155,6 +168,7 @@
         </div>
         {% endfor %}
     </div>
+    
 </section>
 
 

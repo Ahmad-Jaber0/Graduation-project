@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect,get_object_or_404
-from django.contrib import auth, messages
-from django.http import HttpResponse,HttpResponseForbidden,JsonResponse, HttpResponseBadRequest,HttpResponseRedirect,HttpResponseNotFound
-from django.contrib.auth import authenticate,login,logout,get_user_model,update_session_auth_hash
+from django.contrib import auth
+from django.http import HttpResponse,JsonResponse, HttpResponseBadRequest,HttpResponseNotFound
+from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 from .models import *
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_http_methods
 import json
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-
 from django.db.models import Min
 from django.urls import reverse
 import numpy as np
@@ -38,7 +36,6 @@ def SignupPage(request): ############## signipPage :)
             
     return render(request, 'signup.html')
 
-
 def login(request): ######## loginPage after signup :)
     if request.method == 'POST':
         userName = request.POST.get('userName')
@@ -55,7 +52,6 @@ def login(request): ######## loginPage after signup :)
 
     else:
         return render(request, 'login.html')
-
 
 @login_required
 def LogoutPage(request): ###### Logout and go in the home page :)
@@ -79,10 +75,9 @@ def profile(request): ############## present The profile page to the user after 
     course1=Course.objects.all()
 
     return render(request, 'profile.html', {'user_courses': user_courses,'courses':course,'course1':course1})
-######################################################################3
+######################################################################
 
-###################### Course Page #######################33
-
+###################### Course Page #######################
 def course(request, course_name): ##### in the page course when click the Open Course :)
     # Get the course object
     course = get_object_or_404(Course, name=course_name)
@@ -98,7 +93,6 @@ def course(request, course_name): ##### in the page course when click the Open C
 
         if first_topic:
             return redirect('course_detail', course_name=course_name, topic_name=first_topic.topic_name)
-
 
 @login_required
 def course_detail(request, course_name, topic_name): ##### present the course Page :)
@@ -156,9 +150,7 @@ def course_detail(request, course_name, topic_name): ##### present the course Pa
         'show_message': show_message,  # Pass the show_message flag to the template
         'course_name': course_name
     })
-
 ########################################################
-
 
 ########## Dynamic page and form to add course ##################
 @login_required
@@ -208,12 +200,9 @@ def dynamic_page(request): ##### Dynamic Html after fill the form then render th
 
     # Render the dynamic.html template with the topic data
     return render(request, 'dynamic.html', {'topic': topic})
-
 ################################################################
 
-
 ########## API to get chapter and course #################
-
 def fetch_chapters(request):####### Get specifc chapter to this course  :)
     if request.method == "GET" :
         course_name = request.GET.get("course")
@@ -231,7 +220,6 @@ def fetch_topics(request):#######3 Get specifc Topics of this chapter and this c
     topics = Topic.objects.filter(course__name=course_name, chapter__name=chapter_number).values('id', 'topic_name')
 
     return JsonResponse({'topics': list(topics)})
-
 #############################################
 
 ######### Form Edit and delete Course ################
@@ -242,11 +230,9 @@ def Edit_course(request): ######## render Edit Form Course  :)
 def Del_course(request):####### render Delete Form Course   :)
     course=Course.objects.all() 
     return render(request,'Delete.html',{'courses':course})
-
 ############################################
 
 ####### change the html or name of course topic ...ect and update code html in dynamic ###############333
-
 def delete_course_chapter_topic(request): ######## after Delete.html then remove course or chapter or topic :)
     if request.method == 'POST':
         course_name = request.POST.get('Course-Name')
@@ -355,33 +341,44 @@ def save_course(request):######### save course when click in the image saved cou
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
 
+from django.contrib import messages
 @login_required
-def update_profile(request): ##### update the info about the user profile :)
+def update_profile(request):
     if request.method == 'POST':
-        user_profile = User.objects.get(username=request.user.username)
+        user_profile = request.user
+
+        # Update basic profile information
         user_profile.first_name = request.POST.get('first_name', '')
         user_profile.last_name = request.POST.get('last_name', '')
         user_profile.email = request.POST.get('email', '')
+        user_profile.bio = request.POST.get('bio', '')
+        user_profile.phone_number = request.POST.get('phone_number', '')
 
+        # Handle profile image upload
         if 'image' in request.FILES:
-            user_profile.image = request.FILES['image']
+            user_profile.profile_image = request.FILES['image']
 
-        user_profile.save()
-
+        # Update password if provided
         new_password = request.POST.get('password')
         if new_password:
             user_profile.set_password(new_password)
-            user_profile.save()
-            update_session_auth_hash(request, user_profile)
+            update_session_auth_hash(request, user_profile)  # Update session with new password
 
+        try:
+            user_profile.full_clean()  # Validate fields (optional)
+            user_profile.save()
+            messages.success(request, "Profile updated successfully.")
+        except Exception as e:
+            messages.error(request, f"Failed to update profile: {str(e)}")
+        
         return redirect('profile')
 
-    return redirect('profile')
+    return render(request, 'profile.html')
+
 ##########################################################################
 
 ######### Dynamic page quiz and save the quiz ####################### -------> we need change here
-
-
+from django.db.models import Q
 def dynamic_quiz(request, course=None): ### render the EnterQuiz.html and show the form to this quiz :)
     course_name = request.GET.get('course')
 
@@ -389,9 +386,9 @@ def dynamic_quiz(request, course=None): ### render the EnterQuiz.html and show t
         return HttpResponseBadRequest("Course name is required.")  # Return 400 if course name is missing
 
     if not course_name:
-        course1 = get_object_or_404(Course, name=course)  # Return 400 if course name is missing
+        course1 = get_object_or_404(Course, Q(name__iexact=course))  # Return 400 if course name is missing
     else:
-        course1 = get_object_or_404(Course, name=course_name)
+        course1 = get_object_or_404(Course, Q(name__iexact=course_name))
 
     try:
         topics = Topic.objects.filter(course=course1)  # Fetch the topics related to the course
@@ -461,17 +458,27 @@ def save_quiz(request): ##### save this quiz after add   :)
 
     else:
         return JsonResponse({'success': False, 'error_message': 'Invalid request method'})
-    
 ########################################################
 
 ################ Page Quastion and return the number of chapter ---> Recomend 1 
+import urllib.parse
 @login_required
-def quiz(request): ######## Show the quiz of the course to each user 
+def quiz(request):
+    # Get and decode the course name
     course_name = request.GET.get('course')
-    course = get_object_or_404(Course, name=course_name)
+    if not course_name:
+        return HttpResponseNotFound("Course name not provided")
+
+    decoded_course_name = urllib.parse.unquote(course_name)  # Decode URL-encoded course name
+
+    # Fetch the course using the decoded course name
+    course = get_object_or_404(Course, name=decoded_course_name)
+
+    # Get the current question number, default to 1 if not provided
     current_question_number = int(request.GET.get('question_number', 1))
-    
+
     try:
+        # Get the current quiz question
         quiz_question = QuizQuestion.objects.get(course=course, question_number=current_question_number)
     except QuizQuestion.DoesNotExist:
         return HttpResponseNotFound("Question not found")
@@ -482,6 +489,7 @@ def quiz(request): ######## Show the quiz of the course to each user
         user_course_message.message_shown = True
         user_course_message.save()
 
+    # Determine the next question number
     next_question_number = current_question_number + 1
     next_question = QuizQuestion.objects.filter(course=course, question_number=next_question_number).first()
 
@@ -491,17 +499,20 @@ def quiz(request): ######## Show the quiz of the course to each user
     })
 
 @csrf_exempt
-def check_answer(request): #### check_answer of each user after answer the quastion
+def check_answer(request):
     if request.method == 'POST':
+        # Get course and quiz IDs from POST data
         course_id = request.POST.get('course_id')
         course = get_object_or_404(Course, id=course_id)
         quiz_id = request.POST.get('quiz_id')
         selected_answers = json.loads(request.POST.get('selected_answers', '{}'))
 
         try:
-            quiz = QuizQuestion.objects.get(id=quiz_id, course_id=course_id)
+            # Get the quiz question
+            quiz = get_object_or_404(QuizQuestion, id=quiz_id, course_id=course_id)
             sections = QuestionSection.objects.filter(question=quiz)
 
+            # Evaluate the user's answers
             results = {}
             for section in sections:
                 section_id = str(section.section_number)
@@ -517,7 +528,7 @@ def check_answer(request): #### check_answer of each user after answer the quast
                     is_correct=is_correct
                 )
 
-            # Find the next question with a higher question_number
+            # Find the next question
             next_question = QuizQuestion.objects.filter(
                 course_id=course_id,
                 question_number__gt=quiz.question_number
@@ -525,17 +536,18 @@ def check_answer(request): #### check_answer of each user after answer the quast
 
             if next_question:
                 next_question_url = request.build_absolute_uri(
-                    reverse('quiz') + f'?course={course.name}&question_number={next_question.question_number}'
+                    reverse('quiz') + f'?course={urllib.parse.quote(course.name)}&question_number={next_question.question_number}'
                 )
                 return JsonResponse({'status': 'Success', 'results': results, 'next_question_url': next_question_url})
-            else:########### recomend 1
-
+            else:
+                # Calculate chapter recommendations
                 chapters = Chapter.objects.filter(course=course).order_by('id')
                 questions = QuizQuestion.objects.filter(course=course).order_by('question_number')
 
                 num_chapters = chapters.count()
                 num_questions = questions.count()
 
+                # Initialize the matrix
                 matrix = np.zeros((num_chapters, num_questions), dtype=int)
                 chapter_index_map = {chapter.id: idx for idx, chapter in enumerate(chapters)}
                 row_sums = np.zeros(num_chapters, dtype=int)
@@ -548,6 +560,7 @@ def check_answer(request): #### check_answer of each user after answer the quast
                             chapter_idx = chapter_index_map[chapter_id]
                             matrix[chapter_idx][question_idx] += 1
 
+                # Compute row sums and scores
                 for chapter_idx in range(num_chapters):
                     row_sums[chapter_idx] = np.sum(matrix[chapter_idx])
 
@@ -570,15 +583,19 @@ def check_answer(request): #### check_answer of each user after answer the quast
                 total_row_sum = np.sum(row_sums)
                 threshold = row_sums / total_row_sum
 
+                print(threshold)
+                print(normalized)
+
                 for i in range(len(threshold)):
                     if normalized[i] <= threshold[i]:
-                        message = f"You should review Chapter {i+1}."
+                        message = f"You should review Chapter {i+1}."############# change her
                         chapter_url = reverse('course', kwargs={'course_name': course.name}) + f'#{i+1}'
-                        break
-
-                return JsonResponse({'status': 'Success', 'results': results, 'course_page_url': chapter_url, 'message': message})
+                        return JsonResponse({'status': 'Success', 'results': results, 'course_page_url': chapter_url, 'message': message})
 
         except QuizQuestion.DoesNotExist:
             return JsonResponse({'error': 'Question not found'}, status=404)
+
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
 ##################################################

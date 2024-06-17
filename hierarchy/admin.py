@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'first_name', 'last_name', 'email', 'role','image','id']
+    list_display = ['username', 'first_name', 'last_name', 'email', 'role','profile_image','id']
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['name', 'date', 'instructor', 'id','check_boolean']

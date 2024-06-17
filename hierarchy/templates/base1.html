@@ -41,9 +41,9 @@
       </div>
       <div>
           <center>
-              <a href="{% url 'quiz' %}?course={{ course_name }}">
-                  <button id="start-quiz-button">Start Quiz</button>
-              </a>
+            <a href="{% url 'quiz' %}?course={{ course_name|urlencode }}">
+              <button id="start-quiz-button">Start Quiz</button>
+          </a>
               <span> </span>
               <button id="no-thanks-button" onclick="closeMessage()">No Thanks</button>
           </center>

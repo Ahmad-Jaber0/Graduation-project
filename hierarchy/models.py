@@ -5,7 +5,6 @@ from django.dispatch import receiver
 from django.db.models import F
 
 class User(AbstractUser):
-
     ROLE_CHOICES = [
         ('Manager', 'Manager'),
         ('Team Leader', 'Team Leader'),
@@ -17,13 +16,14 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    image = models.ImageField(default='default.jpg')
+    profile_image = models.ImageField(upload_to='profile_images/', default='profile_images/default.png')
 
 class Course(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField()
     instructor = models.CharField(max_length=255)
     check_boolean = models.BooleanField(null=True, blank=True)
+    profile_image = models.ImageField(upload_to='profile_images/', default='profile_images/default.png')
     def __str__(self):
         return self.name  
 
