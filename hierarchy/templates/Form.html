@@ -27,18 +27,46 @@
     </header>
 
     <main class="content-section">
-    <form class="form-container" id="myForm" method='post'>
+    <form class="form-container" id="myForm" method='post' enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <label for="Course-Name:">Course Name:</label>
             <select id="Course-Name:" name="Course-Name:" required>
                 <option value="" disabled selected>Select an option</option>
-                {% for i in course %}
+                {% for i in courses %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
                 {% endfor %}
                 <option value="other">Other</option>
             </select>
             <input type="text" id="otherInput1" name="otherInput1" class="hidden" placeholder="Enter course name">
+            <div class="form-group hidden" id="courseImageDiv">
+                <br>
+                <label for="courseImage">Course Image:</label>
+                <input type="file" name="courseImage" accept="image/*" id="courseImage">
+            </div>
+            
+            <div class="form-group hidden" id="courseFeaturesDiv">
+                <br>
+                <label for="courseFeatures">Course Features:</label>
+                <hr>
+                <label for="basicProgramming">1. Basic Programming:</label>
+                <input type="number" id="basicProgramming" name="basicProgramming" min="0" max="100" pattern="\d{1,2}|100" placeholder="Enter a number from 0-100">
+                <br>
+                <label for="oop">2. Object Oriented Programming:</label>
+                <input type="number" id="oop" name="oop" min="0" max="100" pattern="\d{1,2}|100" placeholder="Enter a number from 0-100">
+                <br>
+                <label for="algorithms">3. Algorithms:</label>
+                <input type="number" id="algorithms" name="algorithms" min="0" max="100" pattern="\d{1,2}|100" placeholder="Enter a number from 0-100">
+                <br>
+                <label for="backend">4. BackEnd:</label>
+                <input type="number" id="backend" name="backend" min="0" max="100" pattern="\d{1,2}|100" placeholder="Enter a number from 0-100">
+                <br>
+                <label for="frontend">5. FrontEnd:</label>
+                <input type="number" id="frontend" name="frontend" min="0" max="100" pattern="\d{1,2}|100" placeholder="Enter a number from 0-100">
+                <br>
+                <label for="frontendProficiency">6. FrontEnd required proficiency level:</label>
+                <input type="number" id="frontendProficiency" name="frontendProficiency" min="0" max="100" pattern="\d{1,2}|100" placeholder="Enter a number from 0-100">
+            </div>
         </div>
         <div class="form-group">
             <label for="Chapter-Number">Chapter Number</label>
@@ -64,95 +92,124 @@
         <button type="submit" class="submit-button" id="submitButton" disabled>Submit</button>
     </form>
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Course Name change event handler
         document.getElementById("Course-Name:").addEventListener("change", function() {
             var otherInput1 = document.getElementById("otherInput1");
             var ChapterNumber = document.getElementById("Chapter-Number");
             var otherInput2 = document.getElementById("otherInput2");
+            var courseImageDiv = document.getElementById("courseImageDiv");
+            var courseFeaturesDiv = document.getElementById("courseFeaturesDiv");
             var topicList = document.getElementById("topicList");
-            var textInput1 = document.getElementById("textInput1");
-
-
-        
+            var allInputs = courseFeaturesDiv.querySelectorAll("input[type='number']");
+    
+            // Clear previous topics when course changes
+            topicList.innerHTML = "";
+    
             if (this.value === "other") {
                 otherInput1.classList.remove("hidden");
                 otherInput1.setAttribute("required", true);
-                ChapterNumber.disabled = true; // Disable chapter select only when "Other" is selected
+                ChapterNumber.value = "other";
+                ChapterNumber.disabled = true;
                 otherInput2.classList.remove("hidden");
                 otherInput2.setAttribute("required", true);
-                textInput1.classList.add("hidden");
-                topicList.classList.add("hidden");
+                courseImageDiv.classList.remove("hidden");
+                courseFeaturesDiv.classList.remove("hidden");
+                allInputs.forEach(function(input) {
+                    input.setAttribute("required", true);
+                });
             } else {
                 otherInput1.classList.add("hidden");
                 otherInput1.removeAttribute("required");
-                ChapterNumber.disabled = false; // Enable chapter select for other course options
+                ChapterNumber.disabled = false;
                 otherInput2.classList.add("hidden");
                 otherInput2.removeAttribute("required");
-                textInput1.classList.remove("hidden");
-                topicList.classList.remove("hidden");
-        
-                // Fetch chapters for the selected course
-                $.ajax({
-                    type: "GET",
-                    url: "{% url 'fetch_chapters' %}",
-                    data: { course: this.value },
-                    success: function(response) {
-                        // Populate chapters dropdown
-                        var chapterDropdown = document.getElementById("Chapter-Number");
-                        chapterDropdown.innerHTML = ""; // Clear previous options
-                        response.chapters.forEach(function(chapter) {
-                            var option = document.createElement("option");
-                            option.text = chapter;
-                            option.value = chapter;
-                            chapterDropdown.appendChild(option);
-                        });
-                        // Add "Other" option
-                        var otherOption = document.createElement("option");
-                        otherOption.text = "Other";
-                        otherOption.value = "other";
-                        chapterDropdown.appendChild(otherOption);
-        
-                        // If a chapter is already selected, fetch topics for it
-                        if (ChapterNumber.value !== "") {
-                            fetchTopics();
-                        }
-                    },
-                    error: function(xhr, errmsg, err) {
-                        alert('Failed to fetch chapters.');
-                    }
+                courseImageDiv.classList.add("hidden");
+                courseFeaturesDiv.classList.add("hidden");
+                allInputs.forEach(function(input) {
+                    input.removeAttribute("required");
                 });
+                fetchChapters(this.value);
             }
+            validateForm();
         });
-        
+    
+        // Chapter Number change event handler
         document.getElementById("Chapter-Number").addEventListener("change", function() {
             var otherInput2 = document.getElementById("otherInput2");
-        
+    
             if (this.value === "other") {
                 otherInput2.classList.remove("hidden");
                 otherInput2.setAttribute("required", true);
             } else {
                 otherInput2.classList.add("hidden");
                 otherInput2.removeAttribute("required");
+                fetchTopics();
             }
-        
-            // Fetch topics when a chapter is selected
-            fetchTopics();
+            validateForm();
         });
-        
+    
+        // Form input event handler for validation
         document.getElementById("myForm").addEventListener("input", function() {
+            validateForm();
+        });
+    
+        // Validate form function
+        function validateForm() {
+            var form = document.getElementById("myForm");
             var submitButton = document.getElementById("submitButton");
-        
-            if (this.checkValidity()) {
+            var allInputs = document.querySelectorAll("#courseImageDiv input, #courseFeaturesDiv input");
+            var allValid = true;
+    
+            allInputs.forEach(function(input) {
+                if (!input.checkValidity()) {
+                    allValid = false;
+                }
+            });
+    
+            if (form.checkValidity() && allValid) {
                 submitButton.removeAttribute("disabled");
             } else {
                 submitButton.setAttribute("disabled", "disabled");
             }
-        });
-        
+        }
+    
+        // Fetch chapters for the selected course
+        function fetchChapters(courseName) {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'fetch_chapters' %}",
+                data: { course: courseName },
+                success: function(response) {
+                    var chapterDropdown = document.getElementById("Chapter-Number");
+                    chapterDropdown.innerHTML = ""; // Clear previous options
+                    response.chapters.forEach(function(chapter) {
+                        var option = document.createElement("option");
+                        option.text = chapter;
+                        option.value = chapter;
+                        chapterDropdown.appendChild(option);
+                    });
+                    // Add "Other" option
+                    var otherOption = document.createElement("option");
+                    otherOption.text = "Other";
+                    otherOption.value = "other";
+                    chapterDropdown.appendChild(otherOption);
+    
+                    // If a chapter is already selected, fetch topics for it
+                    if (chapterDropdown.value !== "") {
+                        fetchTopics();
+                    }
+                },
+                error: function(xhr, errmsg, err) {
+                    alert('Failed to fetch chapters.');
+                }
+            });
+        }
+    
+        // Fetch topics for the selected course and chapter
         function fetchTopics() {
             var topicList = document.getElementById("topicList");
-        
             $.ajax({
                 type: "GET",
                 url: "{% url 'fetch_topics' %}",
@@ -163,7 +220,7 @@
                 success: function(response) {
                     // Clear previous topics
                     topicList.innerHTML = "";
-        
+    
                     // Populate topics
                     response.topics.forEach(function(topic) {
                         var listItem = document.createElement("li");
@@ -176,32 +233,35 @@
                 }
             });
         }
-        
-        
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-<script>
-    $(document).ready(function () {
-        $('#myForm').submit(function (event) {
-            event.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "{% url 'form' %}",
-                data: $(this).serialize(),
-                success: function (response) {
-                    var topicName = response.topic.name;
-                    var courseName=response.topic.courseName;
-                    courseName = encodeURIComponent(courseName);
-                    window.location.href = "{% url 'dynamic_page' %}?topic_Name=" + topicName+ "&course_name=" + courseName;;
-                },
-                error: function (xhr, errmsg, err) {
-                    alert('Topic already exists with this course');
-                }
-            });
+    <script>
+        $(document).ready(function () {
+    $('#myForm').submit(function (event) {
+        event.preventDefault();
+        var formData = new FormData(this); // Create a FormData object from the form
+        $.ajax({
+            type: "POST",
+            url: "{% url 'form' %}",
+            data: formData,
+            contentType: false, // Required for FormData
+            processData: false, // Required for FormData
+            success: function (response) {
+                var topicName = response.topic.name;
+                var courseName = response.topic.courseName;
+                courseName = encodeURIComponent(courseName);
+                window.location.href = "{% url 'dynamic_page' %}?topic_Name=" + topicName + "&course_name=" + courseName;
+            },
+            error: function (xhr, errmsg, err) {
+                alert('Topic already exists with this course');
+            }
         });
     });
-</script>
+});
+
+    </script>
+    
+
 </main>
 <section class="footerbody">
     <footer class="footer">

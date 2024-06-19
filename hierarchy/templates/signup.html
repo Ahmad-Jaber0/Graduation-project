@@ -277,7 +277,7 @@
         <div class="content">
             <h2>Sign Up</h2>
             <div class="form">
-                <form id="signupForm" method="post">
+                <form id="signupForm" method="post" action="{% url 'signup' %}">
                     {% csrf_token %}
 
                     <div class="inputBox">
@@ -318,30 +318,6 @@
     </div>
 </section>
 
-<script>
-$(document).ready(function () {
-    $('#signupForm').submit(function (e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-            type: 'POST',
-            url: '{% url "signup" %}',
-            data: formData,
-            success: function (response) {
-                alert(response.success); 
-                window.location.href = '{% url "login" %}';
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-                var jsonResponse = JSON.parse(xhr.responseText);
-                if (jsonResponse.error) {
-                    alert(jsonResponse.error);
-                }
-            }
-        });
-    });
-});
-</script>
 
 </body>
 </html>

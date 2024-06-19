@@ -13,7 +13,29 @@ import numpy as np
 from django.views.decorators.http import require_POST
 
 #################### auth ################################33
-def SignupPage(request): ############## signipPage :)
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.http import JsonResponse
+from .models import User  # Import your custom User model
+
+def Newlogin(request):
+    if request.method == 'POST':
+        userName = request.POST.get('userName')
+        password = request.POST.get('password')
+        
+        user = authenticate(username=userName, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+
+        else:
+            return JsonResponse({'success': False, 'message': 'Invalid username or password'}, status=400)
+
+    else:
+        return render(request, 'login.html')
+
+def SignupPage(request):
     if request.method == 'POST':
         uname = request.POST.get('username')
         email = request.POST.get('email')
@@ -23,35 +45,125 @@ def SignupPage(request): ############## signipPage :)
         pass2 = request.POST.get('password2')
 
         if User.objects.filter(username=uname).exists():
-
             return JsonResponse({'error': 'Username already exists.'}, status=400)
         
-        
         elif User.objects.filter(email=email).exists():
-            return JsonResponse({'error': 'email already exists.'}, status=400)
+            return JsonResponse({'error': 'Email already exists.'}, status=400)
+        
         else:
+            # Create the user
             my_user = User.objects.create_user(username=uname, email=email, first_name=FN, last_name=LN, password=pass1)
             my_user.save()
-            return JsonResponse({'success': 'User created successfully'})
+
+            # Authenticate and login the user
+            user = authenticate(username=uname, password=pass1)
             
+            if user is not None:
+                login(request, user)  # Log the user in
+
+                # Redirect to the profile or info page after successful signup
+                return redirect('info')
+    
     return render(request, 'signup.html')
 
-def login(request): ######## loginPage after signup :)
+
+def info(request):
+    return render(request,'recommender.html')
+
+@login_required
+def save_questionnaire(request):
     if request.method == 'POST':
-        userName = request.POST.get('userName')
-        password = request.POST.get('password')
-        
-        user = auth.authenticate(username=userName, password=password)
-        
-        if user is not None:
-            auth.login(request, user)
-            return redirect('home')
+        user=request.user
+        data = json.loads(request.body)
+        q1 = data.get('q1')
+        q1_2 = data.get('q1.2')
+        if q1_2== None:
+            q1_2='0'
+        q2 = data.get('q2')
+        q3 = data.get('q3')
+        q4 = data.get('q4')
+        q5 = data.get('q5')
 
-        else:
-            return JsonResponse({'success': False, 'message': 'Invalid username or password'}, status=400)
+        # Save questionnaire response
+        questionnaire_response = QuestionnaireResponse(
+            user=user,
+            q1=q1,
+            q1_2=q1_2,
+            q2=q2,
+            q3=q3,
+            q4=q4,
+            q5=q5
+        )
+        questionnaire_response.save()
 
+        user_responses = QuestionnaireResponse.objects.get(user=request.user)
+
+
+        courses = Course.objects.all()
+        recommendation_matrix = []
+
+    # Initialize recommendation matrix with zeros
+        for course in courses:
+            recommendation_matrix.append({
+                'course': course,
+                'q1': 0,
+                'q2': 0,
+                'q3': 0,
+                'q4': 0,
+                'q5': 0,
+                'q1_2_adjusted': 0.0,  # Adjusted score for q1_2 based on provFront comparison
+                'total_score': 0.0
+            })
+
+        # Define the weights for each question response to course attribute mapping
+        weights = {
+            'q1': 'front',
+            'q2': 'back',
+            'q3': 'basic',
+            'q4': 'oop',
+            'q5': 'algo',
+        }
+
+        # Calculate scores for each course
+        for i, score_entry in enumerate(recommendation_matrix):
+            course = score_entry['course']
+
+            # Calculate q1, q2, q3, q4, q5 scores
+            for question, attribute in weights.items():
+                if user_responses:
+                    response_value = getattr(user_responses, question, '0')
+                else:
+                    response_value = '0'
+
+                attribute_value = getattr(course, attribute, 0.0)
+                weighted_score = float(response_value) * attribute_value
+                recommendation_matrix[i][question] = weighted_score
+                recommendation_matrix[i]['total_score'] += weighted_score
+
+            # Calculate q1_2 adjusted score based on provFront comparison
+            provFront_value = getattr(course, 'provFront', 0.0)
+            if user_responses:
+                q1_2_value = getattr(user_responses, 'q1_2', '0')
+                if float(q1_2_value) == float(provFront_value):
+                    recommendation_matrix[i]['q1_2_adjusted'] = float(q1_2_value)
+                    recommendation_matrix[i]['total_score'] += float(q1_2_value)
+
+        # Find course with the highest total score
+        max_score = -1
+        max_score_course = None
+
+        for entry in recommendation_matrix:
+            course_name = entry['course'].name
+            total_score = entry['total_score']
+            print(f"Course: {course_name}, Total Score: {total_score}")
+
+            if total_score > max_score:
+                max_score = total_score
+                max_score_course = entry['course']
+
+        return JsonResponse({'message': f'go the course {max_score_course.name}'})
     else:
-        return render(request, 'login.html')
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
 def LogoutPage(request): ###### Logout and go in the home page :)
@@ -153,41 +265,75 @@ def course_detail(request, course_name, topic_name): ##### present the course Pa
 ########################################################
 
 ########## Dynamic page and form to add course ##################
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 @login_required
-def Dynamic(request): ######## this is dynamic if the request is get build the Form html to add course if Post then save the info of this course  :)
+def Dynamic(request):
     if request.method == 'POST':
+        # Retrieve form data
         course_name = request.POST.get('Course-Name:')
         chapter_number = request.POST.get('Chapter-Number')
         topic_name = request.POST.get('textInput')
         topic_rank = request.POST.get('topicRank')
+        if 'courseImage' in request.FILES:
+            profile_image = request.FILES['courseImage']
+        else:
+            profile_image = 'profile_images/default.png'
 
+
+        # Convert score inputs to float and divide by 100
+        try:
+            basic_score = float(request.POST.get('basicProgramming', '0')) / 100
+            oop_score = float(request.POST.get('oop', '0')) / 100
+            algo_score = float(request.POST.get('algorithms', '0')) / 100
+            front_score = float(request.POST.get('frontend', '0')) / 100
+            provFront_score = float(request.POST.get('frontendProficiency', '0')) / 100
+            back_score = float(request.POST.get('backend', '0')) / 100
+        except ValueError:
+            basic_score = oop_score = algo_score = front_score = provFront_score = back_score = 0
+
+        # Handle "other" inputs for course and chapter
         if course_name == 'other':
             course_name = request.POST.get('otherInput1')
         if chapter_number is None or chapter_number == 'other':
-            x = request.POST.get('otherInput2')
-            chapter_number = f"Chapter{x}"
+            chapter_number = f"Chapter {request.POST.get('otherInput2')}"
 
         # Check if course already exists, else create a new one
         course, created = Course.objects.get_or_create(
             name=course_name,
-            defaults={'date': timezone.now(), 'instructor': request.user.username}
+            defaults={
+                'date': timezone.now(),
+                'instructor': request.user.username,
+               'profile_image': profile_image,
+                'basic': basic_score,
+                'oop': oop_score,
+                'algo': algo_score,
+                'front': front_score,
+                'provFront': provFront_score,
+                'back': back_score
+            }
         )
 
         # Check if chapter already exists, else create a new one
-        chapter, created = Chapter.objects.get_or_create(course=course, name=chapter_number)
+        chapter, _ = Chapter.objects.get_or_create(course=course, name=chapter_number)
 
         # Check if topic already exists within the same chapter and course
         if Topic.objects.filter(topic_name=topic_name, course=course).exists():
             return JsonResponse({'error': 'Topic already exists within this chapter.'}, status=400)
         else:
-            topic = Topic.objects.create(topic_name=topic_name, chapter=chapter, course=course, rank=topic_rank)
+            topic = Topic.objects.create(
+                topic_name=topic_name,
+                chapter=chapter,
+                course=course,
+                rank=topic_rank
+            )
 
-        return JsonResponse({'topic': {'id': topic.id,'name':topic.topic_name,'courseName':course.name}})
+        return JsonResponse({'topic': {'id': topic.id, 'name': topic.topic_name, 'courseName': course.name}})
 
-    course=Course.objects.all()
-    chapter=Chapter.objects.all()
-
-    return render(request, 'Form.html',{'course':course,'chapter':chapter}) 
+    # For GET requests, retrieve and pass existing courses and chapters to the form
+    courses = Course.objects.all()
+    chapters = Chapter.objects.all()
+    return render(request, 'Form.html', {'courses': courses, 'chapters': chapters})
 
 def dynamic_page(request): ##### Dynamic Html after fill the form then render the html to complete content course  :)
 
@@ -197,29 +343,29 @@ def dynamic_page(request): ##### Dynamic Html after fill the form then render th
 
     # Get the topic object based on the topic_id
     topic = get_object_or_404(Topic, topic_name=topic_Name,course=course)
+    is_edit = request.GET.get('edit_mode') == 'False'
 
     # Render the dynamic.html template with the topic data
-    return render(request, 'dynamic.html', {'topic': topic})
+    return render(request, 'dynamic.html', {'topic': topic, 'is_edit': is_edit})
 ################################################################
 
 ########## API to get chapter and course #################
 def fetch_chapters(request):####### Get specifc chapter to this course  :)
-    if request.method == "GET" :
-        course_name = request.GET.get("course")
-        print(course_name)
-        if course_name:
-            chapters = Chapter.objects.filter(course__name=course_name).values_list("name", flat=True)
-            return JsonResponse({"chapters": list(chapters)})
+    course_name = request.GET.get("course")
+    if course_name:
+        chapters = Chapter.objects.filter(course__name=course_name).values_list("name", flat=True)
+        return JsonResponse({"chapters": list(chapters)})
     return JsonResponse({"error": "Invalid request"})
 
-def fetch_topics(request):#######3 Get specifc Topics of this chapter and this course   :)
+def fetch_topics(request):
     course_name = request.GET.get('course')
-    chapter_number = request.GET.get('chapter')
+    chapter_name = request.GET.get('chapter')
 
-    # Retrieve topics based on course name and chapter number
-    topics = Topic.objects.filter(course__name=course_name, chapter__name=chapter_number).values('id', 'topic_name')
-
-    return JsonResponse({'topics': list(topics)})
+    if course_name and chapter_name:
+        topics = Topic.objects.filter(course__name=course_name, chapter__name=chapter_name).values('id', 'topic_name')
+        return JsonResponse({'topics': list(topics)})
+    else:
+        return JsonResponse({"error": "Invalid request"})
 #############################################
 
 ######### Form Edit and delete Course ################
@@ -252,59 +398,19 @@ def delete_course_chapter_topic(request): ######## after Delete.html then remove
         return redirect('profile')
 
 
-def update_course_chapter_topic(request):######3 Edit Course ---> Change here :)
+def get_dynamic_content(request):
     if request.method == 'POST':
-        button_clicked = request.POST.get('button_clicked')
-
-        print(button_clicked)
-        print('jjj')
-        
-
         course_name = request.POST.get('Course-Name')
-        chapter_name = request.POST.get('Chapter-Number')
+        print(course_name)
+        chapter_number = request.POST.get('Chapter-Number')
+        print(chapter_number)
         topic_id = request.POST.get('topicName')
-        
+        print(topic_id)
 
-        if not (course_name and chapter_name and topic_id):
-            return JsonResponse({'error': 'Missing required fields'}, status=400)
+        topic = Topic.objects.get(pk=topic_id)
+        is_edit = request.GET.get('edit_mode') == 'True'
 
-        try:
-            course = get_object_or_404(Course, name=course_name)
-            chapter = get_object_or_404(Chapter, course=course, name=chapter_name)
-            topic = get_object_or_404(Topic, id=topic_id, chapter=chapter)
-            return render(request, 'dynamic.html', {'topic': topic})
-
-            if request.POST.get('courseNewName'):
-                new_course_name = request.POST.get('New-Course-Name')
-                course.name = new_course_name
-                course.save()
-
-            if request.POST.get('chapterNewNumber'):
-                new_chapter_name = request.POST.get('New-Chapter-Number')
-                chapter.name = new_chapter_name
-                chapter.save()
-
-            if request.POST.get('topicNewName'):
-                new_topic_name = request.POST.get('New-Topic-Name')
-                topic.topic_name = new_topic_name
-                topic.save()
-
-            if request.POST.get('topicNewOrder'):
-                new_topic_order = request.POST.get('New-Topic-Order')
-                topic.rank = new_topic_order
-                topic.save()
-
-            if button_clicked == 'saveEditButton':
-                print('jojo')
-                return render(request, 'dynamic.html', {'topic': topic})
-
-            return redirect('profile')
-
-        except Exception as e:
-            return JsonResponse({'error': 'An error occurred while processing the form submission'}, status=500)
-
-    return JsonResponse({'error': 'Invalid method'}, status=405)
-
+        return render(request, 'dynamic.html', {'topic': topic, 'is_edit': is_edit})
 
 def update_code_html(request, topic_id):  ### after dynamic.html save the contet html of the topic :)
     if request.method == 'POST':

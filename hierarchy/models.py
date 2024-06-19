@@ -15,8 +15,18 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES,default='Developer')
     profile_image = models.ImageField(upload_to='profile_images/', default='profile_images/default.png')
+
+class QuestionnaireResponse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    q1 = models.CharField(max_length=4, null=True, blank=True,default=0)
+    q1_2 = models.CharField(max_length=4, null=True, blank=True,default=0)
+    q2 = models.CharField(max_length=4, null=True, blank=True,default=0)
+    q3 = models.CharField(max_length=4, null=True, blank=True,default=0)
+    q4 = models.CharField(max_length=4, null=True, blank=True,default=0)
+    q5 = models.CharField(max_length=4, null=True, blank=True,default=0)
+
 
 class Course(models.Model):
     name = models.CharField(max_length=255)
@@ -24,6 +34,13 @@ class Course(models.Model):
     instructor = models.CharField(max_length=255)
     check_boolean = models.BooleanField(null=True, blank=True)
     profile_image = models.ImageField(upload_to='profile_images/', default='profile_images/default.png')
+    basic = models.FloatField(default=0.0)
+    oop = models.FloatField(default=0.0)
+    algo = models.FloatField(default=0.0)
+    front = models.FloatField(default=0.0)
+    provFront = models.FloatField(default=0.0)
+    back = models.FloatField(default=0.0)
+    
     def __str__(self):
         return self.name  
 

@@ -4,8 +4,11 @@ from .models import *
 class UserAdmin(admin.ModelAdmin):
     list_display = ['username', 'first_name', 'last_name', 'email', 'role','profile_image','id']
 
+class QuestionnaireResponseAdmin(admin.ModelAdmin):
+    list_display=['user','q1','q1_2','q3','q4','q5']
+
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['name', 'date', 'instructor', 'id','check_boolean']
+    list_display = ['name', 'date', 'instructor', 'id','check_boolean','front','provFront','back','basic','oop','algo']
 
 class ChapterAdmin(admin.ModelAdmin):
     list_display = ['course', 'name', 'id']
@@ -42,6 +45,7 @@ class UserCourseMessageAdmin(admin.ModelAdmin):
     list_display=['user','course','message_shown']
 
 admin.site.register(User, UserAdmin)
+admin.site.register(QuestionnaireResponse,QuestionnaireResponseAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Chapter, ChapterAdmin)
 admin.site.register(Topic, TopicAdmin)

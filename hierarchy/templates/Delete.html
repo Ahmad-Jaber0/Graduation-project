@@ -61,7 +61,7 @@
 
             <div class="button-container">
                 <button type="submit" class="submit-button" id="saveExitButton" name="saveExitButton" disabled>Delete & Exit</button>
-                <a href="{% url 'profile' %}"><button type="button" class="submit-button" id="cancelButton">Cancel</button></a>
+                <button type="button" class="submit-button" id="cancelButton" onclick="window.location.href='{% url 'profile' %}'">Cancel</button>
             </div>
         </form>
         

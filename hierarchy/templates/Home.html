@@ -12,6 +12,8 @@
 </head>
 <header>
     <a href="{% url 'home' %}" class="logo">LoomingCode</a>
+
+    
     <nav class="navigation" id="nav-middle">
         <a href="{% url 'home'%}">Home</a>
         <a href="{% url 'home' %}#courses">Courses</a>
@@ -19,28 +21,31 @@
         <a href="{% url 'home' %}#about">About</a>
         <a href="{% url 'home' %}#contact">Contact</a>
     </nav>
+
+
     <nav class="navigation" id="header-icons">
         {% if request.user.is_authenticated %}
+        
+        <span style = "display:inline-flex; margin-top: 5px;">
         <a href="{% url 'profile' %}" class="profile-link">
-            <div class="profile-icon">
+            <span class="profile-icon">
                 <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}" alt="Profile Image">
-            </div>
+            </span>
         </a>
+
+        <a href="{% url 'logout_page' %}">
+            <i class="fa-solid fa-right-from-bracket fa-lg" id = "logout-icon"></i>
+        </a>
+        </span>
+
         {% else %}
         <a href="{% url 'login' %}">
             <i class="fa fa-right-to-bracket fa-lg"></i>
         </a>
-        {% endif %}
-        <a href="{% url 'logout_page' %}">
-            <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-        </a>
+       {% endif %}
+        
     </nav>
 </header>
-
-
-
-
-
 <section class="WelcomeSection" style="background-image: url('{% static 'images/main.png' %}');">
     <div class="word" id="Welcome-to-word">Welcome to</div>
     <div class="word">
@@ -48,14 +53,14 @@
     </div>
     <p>Unlock your learning ambitions</p>
     <p id="smallparagraph">LoomingCode: Where Ideas Take Flight. Your passport to the coding universe. Let's start coding!</p>
+    {% if not request.user.is_authenticated %}
     <p>
       <a href="{% url 'signup' %}">
         <button type="button" class="button">Create New Account</button>
       </a>
     </p>
+    {% endif %}
     <br>
-
-
     <p>
         <ul class="example-2">
             <li class="icon-content">
@@ -138,7 +143,7 @@
         <div class="card" data-course-id="{{ course.id }}">
             <b>
                 <button class="save_button" onclick="saveCourse(this)">
-                    <img src="{% static 'images/icons8-save-32.png' %}">
+                    <img src="{% static 'images/icons8-save-32.png' %}" class="save_icon">
                 </button>
     
                 <div class="CourseIcon">
@@ -168,11 +173,7 @@
         </div>
         {% endfor %}
     </div>
-    
 </section>
-
-
-
 <div>
     <hr style="border: 1px solid blue">
 </div>
@@ -228,7 +229,7 @@
     <hr style="border: 1px solid blue">
 </div>
 
-<section class="textSection" id="aboute">
+<section class="textSection" id="about">
     <h1>About</h1>
     <p>
         Our platform is built on the belief that everyone should
@@ -363,35 +364,44 @@
 <script>
     function saveCourse(button) {
         const courseCard = $(button).closest('.card');
-        const courseId = courseCard.data('course-id');  // Retrieve the course ID from data attribute
+        const courseId = courseCard.data('course-id');
+        const saveIcon = $(button).find('.save_icon');
 
         $.ajax({
             url: "{% url 'save_course' %}",
             type: "POST",
             data: {
                 'course_id': courseId,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'  // Ensure CSRF token is included
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             success: function(response) {
                 if (response.success) {
-                    alert("Course saved successfully!");
+                    if (response.message.includes('removed')) {
+                        saveIcon.removeClass('saved');
+                        saveIcon.css('background-color', ''); // Reset to default
+                    } else {
+                        saveIcon.addClass('saved');
+                        saveIcon.css('background-color', 'black'); // Change to green to indicate saved
+                    }
                 } else {
-                    alert("Failed to save the course: " + response.message);
+                    console.log("Failed to save/remove the course: " + response.message);
                 }
             },
             error: function(xhr, status, error) {
-                alert("An error occurred: " + error);
+                console.log("An error occurred: " + error);
             }
         });
     }
 </script>
 
-<script>
-    function saveCousre(button){
-        button.style.backgroundColor = "rgb(191, 191, 255)";
+<style>
+    .save_icon {
+        transition: background-color 0.3s ease; /* Smooth transition */
     }
-
-</script>
+    .save_icon.saved {
+        background-color: black; /* Change to green when saved */
+    }
+</style>
 
 </body>
 </html>

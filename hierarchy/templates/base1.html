@@ -61,7 +61,7 @@
           <a href="{% url 'home' %}#courses">Courses</a>
           <a href="{% url 'home' %}#services">Services</a>
   
-          <a href="{% url 'home' %}#aboute">About</a>
+          <a href="{% url 'home' %}#about">About</a>
           <a href="{% url 'home' %}#contact">Contact</a>
       </nav>
       <nav class = "navigation" id = "header-icons">
@@ -132,12 +132,13 @@
       const menu_toggle = document.querySelector('.menu-toggle');
       const sidebar = document.querySelector('.sidebar');
 
+      function closeMessage() {
+              document.getElementById('message').style.display = 'none';
+          }
       menu_toggle.addEventListener('click', () => {
         menu_toggle.classList.toggle('is-active');
         sidebar.classList.toggle('is-active');
-          function closeMessage() {
-              document.getElementById('message').style.display = 'none';
-          }
+          
     
       });
     </script>

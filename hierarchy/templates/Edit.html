@@ -27,7 +27,7 @@
     </header>
 
     <main class="content-section">
-        <form class="form-container" id="myForm" method="post" action="{% url 'update_course_chapter_topic' %}">
+        <form class="form-container" id="myForm" method="post" action="{% url 'dynamic_content' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="Course-Name">Course Name:</label>
@@ -37,10 +37,6 @@
                         <option value="{{ course.name }}">{{ course.name }}</option>
                     {% endfor %}
                 </select>
-                <label>
-                    <input type="checkbox" id="courseNewName" name="courseNewName"> Change Course Name
-                </label>
-                <input type="text" id="otherInput1" name="New-Course-Name" class="hidden" placeholder="Enter course name">
             </div>
             <hr>
             <div class="form-group">
@@ -48,10 +44,6 @@
                 <select id="Chapter-Number" name="Chapter-Number" required disabled>
                     <option value="" disabled selected>Select an option</option>
                 </select>
-                <label>
-                    <input type="checkbox" id="chapterNewNumber" name="chapterNewNumber"> Change Chapter Number
-                </label>
-                <input type="text" id="otherInput2" name="New-Chapter-Number" class="hidden" placeholder="Enter chapter new number" pattern="[1-9][0-9]*">
             </div>
             <hr>
             <div class="form-group">
@@ -59,242 +51,65 @@
                 <select id="topicName" name="topicName" required disabled>
                     <option value="" disabled selected>Select an option</option>
                 </select>
-                <label>
-                    <input type="checkbox" id="topicNewName" name="topicNewName"> Change Topic Name
-                </label>
-                <input type="text" id="textInput1" class="hidden" name="New-Topic-Name" required>
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="topicNewOrder" name="topicNewOrder"> Change Topic Order
-                </label>
-                <input type="text" id="textInput2" class="hidden" name="New-Topic-Order" placeholder="Enter Topic New Order(1,2,3,...)" required>
-            </div>
-
-            <div class="button-container">
-                <button type="submit" class="submit-button" id="saveExitButton" disabled>Save & Exit</button>
-                <button type="submit" class="submit-button" id="saveEditButton" disabled>Save & Edit Topic Content</button>
             </div>
             <div class="button-container">
-                <button type="submit" class="submit-button" id="editContentButton" disabled>Edit topic content</button>
-                <a href="{% url 'profile' %}"><button type="button" class="submit-button" id="cancelButton">Cancel</button></a>
+                <button type="submit" class="submit-button">Submit</button>
+                <button type="button" class="submit-button" id="cancelButton">Cancel</button>
             </div>
-            <input type="hidden" name="button_clicked" id="buttonClicked" value="">
         </form>
         
+
+        
+        
         <script>
-            function validateForm() {
-                const courseName = document.getElementById("Course-Name").value;
-                const chapterNumber = document.getElementById("Chapter-Number").value;
-                const topicName = document.getElementById("topicName").value;
-
-                const courseNewNameChecked = document.getElementById("courseNewName").checked;
-                const chapterNewNumberChecked = document.getElementById("chapterNewNumber").checked;
-                const topicNewNameChecked = document.getElementById("topicNewName").checked;
-                const topicNewOrderChecked = document.getElementById("topicNewOrder").checked;
-
-                const otherInput1 = document.getElementById("otherInput1").value;
-                const otherInput2 = document.getElementById("otherInput2").value;
-                const textInput1 = document.getElementById("textInput1").value;
-                const textInput2 = document.getElementById("textInput2").value;
-
-                const isOtherInput2Valid = /^[1-9][0-9]*$/.test(otherInput2);
-                const isTextInput2Valid = /^[1-9][0-9]*$/.test(textInput2);
-
-                const allSelectsSelected = courseName && chapterNumber && topicName;
-                const atLeastOneCheckboxValid = 
-                    (courseNewNameChecked && otherInput1) ||
-                    (chapterNewNumberChecked && isOtherInput2Valid) ||
-                    (topicNewNameChecked && textInput1) ||
-                    (topicNewOrderChecked && isTextInput2Valid);
-
-                const saveButtonsEnabled = allSelectsSelected && atLeastOneCheckboxValid;
-                const editContentButtonEnabled = courseName || chapterNumber || topicName;
-
-                document.getElementById("saveExitButton").disabled = !saveButtonsEnabled;
-                document.getElementById("saveEditButton").disabled = !saveButtonsEnabled;
-                document.getElementById("editContentButton").disabled = !editContentButtonEnabled;
-            }
-
-            document.getElementById("courseNewName").addEventListener("change", function() {
-                const otherInput1 = document.getElementById("otherInput1");
-                const courseName = document.getElementById("Course-Name").value;
-                if (courseName) {
-                    otherInput1.classList.toggle("hidden", !this.checked);
-                    otherInput1.required = this.checked;
-                } else {
-                    this.checked = false;
-                    alert("Please select a course name first.");
-                }
-                validateForm();
-            });
-
-            document.getElementById("chapterNewNumber").addEventListener("change", function() {
-                const otherInput2 = document.getElementById("otherInput2");
-                const chapterNumber = document.getElementById("Chapter-Number").value;
-                if (chapterNumber) {
-                    otherInput2.classList.toggle("hidden", !this.checked);
-                    otherInput2.required = this.checked;
-                } else {
-                    this.checked = false;
-                    alert("Please select a chapter number first.");
-                }
-                validateForm();
-            });
-
-            document.getElementById("topicNewName").addEventListener("change", function() {
-                const textInput1 = document.getElementById("textInput1");
-                const topicName = document.getElementById("topicName").value;
-                if (topicName) {
-                    textInput1.classList.toggle("hidden", !this.checked);
-                    textInput1.required = this.checked;
-                } else {
-                    this.checked = false;
-                    alert("Please select a topic name first.");
-                }
-                validateForm();
-            });
-
-            document.getElementById("topicNewOrder").addEventListener("change", function() {
-                const textInput2 = document.getElementById("textInput2");
-                const topicName = document.getElementById("topicName").value;
-                if (topicName) {
-                    textInput2.classList.toggle("hidden", !this.checked);
-                    textInput2.required = this.checked;
-                } else {
-                    this.checked = false;
-                    alert("Please select a topic name first.");
-                }
-                validateForm();
-            });
-
-            document.getElementById("Course-Name").addEventListener("change", function() {
-                const chapterNumber = document.getElementById("Chapter-Number");
-                if (this.value) {
-                    chapterNumber.removeAttribute("disabled");
-                } else {
-                    chapterNumber.setAttribute("disabled", "disabled");
-                }
-                validateForm();
-            });
-
-            document.getElementById("Chapter-Number").addEventListener("change", function() {
-                const topicName = document.getElementById("topicName");
-                if (this.value) {
-                    topicName.removeAttribute("disabled");
-                } else {
-                    topicName.setAttribute("disabled", "disabled");
-                }
-                validateForm();
-            });
-
-            document.getElementById("topicName").addEventListener("change", function() {
-                validateForm();
-            });
-
-            document.querySelectorAll('input[type="text"]').forEach(input => {
-                input.addEventListener('input', function() {
-                    const isNumberField = this.id === 'otherInput2' || this.id === 'textInput2';
-                    if (isNumberField && !/^[1-9][0-9]*$/.test(this.value)) {
-                        this.setCustomValidity("Please enter a valid number.");
-                    } else {
-                        this.setCustomValidity("");
-                    }
-                    validateForm();
+            document.addEventListener('DOMContentLoaded', function() {
+                const courseSelect = document.getElementById('Course-Name');
+                const chapterSelect = document.getElementById('Chapter-Number');
+                const topicSelect = document.getElementById('topicName');
+        
+                courseSelect.addEventListener('change', function() {
+                    const selectedCourse = encodeURIComponent(this.value);
+                    fetch(`/fetch_chapters/?course=${selectedCourse}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            chapterSelect.innerHTML = '<option value="" disabled selected>Select an option</option>';
+                            data.chapters.forEach(chapter => {
+                                const option = document.createElement('option');
+                                option.value = chapter;
+                                option.textContent = chapter;
+                                chapterSelect.appendChild(option);
+                            });
+                            chapterSelect.removeAttribute("disabled");
+                        })
+                        .catch(error => {
+                            console.error('Fetch error:', error);
+                            alert("An error occurred while fetching chapters.");
+                        });
                 });
-            });
-
-            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                checkbox.addEventListener('change', validateForm);
-            });
-
-            document.querySelectorAll('select').forEach(select => {
-                select.addEventListener('change', validateForm);
-            });
-
-            document.getElementById("cancelButton").addEventListener("click", function() {
-                window.location.href = "index.html";
-            });
-
-            document.getElementById("Course-Name").addEventListener("change", function() {
-                const selectedCourse = encodeURIComponent(this.value);
-                fetch(`/fetch_chapters/?course=${selectedCourse}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const chapterSelect = document.getElementById("Chapter-Number");
-                        chapterSelect.innerHTML = '<option value="" disabled selected>Select an option</option>';
-                        data.chapters.forEach(chapter => {
-                            const option = document.createElement('option');
-                            option.value = chapter;
-                            option.textContent = chapter;
-                            chapterSelect.appendChild(option);
+        
+                chapterSelect.addEventListener('change', function() {
+                    const selectedCourse = encodeURIComponent(courseSelect.value);
+                    const selectedChapter = encodeURIComponent(this.value);
+                    fetch(`/fetch_topics/?course=${selectedCourse}&chapter=${selectedChapter}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            topicSelect.innerHTML = '<option value="" disabled selected>Select an option</option>';
+                            data.topics.forEach(topic => {
+                                const option = document.createElement('option');
+                                option.value = topic.id;
+                                option.textContent = topic.topic_name;
+                                topicSelect.appendChild(option);
+                            });
+                            topicSelect.removeAttribute("disabled");
+                        })
+                        .catch(error => {
+                            console.error('Fetch error:', error);
+                            alert("An error occurred while fetching topics.");
                         });
-                        chapterSelect.removeAttribute("disabled");
-                        validateForm();
-                    })
-                    .catch(error => {
-                        console.error('Fetch error:', error);
-                        alert("An error occurred while fetching chapters.");
-                    });
-            });
-
-            document.getElementById("Chapter-Number").addEventListener("change", function() {
-                const selectedCourse = encodeURIComponent(document.getElementById("Course-Name").value);
-                const selectedChapter = encodeURIComponent(this.value);
-                fetch(`/fetch_topics/?course=${selectedCourse}&chapter=${selectedChapter}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const topicSelect = document.getElementById("topicName");
-                        topicSelect.innerHTML = '<option value="" disabled selected>Select an option</option>';
-                        data.topics.forEach(topic => {
-                            const option = document.createElement('option');
-                            option.value = topic.id;
-                            option.textContent = topic.topic_name;
-                            topicSelect.appendChild(option);
-                        });
-                        topicSelect.removeAttribute("disabled");
-                        validateForm();
-                    })
-                    .catch(error => {
-                        console.error('Fetch error:', error);
-                        alert("An error occurred while fetching topics.");
-                    });
-            });
-
-            document.getElementById("myForm").addEventListener("submit", function(event) {
-                event.preventDefault();
-            
-                const formData = new FormData(this);
-            
-                fetch("{% url 'update_course_chapter_topic' %}", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
-                    }
-                })
-                .then(response => {
-                    if (response.redirected) {
-                        window.location.href = response.url;
-                        return;
-                    }
-                    if (response.ok && response.headers.get('content-type').includes('text/html')) {
-                        return response.text().then(html => {
-                            document.open();
-                            document.write(html);
-                            document.close();
-                        });
-                    }
-                    return response.json().then(data => {
-                        console.log("Form submission response:", data);
-                    });
-                })
-                .catch(error => {
-                    console.error('Form submission error:', error);
-                    alert("An error occurred while submitting the form.");
                 });
             });
         </script>
+        
     </main>
     <footer class="footer">
         <div class="footer-content">

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/recommender.css' %}">
+    <title>Create Page Form</title>
+</head>
+<body>
+
+
+  <main class="content-section">
+    <form class="form-container" id="myForm" formmethod="post">
+      <div class="question">
+        <label for="Question1">Question[1]: How interested are you in the front-end field?</label>
+        <hr>
+        <ul class="options">
+          <li><input type="radio" name="q1" value="0" required> Not interested at all.</li>
+          <li><input type="radio" name="q1" value="0.25"> Slightly interested.</li>
+          <li><input type="radio" name="q1" value="0.5"> Moderately interested.</li>
+          <li><input type="radio" name="q1" value="0.75"> Very interested.</li>
+          <li><input type="radio" name="q1" value="1"> Extremely interested.</li>
+        </ul>
+      </div>
+      
+      <div class="question">
+        <br>
+        <label for="Question1.2">Question[1][2]: How well do you know the front-end path?</label>
+        <hr>
+        <ul class="options">
+          <li><input type="radio" name="q1.2" value="0" required> I'm a complete beginner.</li>
+          <li><input type="radio" name="q1.2" value="0.25"> I have a basic understanding and can create simple web pages.</li>
+          <li><input type="radio" name="q1.2" value="0.5"> I have a moderate understanding and can build functional web pages.</li>
+          <li><input type="radio" name="q1.2" value="0.75"> I have a strong understanding and can develop complex, interactive web applications.</li>
+          <li><input type="radio" name="q1.2" value="1"> I'm an expert and can create highly sophisticated and optimized front-end solutions.</li>
+        </ul>
+      </div>
+      <br>
+      <div class="question">
+        <label for="Question2">Question[2]: How interested are you in the back-end field?</label>
+        <hr>
+        <ul class="options">
+          <li><input type="radio" name="q2" value="0" required> Not interested at all.</li>
+          <li><input type="radio" name="q2" value="0.25"> Slightly interested.</li>
+          <li><input type="radio" name="q2" value="0.5"> Moderately interested.</li>
+          <li><input type="radio" name="q2" value="0.75"> Very interested.</li>
+          <li><input type="radio" name="q2" value="1"> Extremely interested.</li>
+        </ul>
+      </div>
+      <br>
+      <div class="question">
+        <label for="Question3">Question[3]: How interested are you in the Programming Basics field?</label>
+        <hr>
+        <ul class="options">
+          <li><input type="radio" name="q3" value="0" required> Not interested at all.</li>
+          <li><input type="radio" name="q3" value="0.25"> Slightly interested.</li>
+          <li><input type="radio" name="q3" value="0.5"> Moderately interested.</li>
+          <li><input type="radio" name="q3" value="0.75"> Very interested.</li>
+          <li><input type="radio" name="q3" value="1"> Extremely interested.</li>
+        </ul>
+      </div>
+      <br>
+      <div class="question">
+        <label for="Question4">Question[4]: How interested are you in the OOP field?</label>
+        <hr>
+        <ul class="options">
+          <li><input type="radio" name="q4" value="0" required> Not interested at all.</li>
+          <li><input type="radio" name="q4" value="0.25"> Slightly interested.</li>
+          <li><input type="radio" name="q4" value="0.5"> Moderately interested.</li>
+          <li><input type="radio" name="q4" value="0.75"> Very interested.</li>
+          <li><input type="radio" name="q4" value="1"> Extremely interested.</li>
+        </ul>
+      </div>
+      <br>
+      <div class="question">
+        <label for="Question5">Question[5]: How interested are you in the Algorithms field?</label>
+        <hr>
+        <ul class="options">
+          <li><input type="radio" name="q5" value="0" required> Not interested at all.</li>
+          <li><input type="radio" name="q5" value="0.25"> Slightly interested.</li>
+          <li><input type="radio" name="q5" value="0.5"> Moderately interested.</li>
+          <li><input type="radio" name="q5" value="0.75"> Very interested.</li>
+          <li><input type="radio" name="q5" value="1"> Extremely interested.</li>
+        </ul>
+      </div>
+
+
+      <div class="button-container">
+        <button type="submit" class="submit-button" id="submit" disabled>Submit</button>
+        <button type="submit" class="submit-button">Cancel</button>
+      </div>
+    </form>
+    <script>
+      // Get references to the form elements
+const form = document.getElementById('myForm');
+const q1Radios = document.querySelectorAll('input[name="q1"]');
+const q1_2Radios = document.querySelectorAll('input[name="q1.2"]');
+const q1_2Question = document.querySelector('.question:nth-child(2)');
+const q2Radios = document.querySelectorAll('input[name="q2"]');
+const q3Radios = document.querySelectorAll('input[name="q3"]');
+const q4Radios = document.querySelectorAll('input[name="q4"]');
+const q5Radios = document.querySelectorAll('input[name="q5"]');
+const submitButton = document.getElementById('submit');
+document.addEventListener('DOMContentLoaded', function () {
+  // Get references to the form elements
+  const q1Radios = document.querySelectorAll('input[name="q1"]');
+  const q1_2Radios = document.querySelectorAll('input[name="q1.2"]');
+
+  // Function to disable q1.2 radios and set the first option
+  function disableQ1_2() {
+    q1_2Radios.forEach((radio, index) => {
+      radio.disabled = true;
+      radio.checked = index === 0;
+    });
+  }
+
+  // Function to enable q1.2 radios
+  function enableQ1_2() {
+    q1_2Radios.forEach(radio => {
+      radio.disabled = false;
+    });
+  }
+
+  // Add change event listeners to q1 radios
+  q1Radios.forEach(radio => {
+    radio.addEventListener('change', function () {
+      if (this.value === '0') {
+        disableQ1_2();
+      } else {
+        enableQ1_2();
+      }
+    });
+  });
+
+  // Initialize q1.2 state based on the initial selection of q1
+  const selectedQ1 = document.querySelector('input[name="q1"]:checked');
+  if (selectedQ1 && selectedQ1.value === '0') {
+    disableQ1_2();
+  }
+});
+
+// Function to check if all required questions are answered
+function areAllQuestionsAnswered() {
+  const q1Answered = Array.from(q1Radios).some(radio => radio.checked);
+  const q1_2Answered = Array.from(q1_2Radios).some(radio => radio.checked);
+  const q2Answered = Array.from(q2Radios).some(radio => radio.checked);
+  const q3Answered = Array.from(q3Radios).some(radio => radio.checked);
+  const q4Answered = Array.from(q4Radios).some(radio => radio.checked);
+  const q5Answered = Array.from(q5Radios).some(radio => radio.checked);
+
+  if (q1_2Question.hidden) {
+    return q1Answered && q2Answered && q3Answered && q4Answered && q5Answered;
+  } else {
+    return q1Answered && q1_2Answered && q2Answered && q3Answered && q4Answered && q5Answered;
+  }
+}
+
+// Function to enable/disable the submit button
+function toggleSubmitButton() {
+  submitButton.disabled = !areAllQuestionsAnswered();
+}
+
+
+// Event listeners for all radio buttons
+[...q1_2Radios, ...q2Radios, ...q3Radios, ...q4Radios, ...q5Radios].forEach(radio => {
+  radio.addEventListener('change', toggleSubmitButton);
+});
+
+// Initialize the submit button state
+toggleSubmitButton();
+
+document.getElementById('myForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent the default form submission
+  
+  // Serialize form data into JSON format
+  const formData = new FormData(form);
+  const serializedData = {};
+
+  // Iterate over form data entries
+  for (const [key, value] of formData.entries()) {
+    // Handle special case for q1.2 when it's hidden
+    if (key === 'q1.2') {
+      if (q1_2Question.classList.contains('hidden')) {
+        serializedData[key] = '0'; // Default value when q1.2 is hidden
+      } else {
+        serializedData[key] = value;
+      }
+    } else {
+      serializedData[key] = value;
+    }
+  }
+
+  const userConfirmed = confirm("Do you want to proceed?");
+  
+  if (userConfirmed) {
+    fetch('{% url 'save_questionnaire' %}', {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(serializedData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      // Determine which URL to redirect based on data.message content
+      const redirectUrl = data.message.includes('course') ? "{% url 'course' course_name='PLACEHOLDER' %}".replace('PLACEHOLDER', data.message.split(' ')[3]) : "{% url 'home' %}";
+      window.location.href = redirectUrl;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Error submitting questionnaire. Please try again.');
+    });
+  } else {
+    // Redirect to another page when user clicks Cancel
+    window.location.href = "{% url 'home' %}"; // Replace with your URL
+  }
+});
+
+    </script>
+  </main>
+
+  <section class="footerbody">
+    <footer class="footer">
+      <ul class="social-icon">
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-facebook"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-instagram"></ion-icon>
+          </a></li>
+      </ul>
+      <ul class="menu">
+        <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">About</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
+      </ul>
+      <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
+    </footer>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  </section>
+</body>
+</html>

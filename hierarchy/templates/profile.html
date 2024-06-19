@@ -119,7 +119,7 @@
 
             
                             <div class="CourseIcon">
-                                <img src="{% static 'images/c++icon.png' %}" loading="lazy">
+                                <img src="{{ course.course.profile_image.url }}" alt="Course Image" loading="lazy">
                             </div>
                             <div class="rating">
                                 <!-- Rating input elements -->
@@ -191,13 +191,15 @@
                     <form id="profile-form" action="{% url 'update_profile' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         
-                        <div class="profile-img-container">
-                            <div class="profile-img">
-                                <img id="profile-image-preview" src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}" alt="Profile Image">
+                        <div class="image-container">
+                            <div class="profile-img-container">
+                                <div class="profile-img">
+                                    <img id="profile-image-preview" src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}" alt="Profile Image">
+                                </div>
+                                <button type="button" class="edit-btn" id="upload-button">
+                                    <i class="fas fa-camera"></i>
+                                </button>
                             </div>
-                            <button type="button" class="edit-btn" id="upload-button">
-                                <i class="fas fa-camera"></i> Change Photo
-                            </button>
                         </div>
                         <input type="file" name="image" accept="image/*" id="image-upload" style="display: none;">
                 
@@ -234,11 +236,10 @@
                             <input type="password" class="TextInput" name="password">
                         </div>
                         
-                        <button type="submit">Save</button>
+                        <button type="submit" class="">Save</button>
                         <button type="button" onclick="window.location.href='#'">Cancel</button>
                     </form>
                 </section>
-                
                 
                 </main>
 
