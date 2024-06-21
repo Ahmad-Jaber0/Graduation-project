@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import auth
-from django.http import HttpResponse,JsonResponse, HttpResponseBadRequest,HttpResponseNotFound
+from django.http import HttpResponse,JsonResponse, HttpResponseBadRequest,HttpResponseNotFound,HttpResponseRedirect
+
 from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -43,27 +44,33 @@ def SignupPage(request):
         LN = request.POST.get('last_name')
         pass1 = request.POST.get('password1')
         pass2 = request.POST.get('password2')
+        phone_number = request.POST.get('phoneNumber')
+
+        errors = {}
+
+        if pass1 != pass2:
+            errors['password_mismatch'] = 'Passwords do not match.'
 
         if User.objects.filter(username=uname).exists():
-            return JsonResponse({'error': 'Username already exists.'}, status=400)
-        
-        elif User.objects.filter(email=email).exists():
-            return JsonResponse({'error': 'Email already exists.'}, status=400)
-        
-        else:
-            # Create the user
-            my_user = User.objects.create_user(username=uname, email=email, first_name=FN, last_name=LN, password=pass1)
-            my_user.save()
+            errors['username_exists'] = 'Username already exists.'
 
-            # Authenticate and login the user
-            user = authenticate(username=uname, password=pass1)
-            
-            if user is not None:
-                login(request, user)  # Log the user in
+        if User.objects.filter(email=email).exists():
+            errors['email_exists'] = 'Email already exists.'
 
-                # Redirect to the profile or info page after successful signup
-                return redirect('info')
-    
+        if errors:
+            return render(request, 'signup.html', {'errors': errors, 'form_data': request.POST})
+        
+        # If no errors, create the user
+        my_user = User.objects.create_user(username=uname, email=email, first_name=FN, last_name=LN, password=pass1,phoneNumber=phone_number)
+        my_user.save()
+
+        # Authenticate and log in the user
+        user = authenticate(username=uname, password=pass1)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('info')
+
     return render(request, 'signup.html')
 
 
@@ -73,16 +80,14 @@ def info(request):
 @login_required
 def save_questionnaire(request):
     if request.method == 'POST':
-        user=request.user
+        user = request.user
         data = json.loads(request.body)
-        q1 = data.get('q1')
-        q1_2 = data.get('q1.2')
-        if q1_2== None:
-            q1_2='0'
-        q2 = data.get('q2')
-        q3 = data.get('q3')
-        q4 = data.get('q4')
-        q5 = data.get('q5')
+        q1 = data.get('q1', '0')
+        q1_2 = data.get('q1.2', '0')
+        q2 = data.get('q2', '0')
+        q3 = data.get('q3', '0')
+        q4 = data.get('q4', '0')
+        q5 = data.get('q5', '0')
 
         # Save questionnaire response
         questionnaire_response = QuestionnaireResponse(
@@ -98,11 +103,10 @@ def save_questionnaire(request):
 
         user_responses = QuestionnaireResponse.objects.get(user=request.user)
 
-
         courses = Course.objects.all()
         recommendation_matrix = []
 
-    # Initialize recommendation matrix with zeros
+        # Initialize recommendation matrix with zeros
         for course in courses:
             recommendation_matrix.append({
                 'course': course,
@@ -111,7 +115,7 @@ def save_questionnaire(request):
                 'q3': 0,
                 'q4': 0,
                 'q5': 0,
-                'q1_2_adjusted': 0.0,  # Adjusted score for q1_2 based on provFront comparison
+                'q1_2_adjusted': 0.0,
                 'total_score': 0.0
             })
 
@@ -128,42 +132,34 @@ def save_questionnaire(request):
         for i, score_entry in enumerate(recommendation_matrix):
             course = score_entry['course']
 
-            # Calculate q1, q2, q3, q4, q5 scores
             for question, attribute in weights.items():
-                if user_responses:
-                    response_value = getattr(user_responses, question, '0')
-                else:
-                    response_value = '0'
-
+                response_value = getattr(user_responses, question, '0')
                 attribute_value = getattr(course, attribute, 0.0)
                 weighted_score = float(response_value) * attribute_value
                 recommendation_matrix[i][question] = weighted_score
                 recommendation_matrix[i]['total_score'] += weighted_score
 
-            # Calculate q1_2 adjusted score based on provFront comparison
             provFront_value = getattr(course, 'provFront', 0.0)
-            if user_responses:
-                q1_2_value = getattr(user_responses, 'q1_2', '0')
-                if float(q1_2_value) == float(provFront_value):
-                    recommendation_matrix[i]['q1_2_adjusted'] = float(q1_2_value)
-                    recommendation_matrix[i]['total_score'] += float(q1_2_value)
+            q1_2_value = getattr(user_responses, 'q1_2', '0')
+            if float(q1_2_value) == float(provFront_value):
+                recommendation_matrix[i]['q1_2_adjusted'] = float(q1_2_value)
+                recommendation_matrix[i]['total_score'] += float(q1_2_value)
 
-        # Find course with the highest total score
         max_score = -1
         max_score_course = None
 
         for entry in recommendation_matrix:
-            course_name = entry['course'].name
-            total_score = entry['total_score']
-            print(f"Course: {course_name}, Total Score: {total_score}")
-
-            if total_score > max_score:
-                max_score = total_score
+            if entry['total_score'] > max_score:
+                max_score = entry['total_score']
                 max_score_course = entry['course']
 
-        return JsonResponse({'message': f'go the course {max_score_course.name}'})
-    else:
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
+        if max_score_course:
+            return JsonResponse({'message': f'go the course {max_score_course.name}'})
+        else:
+            return JsonResponse({'error': 'No course recommendation available.'})
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
 
 @login_required
 def LogoutPage(request): ###### Logout and go in the home page :)
@@ -172,9 +168,18 @@ def LogoutPage(request): ###### Logout and go in the home page :)
 ############################################
 
 ############### home page and profile ######################333
-def home(request): ############## present The Home page :)
-    course=Course.objects.all()
-    return render(request, 'home.html',{'courses':course})
+def home(request):
+    courses = Course.objects.all()
+    saved_courses = []
+
+    if request.user.is_authenticated:
+        saved_courses = SavedCourse.objects.filter(user=request.user).values_list('course_id', flat=True)
+    
+    return render(request, 'home.html', {
+        'courses': courses,
+        'saved_courses': saved_courses,
+        'is_authenticated': request.user.is_authenticated,
+    })
 
 @login_required
 def profile(request): ############## present The profile page to the user after login :)
@@ -206,7 +211,7 @@ def course(request, course_name): ##### in the page course when click the Open C
         if first_topic:
             return redirect('course_detail', course_name=course_name, topic_name=first_topic.topic_name)
 
-@login_required
+@login_required(login_url='login')
 def course_detail(request, course_name, topic_name): ##### present the course Page :)
     course = get_object_or_404(Course, name=course_name)
     chapters = Chapter.objects.filter(course=course)
@@ -343,10 +348,9 @@ def dynamic_page(request): ##### Dynamic Html after fill the form then render th
 
     # Get the topic object based on the topic_id
     topic = get_object_or_404(Topic, topic_name=topic_Name,course=course)
-    is_edit = request.GET.get('edit_mode') == 'False'
 
     # Render the dynamic.html template with the topic data
-    return render(request, 'dynamic.html', {'topic': topic, 'is_edit': is_edit})
+    return render(request, 'dynamic.html', {'topic': topic, 'is_edit': False})
 ################################################################
 
 ########## API to get chapter and course #################
@@ -376,6 +380,38 @@ def Edit_course(request): ######## render Edit Form Course  :)
 def Del_course(request):####### render Delete Form Course   :)
     course=Course.objects.all() 
     return render(request,'Delete.html',{'courses':course})
+
+def Del_Quiz(request):
+    courses_with_quizzes = Course.objects.filter(quizquestion__isnull=False).distinct()
+    return render(request, 'DeleteQuiz.html', {'courses': courses_with_quizzes})
+
+def fetch_questions(request):
+    course_name = request.GET.get('course')
+    if course_name:
+        questions = QuizQuestion.objects.filter(course__name=course_name).values('question_number')
+        return JsonResponse({'questions': list(questions)})
+    else:
+        return JsonResponse({"error": "Invalid request"})
+
+def delete_quiz(request):
+    if request.method == 'POST':
+        course_name = request.POST.get('course_name')
+
+        if not course_name:
+            return JsonResponse({"error": "Missing course_name parameter"}, status=400)
+
+        if request.POST.get('DeleteEntireQuiz'):
+            QuizQuestion.objects.filter(course__name=course_name).delete()
+        else:
+            question_number = request.POST.get('question_number')
+            if question_number:
+                quiz_question = get_object_or_404(QuizQuestion, course__name=course_name, question_number=question_number)
+                quiz_question.delete()
+
+        return redirect('delete_quiz')  # Redirect to the delete quiz form
+
+    else:
+        return JsonResponse({"error": "Invalid request method"}, status=405)
 ############################################
 
 ####### change the html or name of course topic ...ect and update code html in dynamic ###############333
@@ -401,21 +437,17 @@ def delete_course_chapter_topic(request): ######## after Delete.html then remove
 def get_dynamic_content(request):
     if request.method == 'POST':
         course_name = request.POST.get('Course-Name')
-        print(course_name)
         chapter_number = request.POST.get('Chapter-Number')
-        print(chapter_number)
         topic_id = request.POST.get('topicName')
-        print(topic_id)
 
         topic = Topic.objects.get(pk=topic_id)
-        is_edit = request.GET.get('edit_mode') == 'True'
 
-        return render(request, 'dynamic.html', {'topic': topic, 'is_edit': is_edit})
+        return render(request, 'dynamic.html', {'topic': topic, 'is_edit': True})
 
-def update_code_html(request, topic_id):  ### after dynamic.html save the contet html of the topic :)
+def update_code_html(request, topic_id):
     if request.method == 'POST':
         try:
-            topic = Topic.objects.get(pk=topic_id)
+            topic = get_object_or_404(Topic, pk=topic_id)
             data = json.loads(request.body)
             code_html = data.get('codeHtml', '')
             topic.code_html = code_html
@@ -423,24 +455,25 @@ def update_code_html(request, topic_id):  ### after dynamic.html save the contet
             return JsonResponse({'success': True})
         except Topic.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Topic not found.'}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Invalid JSON.'}, status=400)
     return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
 
 @require_POST
-def save_course(request):######### save course when click in the image saved course and present in the profile :)
+@login_required
+def save_course(request):
     course_id = request.POST.get('course_id')
     if not course_id:
         return JsonResponse({'success': False, 'message': 'No course_id provided'})
 
     course = get_object_or_404(Course, id=course_id)
-    user = request.user  # Assuming user is authenticated
+    user = request.user
 
     try:
-        # Check if the course is already saved by the user
         saved = SavedCourse.objects.get(user=user, course=course)
         saved.delete()  # Remove the saved course
-        return JsonResponse({'success': True, 'message': 'Course removed successfully'})##########3 remmeber change this text
+        return JsonResponse({'success': True, 'message': 'Course removed successfully'})
     except SavedCourse.DoesNotExist:
-        # Create a new SavedCourse instance for the user
         saved_course = SavedCourse(user=user, course=course)
         saved_course.save()
         return JsonResponse({'success': True, 'message': 'Course saved successfully'})
@@ -459,6 +492,7 @@ def update_profile(request):
         user_profile.email = request.POST.get('email', '')
         user_profile.bio = request.POST.get('bio', '')
         user_profile.phone_number = request.POST.get('phone_number', '')
+        print(request.POST.get('phone_number'))
 
         # Handle profile image upload
         if 'image' in request.FILES:
@@ -471,7 +505,6 @@ def update_profile(request):
             update_session_auth_hash(request, user_profile)  # Update session with new password
 
         try:
-            user_profile.full_clean()  # Validate fields (optional)
             user_profile.save()
             messages.success(request, "Profile updated successfully.")
         except Exception as e:
@@ -484,31 +517,25 @@ def update_profile(request):
 ##########################################################################
 
 ######### Dynamic page quiz and save the quiz ####################### -------> we need change here
-from django.db.models import Q
-def dynamic_quiz(request, course=None): ### render the EnterQuiz.html and show the form to this quiz :)
+def dynamic_quiz(request):
     course_name = request.GET.get('course')
 
-    if not course and not course_name:
+    if not course_name:
         return HttpResponseBadRequest("Course name is required.")  # Return 400 if course name is missing
 
-    if not course_name:
-        course1 = get_object_or_404(Course, Q(name__iexact=course))  # Return 400 if course name is missing
-    else:
-        course1 = get_object_or_404(Course, Q(name__iexact=course_name))
-
     try:
-        topics = Topic.objects.filter(course=course1)  # Fetch the topics related to the course
+        course = get_object_or_404(Course, name__iexact=course_name)
+        topics = Topic.objects.filter(course=course)  # Fetch the topics related to the course
 
-        return render(request, 'EnterQuiz.html', {'topics': topics, 'course_name': course1})  # Render the template with the topics
+        return render(request, 'EnterQuiz.html', {'topics': topics, 'course_name': course_name})  # Render the template with the topics
     except Course.DoesNotExist:
         return render(request, 'EnterQuiz.html', {'error': f'Course "{course_name}" does not exist.'})  # Handle course not found
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return render(request, 'EnterQuiz.html', {'error': 'An unexpected error occurred.'})
-        
 
 @csrf_exempt
-def save_quiz(request): ##### save this quiz after add   :)
+def save_quiz(request):
     if request.method == "POST":
         try:
             course_name = request.POST.get('Course_name')
@@ -519,14 +546,17 @@ def save_quiz(request): ##### save this quiz after add   :)
             html_content = request.POST.get('html_content')
             correct_answers = request.POST.get('correct_answers[]')
 
+            # Check if the question number already exists for the course
+            course = Course.objects.get(name=course_name)
+            if QuizQuestion.objects.filter(course=course, question_number=question_number).exists():
+                return JsonResponse({'success': False, 'error_message': 'Question number already exists for this course.'})
+
             # Split the correct_answers string into a list
             correct_answers_list = correct_answers.split(',')
 
             # Ensure the correct_answers list has the expected number of items
             if len(correct_answers_list) < question_sections_count:
                 raise ValueError("Not enough correct answers provided.")
-
-            course = Course.objects.get(name=course_name)
 
             # Create a new QuizQuestion instance
             quiz_question = QuizQuestion(
@@ -548,22 +578,23 @@ def save_quiz(request): ##### save this quiz after add   :)
                 question_section = QuestionSection.objects.create(
                     question=quiz_question,
                     section_number=i + 1,
-                    correct_answer_text=correct_answers_list[i]  # Correct field name
+                    correct_answer_text=correct_answers_list[i]
                 )
 
-                # Get the options for this section
-                options = request.POST.getlist(f'question_section_{i + 1}_options')
-                for option_text in options:
-                    QuestionOption.objects.create(section=question_section, option_text=option_text, option_id=f'{i + 1}{options.index(option_text) + 1}')
-            # Return success response with course_name
-            return JsonResponse({'success': True, 'course_name': course_name})
+                
 
+            # Return success response with course_name
+            return HttpResponseRedirect(f"{reverse('EnterQuiz')}?course={course_name}")
+
+        except Course.DoesNotExist:
+            return JsonResponse({'success': False, 'error_message': 'Course does not exist.'})
         except Exception as e:
             print("Error:", e)
             return JsonResponse({'success': False, 'error_message': 'Error saving quiz'})
 
     else:
         return JsonResponse({'success': False, 'error_message': 'Invalid request method'})
+
 ########################################################
 
 ################ Page Quastion and return the number of chapter ---> Recomend 1 
@@ -580,8 +611,16 @@ def quiz(request):
     # Fetch the course using the decoded course name
     course = get_object_or_404(Course, name=decoded_course_name)
 
-    # Get the current question number, default to 1 if not provided
-    current_question_number = int(request.GET.get('question_number', 1))
+    # Get the current question number; if not provided, find the lowest question number
+    try:
+        current_question_number = int(request.GET.get('question_number', None))
+    except (TypeError, ValueError):
+        # If no specific question is requested, start with the first available question
+        first_question = QuizQuestion.objects.filter(course=course).order_by('question_number').first()
+        if first_question:
+            current_question_number = first_question.question_number
+        else:
+            return HttpResponseNotFound("No questions available for this course")
 
     try:
         # Get the current quiz question
@@ -598,6 +637,7 @@ def quiz(request):
     # Determine the next question number
     next_question_number = current_question_number + 1
     next_question = QuizQuestion.objects.filter(course=course, question_number=next_question_number).first()
+    print(next_question)
 
     return render(request, 'QuestionPage.html', {
         'quiz': quiz_question,
@@ -607,32 +647,54 @@ def quiz(request):
 @csrf_exempt
 def check_answer(request):
     if request.method == 'POST':
-        # Get course and quiz IDs from POST data
         course_id = request.POST.get('course_id')
         course = get_object_or_404(Course, id=course_id)
         quiz_id = request.POST.get('quiz_id')
         selected_answers = json.loads(request.POST.get('selected_answers', '{}'))
+        is_skip = request.POST.get('is_skip') == 'true'
 
         try:
-            # Get the quiz question
             quiz = get_object_or_404(QuizQuestion, id=quiz_id, course_id=course_id)
             sections = QuestionSection.objects.filter(question=quiz)
 
-            # Evaluate the user's answers
             results = {}
+            if not is_skip:
+                # Server-side validation: Ensure all sections are answered
+                missing_sections = []
+                for section in sections:
+                    section_id = str(section.section_number)
+                    if section_id not in selected_answers:
+                        missing_sections.append(section_id)
+
+                if missing_sections:
+                    return JsonResponse({
+                        'status': 'Error',
+                        'message': 'Please answer all sections of the question.'
+                    }, status=400)
+
             for section in sections:
                 section_id = str(section.section_number)
-                user_answer = selected_answers.get(section_id)
-                is_correct = user_answer == section.correct_answer_text
+                if is_skip:
+                    is_correct = False  # Mark as incorrect if skipped
+                    user_answer = None
+                else:
+                    user_answer = selected_answers.get(section_id)
+                    is_correct = user_answer == section.correct_answer_text
+
                 results[section_id] = {
                     'user_answer': user_answer,
                     'is_correct': is_correct,
                 }
+                # Save user's answer regardless of whether it's correct or not
                 UserAnswer.objects.create(
                     user=request.user,
                     section=section,
                     is_correct=is_correct
                 )
+
+            # Check if the user has gotten all answers wrong across all questions in the course
+            user_answers = UserAnswer.objects.filter(user=request.user, section__question__course=course)
+            all_answers_incorrect = not user_answers.filter(is_correct=True).exists()
 
             # Find the next question
             next_question = QuizQuestion.objects.filter(
@@ -646,7 +708,7 @@ def check_answer(request):
                 )
                 return JsonResponse({'status': 'Success', 'results': results, 'next_question_url': next_question_url})
             else:
-                # Calculate chapter recommendations
+                # If no more questions, or all answers are incorrect, provide chapter recommendations
                 chapters = Chapter.objects.filter(course=course).order_by('id')
                 questions = QuizQuestion.objects.filter(course=course).order_by('question_number')
 
@@ -684,17 +746,24 @@ def check_answer(request):
 
                 min_score = np.min(chapter_scores)
                 max_score = np.max(chapter_scores)
-                normalized = (chapter_scores - min_score) / (max_score - min_score)
+
+                if max_score == min_score:
+                    normalized = np.zeros_like(chapter_scores)  # Avoid division by zero by setting all normalized scores to 0
+                else:
+                    normalized = (chapter_scores - min_score) / (max_score - min_score)
 
                 total_row_sum = np.sum(row_sums)
                 threshold = row_sums / total_row_sum
 
-                print(threshold)
-                print(normalized)
+                # Redirect to Chapter 1 if all answers are incorrect
+                if all_answers_incorrect:
+                    chapter_url = reverse('course', kwargs={'course_name': course.name}) + '#1'
+                    message = "You should review Chapter 1."
+                    return JsonResponse({'status': 'Success', 'results': results, 'course_page_url': chapter_url, 'message': message})
 
                 for i in range(len(threshold)):
                     if normalized[i] <= threshold[i]:
-                        message = f"You should review Chapter {i+1}."############# change her
+                        message = f"You should review Chapter {i+1}."
                         chapter_url = reverse('course', kwargs={'course_name': course.name}) + f'#{i+1}'
                         return JsonResponse({'status': 'Success', 'results': results, 'course_page_url': chapter_url, 'message': message})
 

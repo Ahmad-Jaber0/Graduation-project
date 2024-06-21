@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'hierarchy.apps.SuitConfig',
     'hierarchy',
     'rest_framework',
     'django.contrib.admin',

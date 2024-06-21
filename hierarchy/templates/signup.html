@@ -279,21 +279,27 @@
             <div class="form">
                 <form id="signupForm" method="post" action="{% url 'signup' %}">
                     {% csrf_token %}
-
+                    
                     <div class="inputBox">
-                        <input type="text" required id="username" name="username">
+                        <input type="text" required id="username" name="username" value="{{ form_data.username|default:'' }}">
                         <i>Username</i>
+                        {% if errors.username_exists %}
+                            <p class="error">{{ errors.username_exists }}</p>
+                        {% endif %}
                     </div>
                     <div class="inputBox">
-                        <input type="text" required id="email" name="email">
+                        <input type="text" required id="email" name="email" value="{{ form_data.email|default:'' }}">
                         <i>Email</i>
+                        {% if errors.email_exists %}
+                            <p class="error">{{ errors.email_exists }}</p>
+                        {% endif %}
                     </div>
                     <div class="inputBox">
-                        <input type="text" required id="first_name" name="first_name">
+                        <input type="text" required id="first_name" name="first_name" value="{{ form_data.first_name|default:'' }}">
                         <i>First Name</i>
                     </div>
                     <div class="inputBox">
-                        <input type="text" required id="last_name" name="last_name">
+                        <input type="text" required id="last_name" name="last_name" value="{{ form_data.last_name|default:'' }}">
                         <i>Last Name</i>
                     </div>
                     <div class="inputBox">
@@ -303,21 +309,32 @@
                     <div class="inputBox">
                         <input type="password" required id="password2" name="password2">
                         <i>Confirm Password</i>
+                        {% if errors.password_mismatch %}
+                            <p class="error">{{ errors.password_mismatch }}</p>
+                        {% endif %}
                     </div>
                     <div class="inputBox">
                         <input type="submit" value="Sign Up" id="signupButton">
                     </div>
                 </form>
-
+    
                 <div class="links">
-                    <p>You already have an account --></p>
-                    <a href="{% url 'login' %}">LogIn</a>
+                    <p style = "color: #aaa">You already have an account --></p>
+                    <a href="{% url 'login' %}">Log In</a>
                 </div>
             </div>
         </div>
     </div>
+    
 </section>
 
 
 </body>
 </html>
+<style>
+    .error {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+    </style>

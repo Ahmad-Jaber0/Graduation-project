@@ -10,6 +10,42 @@
 </head>
 <body>
 
+  <header>
+    <a href="{% url 'home' %}" class="logo">LoomingCode</a>
+
+    
+    <nav class="navigation" id="nav-middle">
+        <a href="{% url 'home'%}">Home</a>
+        <a href="{% url 'home' %}#courses">Courses</a>
+        <a href="{% url 'home' %}#services">Services</a>
+        <a href="{% url 'home' %}#about">About</a>
+        <a href="{% url 'home' %}#contact">Contact</a>
+    </nav>
+
+
+    <nav class="navigation" id="header-icons">
+        {% if request.user.is_authenticated %}
+        
+        <span style = "display:inline-flex; margin-top: 5px;">
+        <a href="{% url 'profile' %}" class="profile-link">
+            <span class="profile-icon">
+                <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}" alt="Profile Image">
+            </span>
+        </a>
+
+        <a href="{% url 'logout_page' %}">
+            <i class="fa-solid fa-right-from-bracket fa-lg" id = "logout-icon"></i>
+        </a>
+        </span>
+
+        {% else %}
+        <a href="{% url 'login' %}">
+            <i class="fa fa-right-to-bracket fa-lg"></i>
+        </a>
+       {% endif %}
+        
+    </nav>
+</header>
 
   <main class="content-section">
     <form class="form-container" id="myForm" formmethod="post">
@@ -89,10 +125,25 @@
 
       <div class="button-container">
         <button type="submit" class="submit-button" id="submit" disabled>Submit</button>
-        <button type="submit" class="submit-button">Cancel</button>
+        <button type="button" class="submit-button" id="cancelButton">Cancel</button>
       </div>
     </form>
     <script>
+      
+      document.addEventListener('DOMContentLoaded', function () {
+        // Other existing JavaScript code...
+    
+        // Get the Cancel button by its ID
+        const cancelButton = document.getElementById('cancelButton');
+    
+        // Add an event listener to the Cancel button
+        cancelButton.addEventListener('click', function(event) {
+          // Prevent the default form submission
+          event.preventDefault();
+          // Redirect to the homepage
+          window.location.href = "{% url 'home' %}";
+        });
+      });
       // Get references to the form elements
 const form = document.getElementById('myForm');
 const q1Radios = document.querySelectorAll('input[name="q1"]');
@@ -173,88 +224,104 @@ toggleSubmitButton();
 
 document.getElementById('myForm').addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent the default form submission
-  
+
   // Serialize form data into JSON format
   const formData = new FormData(form);
   const serializedData = {};
 
   // Iterate over form data entries
   for (const [key, value] of formData.entries()) {
-    // Handle special case for q1.2 when it's hidden
-    if (key === 'q1.2') {
-      if (q1_2Question.classList.contains('hidden')) {
-        serializedData[key] = '0'; // Default value when q1.2 is hidden
+      // Handle special case for q1.2 when it's hidden
+      if (key === 'q1.2') {
+          if (q1_2Question.classList.contains('hidden')) {
+              serializedData[key] = '0'; // Default value when q1.2 is hidden
+          } else {
+              serializedData[key] = value;
+          }
       } else {
-        serializedData[key] = value;
+          serializedData[key] = value;
       }
-    } else {
-      serializedData[key] = value;
-    }
   }
 
-  const userConfirmed = confirm("Do you want to proceed?");
-  
-  if (userConfirmed) {
-    fetch('{% url 'save_questionnaire' %}', {
+  // Fetch the recommended course name
+  fetch('{% url "save_questionnaire" %}', {
       method: 'POST',
       headers: {
-        'X-CSRFToken': '{{ csrf_token }}',
-        'Content-Type': 'application/json'
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
       },
       body: JSON.stringify(serializedData)
-    })
-    .then(response => {
+  })
+  .then(response => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+          throw new Error('Network response was not ok');
       }
       return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      // Determine which URL to redirect based on data.message content
-      const redirectUrl = data.message.includes('course') ? "{% url 'course' course_name='PLACEHOLDER' %}".replace('PLACEHOLDER', data.message.split(' ')[3]) : "{% url 'home' %}";
-      window.location.href = redirectUrl;
-    })
-    .catch(error => {
+  })
+  .then(data => {
+      if (data.error) {
+          alert(data.error);
+          return;
+      }
+      // Get the course name from the response
+      const courseName = data.message.split(' ')[3]; // Assuming the message format is consistent
+
+      // Show the confirmation dialog with the course name
+      const userConfirmed = confirm(`The recommended course is: ${courseName}. Do you want to proceed?`);
+
+      if (userConfirmed) {
+          // Redirect to the course page
+          const redirectUrl = "{% url 'course' course_name='PLACEHOLDER' %}".replace('PLACEHOLDER', courseName);
+          window.location.href = redirectUrl;
+      } else {
+          // Redirect to another page if user clicks Cancel
+          window.location.href = "{% url 'home' %}"; // Replace with your desired URL
+      }
+  })
+  .catch(error => {
       console.error('Error:', error);
       alert('Error submitting questionnaire. Please try again.');
-    });
-  } else {
-    // Redirect to another page when user clicks Cancel
-    window.location.href = "{% url 'home' %}"; // Replace with your URL
-  }
+  });
 });
-
     </script>
   </main>
 
   <section class="footerbody">
     <footer class="footer">
-      <ul class="social-icon">
-        <li class="social-icon__item"><a class="social-icon__link" href="#">
-            <ion-icon name="logo-facebook"></ion-icon>
-          </a></li>
-        <li class="social-icon__item"><a class="social-icon__link" href="#">
-            <ion-icon name="logo-twitter"></ion-icon>
-          </a></li>
-        <li class="social-icon__item"><a class="social-icon__link" href="#">
-            <ion-icon name="logo-linkedin"></ion-icon>
-          </a></li>
-        <li class="social-icon__item"><a class="social-icon__link" href="#">
-            <ion-icon name="logo-instagram"></ion-icon>
-          </a></li>
-      </ul>
-      <ul class="menu">
-        <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
-        <li class="menu__item"><a class="menu__link" href="#">About</a></li>
-        <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
-        <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
-        <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
-      </ul>
-      <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
+        <ul class="social-icon">
+            <li class="social-icon__item">
+                <a class="social-icon__link" href="#">
+                    <ion-icon name="logo-facebook"></ion-icon>
+                </a>
+            </li>
+            <li class="social-icon__item">
+                <a class="social-icon__link" href="#">
+                    <ion-icon name="logo-twitter"></ion-icon>
+                </a>
+            </li>
+            <li class="social-icon__item">
+                <a class="social-icon__link" href="#">
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+            </li>
+            <li class="social-icon__item">
+                <a class="social-icon__link" href="#">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                </a>
+            </li>
+        </ul>
+        <ul class="menu">
+            <li class="menu__item"><a class="menu__link" href="{% url 'home'%}">Home</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#about">About</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#services">Services</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#contact">Team</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#contact">Contact</a></li>
+
+        </ul>
+        <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
     </footer>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  </section>
+</section>
 </body>
 </html>

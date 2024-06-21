@@ -1,8 +1,17 @@
 from django.contrib import admin
 from .models import *
 
+admin.site.site_header="LoomingCode"
+admin.site.site_title="LoomingCode"
+
+
+
+
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'first_name', 'last_name', 'email', 'role','profile_image','id']
+    list_display = ['username', 'first_name', 'last_name', 'email', 'role','profile_image','phoneNumber','id']
+    list_editable=['role']
+    search_fields=['username']
+    list_filter=['role']
 
 class QuestionnaireResponseAdmin(admin.ModelAdmin):
     list_display=['user','q1','q1_2','q3','q4','q5']

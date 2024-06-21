@@ -6,8 +6,8 @@ from django.db.models import F
 
 class User(AbstractUser):
     ROLE_CHOICES = [
+        ('Admin', 'Admin'),
         ('Manager', 'Manager'),
-        ('Team Leader', 'Team Leader'),
         ('Developer', 'Developer'),
     ]
     username = models.CharField(max_length=50, unique=True)
@@ -17,6 +17,8 @@ class User(AbstractUser):
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES,default='Developer')
     profile_image = models.ImageField(upload_to='profile_images/', default='profile_images/default.png')
+    phoneNumber = models.CharField(max_length=15, blank=True, null=True)  # Assuming phone numbers can include country code
+    bio = models.TextField(blank=True)
 
 class QuestionnaireResponse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -144,6 +146,8 @@ class QuizQuestion(models.Model):
 
     def __str__(self):
         return f"Question {self.question_number} - Course: {self.course.name}"
+    class Meta:
+        unique_together = (('course', 'question_number'),)
 
 class QuestionSection(models.Model):
     question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE, related_name='sections')
@@ -152,6 +156,8 @@ class QuestionSection(models.Model):
 
     def __str__(self):
         return f"Section {self.section_number} of Question {self.question.question_number}"
+    class Meta:
+        unique_together = (('question', 'section_number'),)
 
 
 class QuestionOption(models.Model):

@@ -143,9 +143,9 @@
         <div class="card" data-course-id="{{ course.id }}">
             <b>
                 <button class="save_button" onclick="saveCourse(this)">
-                    <img src="{% static 'images/icons8-save-32.png' %}" class="save_icon">
+                    <img src="{% static 'images/icons8-save-32.png' %}" 
+                         class="save_icon {% if is_authenticated and course.id in saved_courses %}saved{% endif %}">
                 </button>
-    
                 <div class="CourseIcon">
                     <img src="{{ course.profile_image.url }}" alt="Course Image" loading="lazy">
                 </div>
@@ -166,13 +166,19 @@
                     <span class="rating_participants_count">(<span id="rating_participants_count">12</span>)</span>
                 </div>
                 <h3>{{ course.name }}</h3>
-                <a href="{% url 'course' course.name %}">
-                    <button id="cButton" class="button">OPEN COURSE</button>
-                </a>
+                {% if is_authenticated %}
+                    <a href="{% url 'course' course.name %}">
+                        <button id="cButton" class="button">OPEN COURSE</button>
+                    </a>
+                {% else %}
+                <button id="cButton" class="button" onclick="alertLoginRequired();">OPEN COURSE</button>
+                {% endif %}
             </b>
         </div>
         {% endfor %}
     </div>
+    
+    
 </section>
 <div>
     <hr style="border: 1px solid blue">
@@ -346,11 +352,11 @@
             </li>
         </ul>
         <ul class="menu">
-            <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
-            <li class="menu__item"><a class="menu__link" href="#">About</a></li>
-            <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
-            <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
-            <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home'%}">Home</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#about">About</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#services">Services</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#contact">Team</a></li>
+            <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#contact">Contact</a></li>
 
         </ul>
         <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
@@ -367,6 +373,7 @@
         const courseId = courseCard.data('course-id');
         const saveIcon = $(button).find('.save_icon');
 
+        {% if is_authenticated %}
         $.ajax({
             url: "{% url 'save_course' %}",
             type: "POST",
@@ -378,10 +385,8 @@
                 if (response.success) {
                     if (response.message.includes('removed')) {
                         saveIcon.removeClass('saved');
-                        saveIcon.css('background-color', ''); // Reset to default
                     } else {
                         saveIcon.addClass('saved');
-                        saveIcon.css('background-color', 'black'); // Change to green to indicate saved
                     }
                 } else {
                     console.log("Failed to save/remove the course: " + response.message);
@@ -391,16 +396,27 @@
                 console.log("An error occurred: " + error);
             }
         });
+        {% else %}
+        alert("Please log in to save courses.");
+        // Optionally, redirect to login page
+        window.location.href = "{% url 'login' %}";
+        {% endif %}
+    }
+    function alertLoginRequired() {
+        alert("Please log in to open this course.");
+        window.location.href = "{% url 'login' %}";
     }
 </script>
 
+
 <style>
     .save_icon {
-        transition: background-color 0.3s ease; /* Smooth transition */
-    }
-    .save_icon.saved {
-        background-color: black; /* Change to green when saved */
-    }
+         background-color 0.4s ease; 
+      }
+      .save_icon.saved {
+        background-color: rgb(191, 191, 255) ;
+      }
+
 </style>
 
 </body>

@@ -56,15 +56,45 @@
                 selectedAnswers[sectionNumber] = answerId;
                 console.log("Selected Answers:", selectedAnswers); // Log selected answers
             };
-
+            document.querySelector('.skip').addEventListener('click', function() {
+                submitForm(true);  // Pass true to indicate skip
+            });
+    
+            // Add event listener for the submit button
             document.querySelector('.submit-answer').addEventListener('click', function() {
+                submitForm(false);  // Pass false to indicate this is not a skip
+            });
+    
+            function submitForm(isSkip) {
                 const formData = new FormData();
-                formData.append('course_id', '{{ quiz.course.id }}');
-                formData.append('quiz_id', '{{ quiz.id }}');
+                const course_id = '{{ quiz.course.id }}';
+                const quiz_id = '{{ quiz.id }}';
+                formData.append('course_id', course_id);
+                formData.append('quiz_id', quiz_id);
+                formData.append('is_skip', isSkip.toString());
+    
+                if (!isSkip) {
+                    // Client-side validation: Ensure all sections are answered if not skipping
+                    const totalSections = {{ quiz.sections_count }};
+                    let allSectionsAnswered = true;
+    
+                    for (let i = 1; i <= totalSections; i++) {
+                        if (!selectedAnswers[i]) {
+                            allSectionsAnswered = false;
+                            break;
+                        }
+                    }
+    
+                    if (!allSectionsAnswered) {
+                        alert('Please answer all sections of the question.');
+                        return;
+                    }
+                }
+    
                 formData.append('selected_answers', JSON.stringify(selectedAnswers));
-
+    
                 const csrftoken = getCookie('csrftoken');
-
+    
                 fetch('{% url "check_answer" %}', {
                     method: 'POST',
                     body: formData,
@@ -88,8 +118,8 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
-            });
-
+            }
+    
             // Function to get CSRF token from cookies
             function getCookie(name) {
                 let cookieValue = null;

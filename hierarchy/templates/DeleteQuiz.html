@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Edit.css' %}">
+    <title>Delete Quiz Form</title>
+</head>
+<body>
+  <header>
+    <a href="{% url 'home' %}" class="logo">LoomingCode</a>
+
+    
+    <nav class="navigation" id="nav-middle">
+        <a href="{% url 'home'%}">Home</a>
+        <a href="{% url 'home' %}#courses">Courses</a>
+        <a href="{% url 'home' %}#services">Services</a>
+        <a href="{% url 'home' %}#about">About</a>
+        <a href="{% url 'home' %}#contact">Contact</a>
+    </nav>
+
+
+    <nav class="navigation" id="header-icons">
+        {% if request.user.is_authenticated %}
+        
+        <span style = "display:inline-flex; margin-top: 5px;">
+        <a href="{% url 'profile' %}" class="profile-link">
+            <span class="profile-icon">
+                <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}" alt="Profile Image">
+            </span>
+        </a>
+
+        <a href="{% url 'logout_page' %}">
+            <i class="fa-solid fa-right-from-bracket fa-lg" id = "logout-icon"></i>
+        </a>
+        </span>
+
+        {% else %}
+        <a href="{% url 'login' %}">
+            <i class="fa fa-right-to-bracket fa-lg"></i>
+        </a>
+       {% endif %}
+        
+    </nav>
+</header>
+
+    <main class="content-section">
+        <form class="form-container" id="deleteQuizForm" method="post" action="{% url 'delete_quiz_post' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="Course-Name">Course Name:</label>
+                <select id="Course-Name" name="course_name" required>
+                    <option value="" disabled selected>Select a course</option>
+                    {% for course in courses %}
+                        <option value="{{ course.name }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="Question-Number">Quiz Question Number:</label>
+                <select id="Question-Number" name="question_number" required disabled>
+                    <option value="" disabled selected>Select a question</option>
+                </select>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="DeleteEntireQuiz" name="DeleteEntireQuiz"> Delete Entire Quiz
+                </label>
+            </div>
+            <div class="button-container">
+                <button type="submit" class="submit-button" id="deleteButton" disabled>Delete</button>
+                <button type="button" class="submit-button" id="cancelButton" onclick="window.location.href='{% url 'profile' %}'">Cancel</button>
+            </div>
+        </form>
+    </main>
+
+    <section class="footerbody">
+        <footer class="footer">
+            <ul class="social-icon">
+                <li class="social-icon__item">
+                    <a class="social-icon__link" href="#">
+                        <ion-icon name="logo-facebook"></ion-icon>
+                    </a>
+                </li>
+                <li class="social-icon__item">
+                    <a class="social-icon__link" href="#">
+                        <ion-icon name="logo-twitter"></ion-icon>
+                    </a>
+                </li>
+                <li class="social-icon__item">
+                    <a class="social-icon__link" href="#">
+                        <ion-icon name="logo-linkedin"></ion-icon>
+                    </a>
+                </li>
+                <li class="social-icon__item">
+                    <a class="social-icon__link" href="#">
+                        <ion-icon name="logo-instagram"></ion-icon>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu">
+                <li class="menu__item"><a class="menu__link" href="{% url 'home'%}">Home</a></li>
+                <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#about">About</a></li>
+                <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#services">Services</a></li>
+                <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#contact">Team</a></li>
+                <li class="menu__item"><a class="menu__link" href="{% url 'home' %}#contact">Contact</a></li>
+    
+            </ul>
+            <p>&copy;2024 Aws, Aseel and Ahmad | All Rights Reserved</p>
+        </footer>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </section>
+
+    <script>
+        const courseSelect = document.getElementById('Course-Name');
+        const questionSelect = document.getElementById('Question-Number');
+        const deleteQuizCheckbox = document.getElementById('DeleteEntireQuiz');
+        const deleteButton = document.getElementById('deleteButton');
+
+        courseSelect.addEventListener('change', () => {
+            if (!deleteQuizCheckbox.checked) {
+                questionSelect.disabled = false;
+                fetchQuestions(courseSelect.value);
+            }
+            updateButtonState();
+        });
+
+        questionSelect.addEventListener('change', updateButtonState);
+
+        deleteQuizCheckbox.addEventListener('change', () => {
+            questionSelect.disabled = deleteQuizCheckbox.checked;
+            if (deleteQuizCheckbox.checked) {
+                questionSelect.selectedIndex = 0;
+            }
+            updateButtonState();
+        });
+
+        function updateButtonState() {
+            const isCourseSelected = courseSelect.value !== "";
+            const isQuestionSelected = questionSelect.value !== "";
+            const isDeleteQuizChecked = deleteQuizCheckbox.checked;
+
+            deleteButton.disabled = !(isCourseSelected && (isQuestionSelected || isDeleteQuizChecked));
+        }
+
+        function fetchQuestions(courseName) {
+            fetch(`/fetch_questions/?course=${encodeURIComponent(courseName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    questionSelect.innerHTML = '<option value="" disabled selected>Select a question</option>';
+                    data.questions.forEach(question => {
+                        const option = document.createElement('option');
+                        option.value = question.question_number;
+                        option.textContent = `Question ${question.question_number}`;
+                        questionSelect.appendChild(option);
+                    });
+                    questionSelect.disabled = false;
+                    updateButtonState();
+                })
+                .catch(error => {
+                    console.error('Error fetching questions:', error);
+                    alert("An error occurred while fetching questions.");
+                });
+        }
+    </script>
+</body>
+</html>

@@ -12,19 +12,19 @@
     <header>
         <a href="{% url 'home' %}" class="logo">LoomingCode</a>
         <nav class="navigation" id="nav-middle">
-            <a href="{% url 'home'%}">Home</a>
+            <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'home' %}#courses">Courses</a>
             <a href="{% url 'home' %}#services">Services</a>
-    
-            <a href="{% url 'home' %}#aboute">About</a>
+            <a href="{% url 'home' %}#about">About</a>
             <a href="{% url 'home' %}#contact">Contact</a>
         </nav>
-        <nav class = "navigation" id = "header-icons">
-            <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
-            <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
+        <nav class="navigation" id="header-icons">
+            <a href="{% url 'profile' %}" id="profile"><i class="fa-regular fa-user fa-lg"></i></a>
+            <a href="{% url 'login' %}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
             <a href="{% url 'logout_page' %}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
         </nav>
     </header>
+
     <div class="toolbar">
         <div class="tooltip">
             <button class="toolbarelements" data-element="code block" onclick="func(this)"  disabled><img src="{%static 'images/code.png' %}"></button>
@@ -289,14 +289,14 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const quizForm = document.getElementById('quizForm');
-    
+        
             quizForm.addEventListener('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
-    
+        
                 // Serialize form data
                 const formData = new FormData(quizForm);
                 const saveQuizUrl = "{% url 'save_quiz' %}";
-    
+        
                 // Send POST request via AJAX
                 fetch(saveQuizUrl, {
                     method: 'POST',
@@ -311,24 +311,30 @@
                     }
                     return response.json();
                 })
-                .then(data => {
-                    if (data.success) {
-                        // Redirect to EnterQuiz view with course_name
-                        const courseName = data.course_name;
-                        window.location.href = `/EnterQuiz/?course=${courseName}`;
+               .then(data => {
+                if (data.success) {
+                    // Redirect to dynamic_quiz view with course name
+                    const courseName = data.course_name;
+                    console.log('Redirecting to dynamic_quiz with course:', courseName); // Debug log
+                    alert('Redirecting to dynamic_quiz with course: ' + courseName); // Debug alert
+                    window.location.href = `/EnterQuiz/?course=${encodeURIComponent(courseName)}`;
+                } else {
+                    // Handle error case
+                    if (data.error_message) {
+                        alert(data.error_message);
                     } else {
-                        // Handle error case
-                        console.error('Error saving quiz:', data.error_message);
                         alert('Error saving quiz. Please try again.');
                     }
-                })
+                }
+            })
+
                 .catch(error => {
                     console.error('Error:', error);
                     alert('Error saving quiz. Please try again.');
                 });
-                
             });
         });
+        
     </script>
     
         

@@ -13,18 +13,38 @@
 </head>
 <header>
     <a href="{% url 'home' %}" class="logo">LoomingCode</a>
+
+    
     <nav class="navigation" id="nav-middle">
         <a href="{% url 'home'%}">Home</a>
         <a href="{% url 'home' %}#courses">Courses</a>
         <a href="{% url 'home' %}#services">Services</a>
-
-        <a href="{% url 'home' %}#aboute">About</a>
+        <a href="{% url 'home' %}#about">About</a>
         <a href="{% url 'home' %}#contact">Contact</a>
     </nav>
-    <nav class = "navigation" id = "header-icons">
-        <a href = "{% url 'profile'%}" id = "profile"><i class="fa-regular fa-user fa-lg"></i></a>
-        <a href = "{% url 'login'%}"><i class="fa fa-right-to-bracket fa-lg"></i></a>
-        <a href="{% url 'logout_page' %}"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
+
+
+    <nav class="navigation" id="header-icons">
+        {% if request.user.is_authenticated %}
+        
+        <span style = "display:inline-flex; margin-top: 5px;">
+        <a href="{% url 'profile' %}" class="profile-link">
+            <span class="profile-icon">
+                <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}" alt="Profile Image">
+            </span>
+        </a>
+
+        <a href="{% url 'logout_page' %}">
+            <i class="fa-solid fa-right-from-bracket fa-lg" id = "logout-icon"></i>
+        </a>
+        </span>
+
+        {% else %}
+        <a href="{% url 'login' %}">
+            <i class="fa fa-right-to-bracket fa-lg"></i>
+        </a>
+       {% endif %}
+        
     </nav>
 </header>
 <body>
@@ -42,9 +62,16 @@
                 <li><a href="#profile"><span class="side_bar_icon"><i class="fas fa-user"></i></span> My Profile</a></li>
                 <li><a href="#courses"><span class="side_bar_icon"><i class="fas fa-check-circle"></i></span> Enrolled Courses</a></li>
                 <li><a href="#Saved-Courses"><span class="side_bar_icon"><i class="fas fa-bookmark"></i></span> Saved Courses</a></li>
-                {% if request.user.role == "Manager" %}
+                {% if request.user.role == "Manager" or  request.user.role == "Admin"%}
                 <li><a href="#moderator-permissions"><span class="side_bar_icon"><i class="fas fa-user-shield"></i></span> Moderator Permissions</a></li>
                 {%endif%}
+                {% if request.user.role == "Admin" %}
+                <li>
+                    <a href="http://127.0.0.1:8000/admin/" onclick="window.location.href='http://127.0.0.1:8000/admin/'; return false;">
+                        <span class="side_bar_icon"><i class="fas fa-user-shield"></i></span> Admin DashBoard
+                    </a>
+                </li>
+                {% endif %}
                 <hr>
                 <li><a href="#settings"><span class="side_bar_icon"><i class="fas fa-cog"></i></span> Settings</a></li>
             </ul>
@@ -77,12 +104,12 @@
 
                 <div class="label-line">
                     <div class="label">Phone Number</div>
-                    <div class="label">________</div>
+                    <div class="label">{{request.user.phoneNumber}}</div>
                 </div>
 
                 <div class="label-line">
                     <div class="label">Bio</div>
-                    <div class="label">________</div>
+                    <div class="label">{{request.user.bio}}</div>
                 </div>
                 <div class="label-line">
                     <div class="label">Role</div>
@@ -177,6 +204,11 @@
                         </select>
                     </div>
                     <hr>
+                    <div class="label-line">
+                        <div class="label"><i class="fas fa-trash-alt"></i> &nbsp; Delete a Quiz Question</div>
+                        <div class="label"><a href="{% url 'delete_quiz'%}"><button>Delete</button></a></div>
+                    </div>
+                    <hr>
                 </section>
 
 
@@ -223,12 +255,13 @@
                         
                         <div class="label-line">
                             <div class="label">Phone Number</div>
-                            <input type="text" class="TextInput" name="phone_number" value="{{ request.user.phone_number }}">
+                            <input type="text" class="TextInput" name="phone_number" value="{{ request.user.phoneNumber }}">
+
                         </div>
                         
                         <div class="label-line">
                             <div class="label">Bio</div>
-                            <textarea class="TextInput" name="bio">{{ request.user.bio }}</textarea>
+                            <textarea class="TextInput" name="bio" value="{{ request.user.bio }}">{{ request.user.bio }}</textarea>
                         </div>
                         
                         <div class="label-line">
@@ -299,7 +332,7 @@
         function loadQuiz(courseName) {
             if (courseName) {
                 // Adjusted URL to match your Django URL configuration
-                window.location.href = `/EnterQuiz/?course=${courseName}`;
+                window.location.href = `/EnterQuiz/?course=${encodeURIComponent(courseName)}`;
             }
         }
         </script>

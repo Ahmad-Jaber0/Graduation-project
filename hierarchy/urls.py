@@ -29,5 +29,8 @@ urlpatterns = [
     path('save_course/', views.save_course, name='save_course'),
     path('info/',views.info,name='info'),
     path('save/',views.save_questionnaire,name='save_questionnaire'),
+    path('delete_quiz/', views.Del_Quiz, name='delete_quiz'),
+    path('fetch_questions/', views.fetch_questions, name='fetch_questions'),
+    path('delete_quiz_post/', views.delete_quiz, name='delete_quiz_post'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

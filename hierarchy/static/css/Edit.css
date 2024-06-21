@@ -12,18 +12,22 @@
 /*------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------Header----------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------*/
-header {
+header{
   background-color: black;
   width: 100%;
   position: fixed;
-  top: 0;
-  left: 0;
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px 100px;
   border-bottom: 1px solid blue;
+}
+.profile-icon img {
+width: 30px; /* Adjust the width as per your design */
+height: 30px; /* Adjust the height as per your design */
+border-radius: 50%; /* Optional: Makes the image round */
+object-fit: cover; /* Ensures the image fills the container */
 }
 
 .logo {
