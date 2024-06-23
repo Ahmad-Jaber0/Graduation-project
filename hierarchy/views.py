@@ -44,7 +44,6 @@ def SignupPage(request):
         LN = request.POST.get('last_name')
         pass1 = request.POST.get('password1')
         pass2 = request.POST.get('password2')
-        phone_number = request.POST.get('phoneNumber')
 
         errors = {}
 
@@ -61,7 +60,7 @@ def SignupPage(request):
             return render(request, 'signup.html', {'errors': errors, 'form_data': request.POST})
         
         # If no errors, create the user
-        my_user = User.objects.create_user(username=uname, email=email, first_name=FN, last_name=LN, password=pass1,phoneNumber=phone_number)
+        my_user = User.objects.create_user(username=uname, email=email, first_name=FN, last_name=LN, password=pass1)
         my_user.save()
 
         # Authenticate and log in the user
@@ -491,8 +490,6 @@ def update_profile(request):
         user_profile.last_name = request.POST.get('last_name', '')
         user_profile.email = request.POST.get('email', '')
         user_profile.bio = request.POST.get('bio', '')
-        user_profile.phone_number = request.POST.get('phone_number', '')
-        print(request.POST.get('phone_number'))
 
         # Handle profile image upload
         if 'image' in request.FILES:

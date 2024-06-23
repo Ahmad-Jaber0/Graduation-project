@@ -6,7 +6,6 @@ from django.db.models import F
 
 class User(AbstractUser):
     ROLE_CHOICES = [
-        ('Admin', 'Admin'),
         ('Manager', 'Manager'),
         ('Developer', 'Developer'),
     ]
@@ -17,8 +16,8 @@ class User(AbstractUser):
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES,default='Developer')
     profile_image = models.ImageField(upload_to='profile_images/', default='profile_images/default.png')
-    phoneNumber = models.CharField(max_length=15, blank=True, null=True)  # Assuming phone numbers can include country code
     bio = models.TextField(blank=True)
+    super_admin = models.BooleanField(default=False)
 
 class QuestionnaireResponse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

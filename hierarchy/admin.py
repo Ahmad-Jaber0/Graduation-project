@@ -8,10 +8,15 @@ admin.site.site_title="LoomingCode"
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'first_name', 'last_name', 'email', 'role','profile_image','phoneNumber','id']
+    list_display = ['username', 'first_name', 'last_name', 'email', 'role','profile_image','id']
     list_editable=['role']
     search_fields=['username']
     list_filter=['role']
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = list(super().get_readonly_fields(request, obj))
+        if obj:  # This condition is true when editing an existing user
+            readonly_fields.append('super_admin')
+        return readonly_fields
 
 class QuestionnaireResponseAdmin(admin.ModelAdmin):
     list_display=['user','q1','q1_2','q3','q4','q5']
@@ -41,9 +46,6 @@ class UserAnswerAdmin(admin.ModelAdmin):
     list_display=['user','section','is_correct','id']
 
 
-class QuestionOptionAdmin(admin.ModelAdmin):
-    list_display=['section','option_text','option_id']
-
 class UserTopicProgressAmin(admin.ModelAdmin):
     list_display=['user','topic','completed']
 
@@ -61,7 +63,6 @@ admin.site.register(Topic, TopicAdmin)
 admin.site.register(QuizQuestion, QuizQuestionAdmin)
 admin.site.register(QuestionSection, QuestionSectionAdmin)
 admin.site.register(UserAnswer,UserAnswerAdmin)
-admin.site.register(QuestionOption,QuestionOptionAdmin)
 
 admin.site.register(UserTopicProgress,UserTopicProgressAmin)
 admin.site.register(UserCourseProgress,UserCourseProgressAdmin)
