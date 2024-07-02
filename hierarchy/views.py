@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,get_object_or_404
-from django.contrib import auth
+from django.contrib import auth,messages
 from django.http import HttpResponse,JsonResponse, HttpResponseBadRequest,HttpResponseNotFound,HttpResponseRedirect
 
 from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
@@ -14,10 +14,6 @@ import numpy as np
 from django.views.decorators.http import require_POST
 
 #################### auth ################################33
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.http import JsonResponse
-from .models import User  # Import your custom User model
 
 def Newlogin(request):
     if request.method == 'POST':
@@ -269,8 +265,7 @@ def course_detail(request, course_name, topic_name): ##### present the course Pa
 ########################################################
 
 ########## Dynamic page and form to add course ##################
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
+
 @login_required
 def Dynamic(request):
     if request.method == 'POST':
@@ -479,7 +474,6 @@ def save_course(request):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
 
-from django.contrib import messages
 @login_required
 def update_profile(request):
     if request.method == 'POST':
