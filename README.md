@@ -17,3 +17,7 @@ https://www.youtube.com/watch?v=W7-nJvsSWBI
 ![Learner useCase](https://github.com/user-attachments/assets/f56d7662-ecb7-43e9-be7c-4f3a95a27eb0)
 # Moderator useCase
 ![Moderator useCase](https://github.com/user-attachments/assets/9e557268-fb79-44a1-b196-ee7c38532eec)
+# analysis Helper System
+https://stirring-parmesan-c8c.notion.site/C-Quiz-2-dfa4ecd664004fc48e29d1b76a747813?pvs=4
+# analysis Recommender System
+https://stirring-parmesan-c8c.notion.site/Outer-Recommender-59ba69e1e65340d78fec912369419949
