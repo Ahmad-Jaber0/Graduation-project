@@ -6,3 +6,14 @@ Our intelligent feature recommends the most suitable starting chapters for each 
 # Recommender System
 We created a content-based recommender system that suggests courses aligning with the learner's preferences, previous knowledge, and learning style, making learning more efficient and tailored.
 # Project Demo Video
+https://www.youtube.com/watch?v=W7-nJvsSWBI
+# ERD Diagram 
+![ERD](https://github.com/user-attachments/assets/3eea6e2f-2527-4ad9-9cf5-dac92328e19c)
+# class Diagram
+![class digram](https://github.com/user-attachments/assets/2b686661-87d4-4e9d-956a-27a86f2ac9b3)
+# Admin useCase
+![Admin useCase](https://github.com/user-attachments/assets/6c2d9664-2d3f-4a99-9dca-43964cd0f483)
+# Learner useCase
+![Learner useCase](https://github.com/user-attachments/assets/f56d7662-ecb7-43e9-be7c-4f3a95a27eb0)
+# Moderator useCase
+![Moderator useCase](https://github.com/user-attachments/assets/9e557268-fb79-44a1-b196-ee7c38532eec)
